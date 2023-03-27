@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="12"/>
+    <ManyBuildModesSelection Value="Debug,&quot;Release Win64&quot;"/>
+    <BuildModes Active="Release Win x64"/>
+    <Units>
+      <Unit>
+        <Filename Value="MDX_Tool.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
+        <CursorPos Y="130"/>
+        <UsageCount Value="37"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="untDXUtils.pas"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="631"/>
+        <CursorPos X="56" Y="661"/>
+        <UsageCount Value="18"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="units\untDX7Voice.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="13" Y="895"/>
+        <UsageCount Value="12"/>
+      </Unit>
+      <Unit>
+        <Filename Value="units\untDX7IISupplement.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="136"/>
+        <CursorPos X="81" Y="149"/>
+        <UsageCount Value="12"/>
+      </Unit>
+      <Unit>
+        <Filename Value="units\untUtils.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="4"/>
+        <CursorPos X="11" Y="20"/>
+        <UsageCount Value="12"/>
+      </Unit>
+      <Unit>
+        <Filename Value="units\untTX7Function.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="212"/>
+        <CursorPos X="79" Y="225"/>
+        <UsageCount Value="12"/>
+      </Unit>
+      <Unit>
+        <Filename Value="units\untMDXSupplement.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="90"/>
+        <CursorPos X="78" Y="105"/>
+        <UsageCount Value="12"/>
+      </Unit>
+    </Units>
+    <JumpHistory HistoryIndex="29">
+      <Position>
+        <Filename Value="untDXUtils.pas"/>
+        <Caret Line="147" TopLine="135"/>
+      </Position>
+      <Position>
+        <Filename Value="untDXUtils.pas"/>
+        <Caret Line="146" TopLine="135"/>
+      </Position>
+      <Position>
+        <Filename Value="untDXUtils.pas"/>
+        <Caret Line="147" TopLine="135"/>
+      </Position>
+      <Position>
+        <Filename Value="MDX_Tool.lpr"/>
+        <Caret Line="263" Column="48" TopLine="231"/>
+      </Position>
+      <Position>
+        <Filename Value="untDXUtils.pas"/>
+        <Caret Line="139" TopLine="132"/>
+      </Position>
+      <Position>
+        <Filename Value="untDXUtils.pas"/>
+        <Caret Line="140" TopLine="132"/>
+      </Position>
+      <Position>
+        <Filename Value="untDXUtils.pas"/>
+        <Caret Line="141" TopLine="132"/>
+      </Position>
+      <Position>
+        <Filename Value="untDXUtils.pas"/>
+        <Caret Line="142" TopLine="132"/>
+      </Position>
+      <Position>
+        <Filename Value="untDXUtils.pas"/>
+        <Caret Line="143" TopLine="132"/>
+      </Position>
+      <Position>
+        <Filename Value="untDXUtils.pas"/>
+        <Caret Line="144" TopLine="132"/>
+      </Position>
+      <Position>
+        <Filename Value="untDXUtils.pas"/>
+        <Caret Line="146" TopLine="132"/>
+      </Position>
+      <Position>
+        <Filename Value="untDXUtils.pas"/>
+        <Caret Line="147" TopLine="132"/>
+      </Position>
+      <Position>
+        <Filename Value="untDXUtils.pas"/>
+        <Caret Line="146" TopLine="132"/>
+      </Position>
+      <Position>
+        <Filename Value="untDXUtils.pas"/>
+        <Caret Line="147" TopLine="132"/>
+      </Position>
+      <Position>
+        <Filename Value="untDXUtils.pas"/>
+        <Caret Line="146" TopLine="132"/>
+      </Position>
+      <Position>
+        <Filename Value="untDXUtils.pas"/>
+        <Caret Line="147" TopLine="132"/>
+      </Position>
+      <Position>
+        <Filename Value="untDXUtils.pas"/>
+        <Caret Line="146" TopLine="132"/>
+      </Position>
+      <Position>
+        <Filename Value="untDXUtils.pas"/>
+        <Caret Line="147" TopLine="132"/>
+      </Position>
+      <Position>
+        <Filename Value="untDXUtils.pas"/>
+        <Caret Line="146" TopLine="132"/>
+      </Position>
+      <Position>
+        <Filename Value="untDXUtils.pas"/>
+        <Caret Line="147" TopLine="132"/>
+      </Position>
+      <Position>
+        <Filename Value="untDXUtils.pas"/>
+        <Caret Line="146" TopLine="132"/>
+      </Position>
+      <Position>
+        <Filename Value="untDXUtils.pas"/>
+        <Caret Line="147" TopLine="132"/>
+      </Position>
+      <Position>
+        <Filename Value="untDXUtils.pas"/>
+        <Caret Line="146" TopLine="132"/>
+      </Position>
+      <Position>
+        <Filename Value="untDXUtils.pas"/>
+        <Caret Line="147" TopLine="132"/>
+      </Position>
+      <Position>
+        <Filename Value="untDXUtils.pas"/>
+        <Caret Line="146" TopLine="132"/>
+      </Position>
+      <Position>
+        <Filename Value="untDXUtils.pas"/>
+        <Caret Line="147" TopLine="132"/>
+      </Position>
+      <Position>
+        <Filename Value="untDXUtils.pas"/>
+        <Caret Line="146" TopLine="132"/>
+      </Position>
+      <Position>
+        <Filename Value="untDXUtils.pas"/>
+        <Caret Line="147" TopLine="132"/>
+      </Position>
+      <Position>
+        <Filename Value="MDX_Tool.lpr"/>
+        <Caret Line="180" Column="24" TopLine="177"/>
+      </Position>
+      <Position>
+        <Filename Value="MDX_Tool.lpr"/>
+        <Caret Line="49" Column="5" TopLine="36"/>
+      </Position>
+    </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes ActiveMode="default">
+        <Mode Name="default">
+          <local>
+            <CommandLineParams Value="-i -f BUCK-1.SYX"/>
+            <WorkingDirectory Value="C:\Users\Administrator\Documents\Lazarus\MDX_Tool"/>
+          </local>
+        </Mode>
+      </Modes>
+    </RunParams>
+    <HistoryLists>
+      <List Name="WorkingDirectory" Type="File" Count="1">
+        <Item1 Value="C:\Users\Administrator\Documents\Lazarus\MDX_Tool"/>
+      </List>
+      <List Name="LaunchingApplication" Type="File" Count="1">
+        <Item1 Value="C:\WINDOWS\system32\cmd.exe /C ${TargetCmdLine}"/>
+      </List>
+      <List Name="CommandLineParameters" Count="2">
+        <Item1 Value="-i -f BUCK-1.SYX"/>
+        <Item2 Value="-i -f DMC-1.SYX"/>
+      </List>
+    </HistoryLists>
+  </ProjectSession>
+</CONFIG>
