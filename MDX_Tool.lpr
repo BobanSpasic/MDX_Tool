@@ -5,7 +5,7 @@ program MDX_Tool;
 uses
  {$IFDEF UNIX}
   cthreads,
-        {$ENDIF}
+           {$ENDIF}
   Classes,
   SysUtils,
   CustApp,
@@ -30,16 +30,14 @@ type
   var
     ErrorMsg: string;
     fInput: string;
-    fOutput: string;
     slReport: TStringList;
     msInputFile: TMemoryStream;
     i: integer;
     iStartPos: integer;
   begin
     fInput := '';
-    fOutput:= '';
     // quick check parameters
-    ErrorMsg := CheckOptions('hirf:o:', 'help info repair file: output:');
+    ErrorMsg := CheckOptions('hirf:', 'help info repair file:');
 
     if ErrorMsg <> '' then
     begin
@@ -58,8 +56,6 @@ type
 
     if HasOption('f', 'file') then
       fInput := GetOptionValue('f', 'file');
-    if HasOption('o', 'output') then
-      fOutput := GetOptionValue('o', 'output');
 
     if HasOption('r', 'repair') then
     begin
@@ -70,35 +66,20 @@ type
         Exit;
       end;
 
-      if fOutput <> '' then
+      slReport := TStringList.Create;
+
+      WriteLn('Repairing file ' + ExtractFileName(fInput));
+      if trim(ExtractFileDir(fInput)) = '' then
+        fInput := IncludeTrailingPathDelimiter(GetCurrentDir) + fInput;
+      if RepairDX7SysEx(fInput, slReport) then
       begin
-        slReport := TStringList.Create;
-        msInputFile := TMemoryStream.Create;
-        msInputFile.LoadFromFile(fInput);
-        iStartPos := 0;
-
-        if ContainsDX_SixOP_Data(msInputFile, iStartPos, slReport) then
-        begin
-
-        end
-        else
-        if RepairDX7SysEx(fInput, fOutput, slReport) then
-        begin
-
-        end;
-
         for i := 0 to slReport.Count - 1 do
           WriteLn(slReport[i]);
-
-        msInputFile.Free;
-        slReport.Free;
       end
       else
-      begin
-        WriteLn('Parameter -o {filename} is missing');
-        Terminate;
-        Exit;
-      end;
+        WriteLn('No defects recognized');
+
+      slReport.Free;
     end;
 
     if HasOption('i', 'info') then
@@ -106,6 +87,7 @@ type
       if not FileExists(fInput) then
       begin
         WriteLn('Parameter -f {filename} is missing or the file {file_name} could not be found');
+        Terminate;
         Exit;
       end
       else
@@ -115,7 +97,7 @@ type
         msInputFile.LoadFromFile(fInput);
         iStartPos := 0;
 
-        if ContainsDX_SixOP_Data(msInputFile, iStartPos, slReport) then
+        if ContainsDX_SixOP_Data_New(msInputFile, iStartPos, slReport) then
         begin
 
         end;
@@ -153,15 +135,14 @@ type
     writeln('  Parameters (short and long form):');
     writeln('       -h                 --help                   This help message');
     writeln('       -i                 --info                   Information');
-    writeln('       -r                 --repair                 Repair');
+    writeln('       -r                 --repair                 Repair/extract DX7 VMEM data from files');
     //    writeln('       -d                 --dx7                    output DX7 mark I files');
     //    writeln('                                               (DX7II and TX data will be removed)');
     writeln('       -f {filename}      --file={filename}        Input file');
-    writeln('       -o {filename}      --output={filename}      Output file');
     WriteLn('');
     writeln('  Example usage:');
     writeln('       MDX_Tool -i -f my_dx_file.syx');
-    writeln('       MDX_Tool -r -f my_dx_file.syx -o my_repaired_file.syx');
+    writeln('       MDX_Tool -r -f my_dx_file.syx');
     writeln('       MDX_Tool --info --file=my_dx_file.syx');
   end;
 
