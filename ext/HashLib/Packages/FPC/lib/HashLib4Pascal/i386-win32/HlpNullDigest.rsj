@@ -1,0 +1,4 @@
+{"version":1,"strings":[
+{"hash":154644946,"name":"hlpnulldigest.shashsizenotimplemented","sourcebytes":[72,97,115,104,83,105,122,101,32,78,111,116,32,73,109,112,108,101,109,101,110,116,101,100,32,70,111,114,32,34,37,115,34],"value":"HashSize Not Implemented For \"%s\""},
+{"hash":144944354,"name":"hlpnulldigest.sblocksizenotimplemented","sourcebytes":[66,108,111,99,107,83,105,122,101,32,78,111,116,32,73,109,112,108,101,109,101,110,116,101,100,32,70,111,114,32,34,37,115,34],"value":"BlockSize Not Implemented For \"%s\""}
+]}

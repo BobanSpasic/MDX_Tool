@@ -1,0 +1,6 @@
+{"version":1,"strings":[
+{"hash":81149934,"name":"hlppbkdf2_hmacnotbuildinadapter.sinvalidbytecount","sourcebytes":[34,40,65,66,121,116,101,67,111,117,110,116,41,34,32,65,114,103,117,109,101,110,116,32,109,117,115,116,32,98,101,32,97,32,118,97,108,117,101,32,103,114,101,97,116,101,114,32,116,104,97,110,32,122,101,114,111,46],"value":"\"(AByteCount)\" Argument must be a value greater than zero."},
+{"hash":240878386,"name":"hlppbkdf2_hmacnotbuildinadapter.sinvalidindex","sourcebytes":[73,110,118,97,108,105,100,32,115,116,97,114,116,32,111,114,32,101,110,100,32,105,110,100,101,120,32,105,110,32,116,104,101,32,105,110,116,101,114,110,97,108,32,98,117,102,102,101,114],"value":"Invalid start or end index in the internal buffer"},
+{"hash":245990292,"name":"hlppbkdf2_hmacnotbuildinadapter.snotinitializedihashinstance","sourcebytes":[34,73,72,97,115,104,34,32,105,110,115,116,97,110,99,101,32,105,115,32,117,110,105,110,105,116,105,97,108,105,122,101,100],"value":"\"IHash\" instance is uninitialized"},
+{"hash":108624542,"name":"hlppbkdf2_hmacnotbuildinadapter.siterationtoosmall","sourcebytes":[73,116,101,114,97,116,105,111,110,32,109,117,115,116,32,98,101,32,103,114,101,97,116,101,114,32,116,104,97,110,32,122,101,114,111,46],"value":"Iteration must be greater than zero."}
+]}

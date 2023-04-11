@@ -24,11 +24,12 @@ program MDX_Tool;
 uses
  {$IFDEF UNIX}
   cthreads,
-           {$ENDIF}
+             {$ENDIF}
   Classes,
   SysUtils,
   CustApp,
-  untDXUtils;
+  untUtils, untDXUtils,
+  untDXObjInterface;
 
 type
 
@@ -49,6 +50,7 @@ type
   var
     ErrorMsg: string;
     fInput: string;
+    fOutputDir: string;
     slReport: TStringList;
     msInputFile: TMemoryStream;
     i: integer;
@@ -56,7 +58,7 @@ type
   begin
     fInput := '';
     // quick check parameters
-    ErrorMsg := CheckOptions('hirf:', 'help info repair file:');
+    ErrorMsg := CheckOptions('hirvsjf:d:', 'help info repair voices split join file: dir:');
 
     if ErrorMsg <> '' then
     begin
@@ -80,7 +82,7 @@ type
     begin
       if not FileExists(fInput) then
       begin
-        WriteLn('Parameter -f {filename} is missing or the file {file_name} could not be found');
+        WriteLn('Parameter -f {filename} is missing or the file {filename} could not be found');
         Terminate;
         Exit;
       end;
@@ -105,7 +107,7 @@ type
     begin
       if not FileExists(fInput) then
       begin
-        WriteLn('Parameter -f {filename} is missing or the file {file_name} could not be found');
+        WriteLn('Parameter -f {filename} is missing or the file {filename} could not be found');
         Terminate;
         Exit;
       end
@@ -129,6 +131,89 @@ type
       end;
     end;
 
+    if HasOption('v', 'voices') then
+    begin
+      if not FileExists(fInput) then
+      begin
+        WriteLn('Parameter -f {filename} is missing or the file {filename} could not be found');
+        Terminate;
+        Exit;
+      end
+      else
+      begin
+        slReport := TStringList.Create;
+        msInputFile := TMemoryStream.Create;
+        msInputFile.LoadFromFile(fInput);
+
+        GetVoices(msInputFile, slReport);
+
+        for i := 0 to slReport.Count - 1 do
+          WriteLn(slReport[i]);
+
+        msInputFile.Free;
+        slReport.Free;
+      end;
+    end;
+
+    if HasOption('s', 'split') then
+    begin
+      if not FileExists(fInput) then
+      begin
+        WriteLn('Parameter -f {filename} is missing or the file {filename} could not be found');
+        Terminate;
+        Exit;
+      end
+      else
+      begin
+        if not HasOption('d', 'dir') then
+        begin
+          WriteLn('Parameter -d {directory} is missing');
+          Terminate;
+          Exit;
+        end
+        else
+        begin
+          fOutputDir :=IncludeTrailingPathDelimiter(GetOptionValue('d', 'outdir'));
+          if pos(':\', fOutputDir) = 0 then fOutputDir := IncludeTrailingPathDelimiter(GetCurrentDir) + fOutputDir;
+          if not DirectoryExists(fOutputDir) then
+          ForceDirectories(fOutputDir);
+          msInputFile := TMemoryStream.Create;
+          msInputFile.LoadFromFile(fInput);
+
+          SplitVMEM2VCED(msInputFile, fOutputDir);
+
+          msInputFile.Free;
+          WriteLn('Done!');
+        end;
+      end;
+    end;
+
+     if HasOption('j', 'join') then
+    begin
+      fOutputDir :=IncludeTrailingPathDelimiter(GetOptionValue('d', 'dir'));
+      if pos(':\', fOutputDir) = 0 then fOutputDir := IncludeTrailingPathDelimiter(GetCurrentDir) + fOutputDir;
+      if not DirectoryExists(fOutputDir) then
+      begin
+        WriteLn('Parameter -d {directory} is missing or the directory could not be found');
+        Terminate;
+        Exit;
+      end
+      else
+      begin
+        if not HasOption('f', 'file') then
+        begin
+          WriteLn('Parameter -f {filename} is missing');
+          Terminate;
+          Exit;
+        end
+        else
+        begin
+          JoinVCED2VMEM(fOutputDir, fInput);
+          WriteLn('Done!');
+        end;
+      end;
+    end;
+
     Terminate;
   end;
 
@@ -147,7 +232,7 @@ type
   begin
     writeln('');
     writeln('');
-    writeln('MDX_Tool 0.9 (beta) - tool for getting info from Yamaha DX SysEx files');
+    writeln('MDX_Tool 1.1 - tool for various manipulation of DX SysEx files');
     writeln('Author: Boban Spasic');
     writeln('');
     writeln('Usage: ', ExtractFileName(ExeName), ' -parameters');
@@ -155,14 +240,25 @@ type
     writeln('       -h                 --help                   This help message');
     writeln('       -i                 --info                   Information');
     writeln('       -r                 --repair                 Repair/extract DX7 VMEM data from files');
-    //    writeln('       -d                 --dx7                    output DX7 mark I files');
-    //    writeln('                                               (DX7II and TX data will be removed)');
-    writeln('       -f {filename}      --file={filename}        Input file');
-    WriteLn('');
+    writeln('       -s                 --split                  Split bank (VMEM) into single voices (VCED)');
+    writeln('       -j                 --join                   Join single voices (VCED) into a bank (VMEM)');
+    writeln('');
+    writeln('       -f {filename}      --file={filename}        Input file (or output file for -j parameter)');
+    writeln('       -d {directory}     --dir={directory}        Output directory for -s parameter');
+    writeln('                                                   Input directory for -j parameter');
+    writeln('                                                   If it does not contain a drive letter, a sub-directory in');
+    writeln('                                                   current directory will be created.');
+    writeLn('');
     writeln('  Example usage:');
     writeln('       MDX_Tool -i -f my_dx_file.syx');
     writeln('       MDX_Tool -r -f my_dx_file.syx');
+    writeln('       MDX_Tool -s -f my_dx_file.syx -d new_directory');
+    writeln('       MDX_Tool -j -f my_new_bank.syx -d directory_with_VCEDs');
     writeln('       MDX_Tool --info --file=my_dx_file.syx');
+    writeLn('');
+    writeLn('');
+    writeLn('Split and Join parameters expect non-corrupted files as input (headerless files are accepted).');
+    writeln('No file-sanity checks are executed.');
   end;
 
 var

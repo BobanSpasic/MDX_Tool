@@ -1,0 +1,9 @@
+{"version":1,"strings":[
+{"hash":21875651,"name":"hlpblake2s.sinvalidconfiglength","sourcebytes":[67,111,110,102,105,103,32,76,101,110,103,116,104,32,77,117,115,116,32,66,101,32,56,32,87,111,114,100,115],"value":"Config Length Must Be 8 Words"},
+{"hash":198090620,"name":"hlpblake2s.sconfignil","sourcebytes":[67,111,110,102,105,103,32,67,97,110,110,111,116,32,66,101,32,78,105,108],"value":"Config Cannot Be Nil"},
+{"hash":221561054,"name":"hlpblake2s.sinvalidxofsize","sourcebytes":[88,79,70,83,105,122,101,32,105,110,32,66,105,116,115,32,109,117,115,116,32,98,101,32,77,117,108,116,105,112,108,101,115,32,111,102,32,56,32,97,110,100,32,98,101,32,66,101,116,119,101,101,110,32,37,117,32,97,110,100,32,37,117,32,66,121,116,101,115,46],"value":"XOFSize in Bits must be Multiples of 8 and be Between %u and %u Bytes."},
+{"hash":14896552,"name":"hlpblake2s.soutputlengthinvalid","sourcebytes":[79,117,116,112,117,116,32,76,101,110,103,116,104,32,105,115,32,97,98,111,118,101,32,116,104,101,32,68,105,103,101,115,116,32,76,101,110,103,116,104],"value":"Output Length is above the Digest Length"},
+{"hash":28310884,"name":"hlpblake2s.soutputbuffertooshort","sourcebytes":[79,117,116,112,117,116,32,66,117,102,102,101,114,32,84,111,111,32,83,104,111,114,116],"value":"Output Buffer Too Short"},
+{"hash":12500227,"name":"hlpblake2s.smaximumoutputlengthexceeded","sourcebytes":[34,77,97,120,105,109,117,109,32,76,101,110,103,116,104,32,105,115,32,50,94,51,50,32,98,108,111,99,107,115,32,111,102,32,51,50,32,98,121,116,101,115],"value":"\"Maximum Length is 2^32 blocks of 32 bytes"},
+{"hash":214184964,"name":"hlpblake2s.swritetoxofafterreaderror","sourcebytes":[34,37,115,34,32,87,114,105,116,101,32,116,111,32,88,111,102,32,97,102,116,101,114,32,82,101,97,100,32,110,111,116,32,65,108,108,111,119,101,100],"value":"\"%s\" Write to Xof after Read not Allowed"}
+]}

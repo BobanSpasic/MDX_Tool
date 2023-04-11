@@ -1,0 +1,4 @@
+{"version":1,"strings":[
+{"hash":76610578,"name":"hlpcrc.sunsupportedcrctype","sourcebytes":[85,110,83,117,112,112,111,114,116,101,100,32,67,82,67,32,84,121,112,101,58,32,34,37,115,34],"value":"UnSupported CRC Type: \"%s\""},
+{"hash":138132434,"name":"hlpcrc.swidthoutofrange","sourcebytes":[87,105,100,116,104,32,77,117,115,116,32,98,101,32,66,101,116,119,101,101,110,32,51,32,97,110,100,32,54,52,46,32,34,37,100,34],"value":"Width Must be Between 3 and 64. \"%d\""}
+]}
