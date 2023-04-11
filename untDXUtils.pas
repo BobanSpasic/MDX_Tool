@@ -195,7 +195,7 @@ begin
     if iDumpStart > -1 then
     begin
       //Report.Add('Header found at: ' + IntToStr(iDumpStart));
-      //do not read behind the end of stream
+      //do not read behind the end of the stream
       if (iDumpStart + 8) <= dmp.Size then
       begin
         dmp.Position := iDumpStart;

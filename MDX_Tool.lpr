@@ -1,3 +1,22 @@
+{
+ *****************************************************************************
+  See the file COPYING.modifiedLGPL.txt, included in this distribution,
+  for details about the license.
+ *****************************************************************************
+
+ Author: Boban Spasic
+
+ Program description:
+ This program can get some info from Yamaha DX7 SysEx files. The info is more about the integrity/corruption of the files.
+ Second aspect of the program is to repair some of the common corrupted files found on the internet.
+ Third aspect (not yet implemented) will be the conversion from VMEM to VCED and vice-versa.
+ 
+ ToDo:
+ - get voice list
+ - conversion VMEM <> VCED
+ - duplicate finder along a collection of files
+}
+
 program MDX_Tool;
 
 {$mode objfpc}{$H+}
