@@ -10,7 +10,7 @@ Usage: MDX_Tool.exe -parameters
        -c                 --crop                   Crop headers from the VMEM/VCED files  
        -s                 --split                  Split bank (VMEM) into single voices (VCED)  
        -x                 --xsplit                 Split bank (VMEM) into single voices (VCED)  
-                                                   and take the SHA256 hash as a file name.  
+                                                   and take the SHA2-256 hash as a file name.  
                                                    Voice name (10xASCII) is not a part of the hash  
        -j                 --join                   Join single voices (VCED) into a bank (VMEM)  
                                                    If the file voices.lst exists inside the input directory  
@@ -31,3 +31,5 @@ Usage: MDX_Tool.exe -parameters
   ```
   
 Split and Join parameters expect non-corrupted files as input (headerless files are accepted).  
+
+External library HashLib is used for calculating hash: https://github.com/Xor-el/HashLib4Pascal
