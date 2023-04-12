@@ -97,6 +97,7 @@ type
 function ContainsDX_SixOP_Data_New(dmp: TMemoryStream; var StartPos: integer;
   const Report: TStrings): boolean;
 function RepairDX7SysEx(aFileName: string; const Report: TStrings): boolean;
+function CropHeaders(aFileName: string): boolean;
 function CheckSum(dmp: TMemoryStream; StartPos, DumpLen: integer): boolean;
 function PosBytes(aBytes: array of byte; aStream: TStream;
   aFromPos: integer = 0): integer;
@@ -428,8 +429,8 @@ begin
       iCalcChk := ((not (iCalcChk and 255)) and 127) + 1;
       msRepaired.WriteByte(iCalcChk);
       msRepaired.WriteByte($F7);
-      sNameRepaired := sDirRepaired + sNameRepaired + '_' + IntToStr(iDumpStart) +
-        '_DX7_repaired.syx';
+      sNameRepaired := sDirRepaired + sNameRepaired + '_' +
+        IntToStr(iDumpStart) + '_DX7_repaired.syx';
       msRepaired.SaveToFile(sNameRepaired);
       Result := True;
     end;
@@ -441,6 +442,55 @@ begin
   end;
   msToRepair.Free;
   msRepaired.Free;
+end;
+
+function CropHeaders(aFileName: string): boolean;
+var
+  msToCrop: TMemoryStream;
+  msCropped: TMemoryStream;
+  abSysExID: array[0..1] of byte = ($F0, $43);
+  sNameCropped: string;
+  sDirCropped: string;
+  tmpByte: byte;
+begin
+  Result := False;
+  sNameCropped := ExtractFileName(aFileName);
+  sNameCropped := ExtractFileNameWithoutExt(sNameCropped);
+  sDirCropped := IncludeTrailingPathDelimiter(ExtractFileDir(aFileName));
+  msToCrop := TMemoryStream.Create;
+  msCropped := TMemoryStream.Create;
+  msToCrop.LoadFromFile(aFileName);
+  if PosBytes(abSysExID, msToCrop) = 0 then  //check for DX7 header
+  begin
+    if msToCrop.Size = 4104 then
+    begin
+      msToCrop.Position := 3;
+      tmpByte := msToCrop.ReadByte;
+      if tmpByte = 9 then     //VMEM
+      begin
+        msToCrop.Position := 6;
+        msCropped.CopyFrom(msToCrop, 4096);
+        msCropped.SaveToFile(sDirCropped + sNameCropped + '.dx7hdlsvmem.syx');
+        Result := True;
+      end;
+    end;
+
+    if msToCrop.Size = 163 then
+    begin
+      msToCrop.Position := 3;
+      tmpByte := msToCrop.ReadByte;
+      if tmpByte = 0 then     //VCED
+      begin
+        msToCrop.Position := 6;
+        msCropped.CopyFrom(msToCrop, 155);
+        msCropped.SaveToFile(sDirCropped + sNameCropped + '.dx7hdlsvced.syx');
+        Result := True;
+      end;
+    end;
+  end;
+
+  msToCrop.Free;
+  msCropped.Free;
 end;
 
 //function RepairDX7SysEx(aFileName, aOutFileName: string;
@@ -535,27 +585,26 @@ end;
 
 function GetValidFileName(aFileName: string): string;
 var
-  FDir, FFile, FExt: string;
+  FFile, FExt: string;
   FFileWithExt: string;
   FWinReservedNames: array [1..22] of
   string = ('CON', 'PRN', 'AUX', 'NUL', 'COM1', 'COM2', 'COM3', 'COM4',
     'COM5', 'COM6', 'COM7', 'COM8', 'COM9', 'LPT1', 'LPT2', 'LPT3',
     'LPT4', 'LPT5', 'LPT6', 'LPT7', 'LPT8', 'LPT9');
-  FWinIllegalChars: array [1..9] of char = ('<', '>', ':', '"', '\', '/', '?', '|', '*');
+  FWinIllegalChars: array [1..10] of char = ('<', '>', ':', '"', '\', '/', '?', '|', '*', '=');
   i: integer;
 begin
-  FDir := ExtractFileDir(aFileName);
   FFile := ExtractFileNameWithoutExt(aFileName);
   FExt := ExtractFileExt(aFileName);
 
   if UpperCase(FExt) in FWinReservedNames then FExt := 'InvalidExtension';
   if UpperCase(FFile) in FWinReservedNames then FFile := 'InvalidName';
 
-  for i := 1 to 9 do
-    FFile := ReplaceStr(FFile, FWinIllegalChars[i], '_');
+  for i := 1 to 10 do
+    FFile := ReplaceStr(FFile, FWinIllegalChars[i], '(' + IntToHex(ord(FWinIllegalChars[i])) + ')');
 
-  for i := 1 to 9 do
-    FExt := ReplaceStr(FExt, FWinIllegalChars[i], '_');
+  for i := 1 to 10 do
+    FExt := ReplaceStr(FExt, FWinIllegalChars[i], '(' + IntToHex(ord(FWinIllegalChars[i])) + ')');
 
   for i := 1 to Length(FFile) do
     if (Ord(FFile[i]) < 32) then FFile[i] := '_';
@@ -566,9 +615,7 @@ begin
     SetLength(FFileWithExt, Length(FFileWithExt) - 1);
   if FFileWithExt[Length(FFileWithExt)] = '.' then
     SetLength(FFileWithExt, Length(FFileWithExt) - 1);
-  if FDir <> '' then
-    Result := IncludeTrailingPathDelimiter(FDir) + FFileWithExt
-  else
+
     Result := FFileWithExt;
 end;
 

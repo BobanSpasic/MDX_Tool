@@ -155,7 +155,6 @@
       <Unit>
         <Filename Value="untDXObjInterface.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="untDXObjInterface"/>
       </Unit>
       <Unit>
         <Filename Value="units\untUtils.pas"/>

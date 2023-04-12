@@ -58,7 +58,7 @@ type
   begin
     fInput := '';
     // quick check parameters
-    ErrorMsg := CheckOptions('hirvsjf:d:', 'help info repair voices split join file: dir:');
+    ErrorMsg := CheckOptions('hirvcsxjf:d:', 'help info repair voices crop split xsplit join file: dir:');
 
     if ErrorMsg <> '' then
     begin
@@ -155,6 +155,25 @@ type
       end;
     end;
 
+    if HasOption('c', 'crop') then
+    begin
+      if not FileExists(fInput) then
+      begin
+        WriteLn('Parameter -f {filename} is missing or the file {filename} could not be found');
+        Terminate;
+        Exit;
+      end;
+
+      if trim(ExtractFileDir(fInput)) = '' then
+        fInput := IncludeTrailingPathDelimiter(GetCurrentDir) + fInput;
+      if CropHeaders(fInput) then
+      begin
+        WriteLn('Cropping file ' + ExtractFileName(fInput) + ': OK');
+      end
+      else
+        WriteLn('Cropping file ' + ExtractFileName(fInput) + ': FAIL');
+    end;
+
     if HasOption('s', 'split') then
     begin
       if not FileExists(fInput) then
@@ -181,6 +200,39 @@ type
           msInputFile.LoadFromFile(fInput);
 
           SplitVMEM2VCED(msInputFile, fOutputDir);
+
+          msInputFile.Free;
+          WriteLn('Done!');
+        end;
+      end;
+    end;
+
+    if HasOption('x', 'xsplit') then
+    begin
+      if not FileExists(fInput) then
+      begin
+        WriteLn('Parameter -f {filename} is missing or the file {filename} could not be found');
+        Terminate;
+        Exit;
+      end
+      else
+      begin
+        if not HasOption('d', 'dir') then
+        begin
+          WriteLn('Parameter -d {directory} is missing');
+          Terminate;
+          Exit;
+        end
+        else
+        begin
+          fOutputDir :=IncludeTrailingPathDelimiter(GetOptionValue('d', 'outdir'));
+          if pos(':\', fOutputDir) = 0 then fOutputDir := IncludeTrailingPathDelimiter(GetCurrentDir) + fOutputDir;
+          if not DirectoryExists(fOutputDir) then
+          ForceDirectories(fOutputDir);
+          msInputFile := TMemoryStream.Create;
+          msInputFile.LoadFromFile(fInput);
+
+          XSplitVMEM2VCED(msInputFile, fOutputDir);
 
           msInputFile.Free;
           WriteLn('Done!');
@@ -232,22 +284,29 @@ type
   begin
     writeln('');
     writeln('');
-    writeln('MDX_Tool 1.1 - tool for various manipulation of DX SysEx files');
+    writeln('MDX_Tool 1.2 - tool for various manipulation of DX7 VMEM and VCED SysEx files');
     writeln('Author: Boban Spasic');
+    writeln('https://github.com/BobanSpasic/MDX_Tool');
     writeln('');
     writeln('Usage: ', ExtractFileName(ExeName), ' -parameters');
     writeln('  Parameters (short and long form):');
     writeln('       -h                 --help                   This help message');
     writeln('       -i                 --info                   Information');
     writeln('       -r                 --repair                 Repair/extract DX7 VMEM data from files');
+    writeln('       -c                 --crop                   Crop headers from the VMEM/VCED files');
     writeln('       -s                 --split                  Split bank (VMEM) into single voices (VCED)');
+    writeln('       -x                 --xsplit                 Split bank (VMEM) into single voices (VCED)');
+    writeln('                                                   and take the SHA256 hash as a file name.');
+    writeln('                                                   Voice name (10xASCII) is not a part of the hash');
     writeln('       -j                 --join                   Join single voices (VCED) into a bank (VMEM)');
+    writeln('                                                   If the file voices.lst exists inside the input directory');
+    writeln('                                                   - the voices inside the bank will be sorted according to the list');
     writeln('');
     writeln('       -f {filename}      --file={filename}        Input file (or output file for -j parameter)');
-    writeln('       -d {directory}     --dir={directory}        Output directory for -s parameter');
+    writeln('       -d {directory}     --dir={directory}        Output directory for -s and -x parameters');
     writeln('                                                   Input directory for -j parameter');
     writeln('                                                   If it does not contain a drive letter, a sub-directory in');
-    writeln('                                                   current directory will be created.');
+    writeln('                                                   the current directory will be created.');
     writeLn('');
     writeln('  Example usage:');
     writeln('       MDX_Tool -i -f my_dx_file.syx');
@@ -258,7 +317,6 @@ type
     writeLn('');
     writeLn('');
     writeLn('Split and Join parameters expect non-corrupted files as input (headerless files are accepted).');
-    writeln('No file-sanity checks are executed.');
   end;
 
 var
