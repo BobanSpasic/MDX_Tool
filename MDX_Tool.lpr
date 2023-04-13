@@ -296,7 +296,7 @@ type
     writeln('       -c                 --crop                   Crop headers from the VMEM/VCED files');
     writeln('       -s                 --split                  Split bank (VMEM) into single voices (VCED)');
     writeln('       -x                 --xsplit                 Split bank (VMEM) into single voices (VCED)');
-    writeln('                                                   and take the SHA256 hash as a file name.');
+    writeln('                                                   and take the SHA2-256 hash as a file name.');
     writeln('                                                   Voice name (10xASCII) is not a part of the hash');
     writeln('       -j                 --join                   Join single voices (VCED) into a bank (VMEM)');
     writeln('                                                   If the file voices.lst exists inside the input directory');
