@@ -96,6 +96,10 @@ type
 
 function ContainsDX_SixOP_Data_New(dmp: TMemoryStream; var StartPos: integer;
   const Report: TStrings): boolean;
+function ContainsDX7VoiceDump(dmp: TMemoryStream;
+  var StartPos, StartDmp: integer): boolean;
+function ContainsDX7BankDump(dmp: TMemoryStream;
+  var StartPos, StartDmp: integer): boolean;
 function RepairDX7SysEx(aFileName: string; const Report: TStrings): boolean;
 function CropHeaders(aFileName: string): boolean;
 function CheckSum(dmp: TMemoryStream; StartPos, DumpLen: integer): boolean;
@@ -210,7 +214,7 @@ begin
         rHeader.lsb := dmp.ReadByte;
         if rHeader.f in abSysExType then
         begin
-          StartPos := iDumpStart;
+          StartPos := dmp.Position;
           if rHeader.f = $00 then
             Report.Add('DX7/DX9 Voice - VCED at position ' +
               IntToStr(StartPos));
@@ -258,6 +262,7 @@ begin
             else
             begin
               Report.Add('Checksum mismatch');
+              Result := False;
             end;
           end
           else
@@ -283,6 +288,98 @@ begin
       Report.Add('DX header not found');
       Exit;
     end;
+  end;
+end;
+
+
+function ContainsDX7VoiceDump(dmp: TMemoryStream;
+  var StartPos, StartDmp: integer): boolean;
+var
+  dummy: byte;
+begin
+  if StartPos <= dmp.Size then
+  begin
+    dmp.Position := StartPos;
+    StartPos := -1;
+    //ToDo while loop
+    while (StartPos = -1) and (dmp.Position < dmp.Size) do
+      if dmp.ReadByte = $F0 then                  // $F0 - SysEx
+        StartPos := dmp.Position - 1;
+    if StartPos <> -1 then
+    begin
+      dummy := dmp.ReadByte;
+      if not (dummy = $43) then StartPos := -1;     // $43 - Yamaha
+      dummy := dmp.ReadByte;                        // sub-status + channel number
+      dummy := dmp.ReadByte;
+      if not (dummy = $00) then StartPos := -1;     // $00 - 1 Voice dump
+      dummy := dmp.ReadByte;
+      if not (dummy = $01) then StartPos := -1;     // byte count MS
+      dummy := dmp.ReadByte;
+      if not (dummy = $1B) then StartPos := -1;     // byte count LS
+    end;
+    if StartPos <> -1 then
+    begin
+      Result := True;
+      StartDmp := StartPos + 6;
+    end
+    else
+    begin
+      Result := False;
+      StartDmp := -1;
+    end;
+  end
+  else
+  begin
+    StartPos := -1;
+    Result := False;
+  end;
+end;
+
+function ContainsDX7BankDump(dmp: TMemoryStream;
+  var StartPos, StartDmp: integer): boolean;
+var
+  dummy: byte;
+begin
+  if StartPos <= dmp.Size then
+  begin
+    dmp.Position := StartPos;
+    StartPos := -1;
+    while (StartPos = -1) and (dmp.Position < dmp.Size - 6) do
+    begin
+      dummy := dmp.ReadByte;
+      if dummy = $F0 then                           // $F0 - SysEx
+      begin
+        StartPos := dmp.Position - 1;
+        dummy := dmp.ReadByte;
+        if not (dummy = $43) then StartPos := -1;     // $43 - Yamaha
+        dummy := dmp.ReadByte;                        // sub-status + channel number
+        dummy := dmp.ReadByte;
+        if not (dummy = $09) then StartPos := -1;     // $09 - 32 Voice dump
+        dummy := dmp.ReadByte;
+        if not (dummy = $20) then StartPos := -1;     // byte count MS
+        dummy := dmp.ReadByte;
+        if not (dummy = $00) then StartPos := -1;     // byte count LS
+      end;
+    end;
+    if StartPos <> -1 then
+      if (dmp.Size - StartPos) < 4104 then
+        StartPos := -1;  //file too short
+
+    if StartPos <> -1 then
+    begin
+      Result := True;
+      StartDmp := StartPos + 6;
+    end
+    else
+    begin
+      Result := False;
+      StartDmp := -1;
+    end;
+  end
+  else
+  begin
+    StartPos := -1;
+    Result := False;
   end;
 end;
 
@@ -412,6 +509,7 @@ begin
     end;
     if needExtractDump or needFillDump or needRewriteHeader then
     begin
+      //ToDo do recursive search
       msRepaired.WriteByte($F0);
       msRepaired.WriteByte($43);
       msRepaired.WriteByte($00);

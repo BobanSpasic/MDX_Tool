@@ -12,7 +12,6 @@
  Third aspect (not yet implemented) will be the conversion from VMEM to VCED and vice-versa.
  
  ToDo:
- - get voice list
  - conversion VMEM <> VCED
  - duplicate finder along a collection of files
 }
@@ -24,11 +23,12 @@ program MDX_Tool;
 uses
  {$IFDEF UNIX}
   cthreads,
-             {$ENDIF}
+               {$ENDIF}
   Classes,
   SysUtils,
   CustApp,
-  untUtils, untDXUtils,
+  untUtils,
+  untDXUtils,
   untDXObjInterface;
 
 type
@@ -55,10 +55,12 @@ type
     msInputFile: TMemoryStream;
     i: integer;
     iStartPos: integer;
+    iDmpPos: integer;
   begin
     fInput := '';
     // quick check parameters
-    ErrorMsg := CheckOptions('hirvcsxjf:d:', 'help info repair voices crop split xsplit join file: dir:');
+    ErrorMsg := CheckOptions('himnrvcsxjf:d:',
+      'help info hname vname repair voices crop split xsplit join file: dir:');
 
     if ErrorMsg <> '' then
     begin
@@ -117,17 +119,53 @@ type
         msInputFile := TMemoryStream.Create;
         msInputFile.LoadFromFile(fInput);
         iStartPos := 0;
+        iDmpPos := 0;
 
         if ContainsDX_SixOP_Data_New(msInputFile, iStartPos, slReport) then
         begin
-
+          for i := 0 to slReport.Count - 1 do
+            WriteLn(slReport[i]);
+          iStartPos := 0;
+          if ContainsDX7BankDump(msInputFile, iStartPos, iDmpPos) then
+            if CheckIntegrity(msInputFile, iDmpPos) then
+              WriteLn('VMEM data integrity is OK');
+        end
+        else
+        begin
+          for i := 0 to slReport.Count - 1 do
+            WriteLn(slReport[i]);
         end;
-
-        for i := 0 to slReport.Count - 1 do
-          WriteLn(slReport[i]);
 
         msInputFile.Free;
         slReport.Free;
+      end;
+    end;
+
+    if HasOption('m', 'hname') then
+    begin
+      if not FileExists(fInput) then
+      begin
+        WriteLn('Parameter -f {filename} is missing or the file {filename} could not be found');
+        Terminate;
+        Exit;
+      end
+      else
+      begin
+        Hash2Name(fInput);
+      end;
+    end;
+
+    if HasOption('n', 'vname') then
+    begin
+      if not FileExists(fInput) then
+      begin
+        WriteLn('Parameter -f {filename} is missing or the file {filename} could not be found');
+        Terminate;
+        Exit;
+      end
+      else
+      begin
+        Voice2Name(fInput);
       end;
     end;
 
@@ -192,10 +230,11 @@ type
         end
         else
         begin
-          fOutputDir :=IncludeTrailingPathDelimiter(GetOptionValue('d', 'outdir'));
-          if pos(':\', fOutputDir) = 0 then fOutputDir := IncludeTrailingPathDelimiter(GetCurrentDir) + fOutputDir;
+          fOutputDir := IncludeTrailingPathDelimiter(GetOptionValue('d', 'outdir'));
+          if pos(':\', fOutputDir) = 0 then
+            fOutputDir := IncludeTrailingPathDelimiter(GetCurrentDir) + fOutputDir;
           if not DirectoryExists(fOutputDir) then
-          ForceDirectories(fOutputDir);
+            ForceDirectories(fOutputDir);
           msInputFile := TMemoryStream.Create;
           msInputFile.LoadFromFile(fInput);
 
@@ -225,10 +264,11 @@ type
         end
         else
         begin
-          fOutputDir :=IncludeTrailingPathDelimiter(GetOptionValue('d', 'outdir'));
-          if pos(':\', fOutputDir) = 0 then fOutputDir := IncludeTrailingPathDelimiter(GetCurrentDir) + fOutputDir;
+          fOutputDir := IncludeTrailingPathDelimiter(GetOptionValue('d', 'outdir'));
+          if pos(':\', fOutputDir) = 0 then
+            fOutputDir := IncludeTrailingPathDelimiter(GetCurrentDir) + fOutputDir;
           if not DirectoryExists(fOutputDir) then
-          ForceDirectories(fOutputDir);
+            ForceDirectories(fOutputDir);
           msInputFile := TMemoryStream.Create;
           msInputFile.LoadFromFile(fInput);
 
@@ -240,10 +280,11 @@ type
       end;
     end;
 
-     if HasOption('j', 'join') then
+    if HasOption('j', 'join') then
     begin
-      fOutputDir :=IncludeTrailingPathDelimiter(GetOptionValue('d', 'dir'));
-      if pos(':\', fOutputDir) = 0 then fOutputDir := IncludeTrailingPathDelimiter(GetCurrentDir) + fOutputDir;
+      fOutputDir := IncludeTrailingPathDelimiter(GetOptionValue('d', 'dir'));
+      if pos(':\', fOutputDir) = 0 then
+        fOutputDir := IncludeTrailingPathDelimiter(GetCurrentDir) + fOutputDir;
       if not DirectoryExists(fOutputDir) then
       begin
         WriteLn('Parameter -d {directory} is missing or the directory could not be found');
@@ -284,7 +325,7 @@ type
   begin
     writeln('');
     writeln('');
-    writeln('MDX_Tool 1.2 - tool for various manipulation of DX7 VMEM and VCED SysEx files');
+    writeln('MDX_Tool 1.4 - tool for various manipulation of DX7 VMEM and VCED SysEx files');
     writeln('Author: Boban Spasic');
     writeln('https://github.com/BobanSpasic/MDX_Tool');
     writeln('');
@@ -292,6 +333,8 @@ type
     writeln('  Parameters (short and long form):');
     writeln('       -h                 --help                   This help message');
     writeln('       -i                 --info                   Information');
+    writeln('       -n                 --vname                  Rename file to the name of the contained voice');
+    writeln('       -m                 --hname                  Rename file to the SHA2-256 hash of the file');
     writeln('       -r                 --repair                 Repair/extract DX7 VMEM data from files');
     writeln('       -c                 --crop                   Crop headers from the VMEM/VCED files');
     writeln('       -s                 --split                  Split bank (VMEM) into single voices (VCED)');

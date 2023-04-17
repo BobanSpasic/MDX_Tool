@@ -21,7 +21,7 @@
           <Version Value="11"/>
           <PathDelim Value="\"/>
           <Target>
-            <Filename Value="MDX_Tool"/>
+            <Filename Value="bin\debug\MDX_Tool"/>
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
@@ -148,6 +148,11 @@
     <RunParams>
       <FormatVersion Value="2"/>
     </RunParams>
+    <RequiredPackages>
+      <Item>
+        <PackageName Value="HashLib4PascalPackage"/>
+      </Item>
+    </RequiredPackages>
     <Units>
       <Unit>
         <Filename Value="MDX_Tool.lpr"/>
