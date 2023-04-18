@@ -9,7 +9,6 @@
       <Unit>
         <Filename Value="MDX_Tool.lpr"/>
         <IsPartOfProject Value="True"/>
-        <IsVisibleTab Value="True"/>
         <TopLine Value="489"/>
         <CursorPos X="81" Y="512"/>
         <UsageCount Value="83"/>
@@ -58,9 +57,10 @@
       </Unit>
       <Unit>
         <Filename Value="units\untDX7Voice.pas"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="5"/>
-        <TopLine Value="949"/>
-        <CursorPos X="67" Y="990"/>
+        <TopLine Value="20"/>
+        <CursorPos X="12" Y="32"/>
         <UsageCount Value="21"/>
         <Loaded Value="True"/>
       </Unit>
@@ -127,10 +127,6 @@
       </Unit>
     </Units>
     <JumpHistory HistoryIndex="29">
-      <Position>
-        <Filename Value="untDXObjInterface.pas"/>
-        <Caret Line="96" TopLine="71"/>
-      </Position>
       <Position>
         <Filename Value="untDXObjInterface.pas"/>
         <Caret Line="98" TopLine="72"/>
@@ -246,6 +242,10 @@
       <Position>
         <Filename Value="MDX_Tool.lpr"/>
         <Caret Line="195" Column="32" TopLine="188"/>
+      </Position>
+      <Position>
+        <Filename Value="MDX_Tool.lpr"/>
+        <Caret Line="512" Column="81" TopLine="489"/>
       </Position>
     </JumpHistory>
     <RunParams>
