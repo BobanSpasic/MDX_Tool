@@ -363,6 +363,8 @@ type
     procedure SysExVoiceToStream(aCh: integer; var aStream: TMemoryStream);
     function CalculateHash: string;
     function CheckMinMax(var slReport: TStringList): boolean;
+    function HasNullInName: boolean;
+    procedure Normalize;
   end;
 
 function VCEDtoVMEM(aPar: TDX7_VCED_Params): TDX7_VMEM_Params;
@@ -772,6 +774,7 @@ var
   arMax: array [0..155] of byte;
   i: integer;
 begin
+  //normalize - set the values inside the limits
   GetDefinedValues(DX7, fMin, arMin);
   GetDefinedValues(DX7, fMax, arMax);
   Result := True;
@@ -786,6 +789,24 @@ begin
         IntToStr(arMin[i]) + ',' + IntToStr(arMax[i]) + ']');
     end;
   end;
+end;
+
+procedure TDX7VoiceContainer.Normalize;
+var
+  arMin: array [0..155] of byte;
+  arMax: array [0..155] of byte;
+  i: integer;
+begin
+  GetDefinedValues(DX7, fMin, arMin);
+  GetDefinedValues(DX7, fMax, arMax);
+  for i := 0 to 155 do
+  begin
+    if FDX7_VCED_Params.params[i] < arMin[i] then
+      FDX7_VCED_Params.params[i] := arMin[i];
+    if FDX7_VCED_Params.params[i] > arMax[i] then
+      FDX7_VCED_Params.params[i] := arMax[i];
+  end;
+  FDX7_VMEM_Params := VCEDtoVMEM(FDX7_VCED_Params);
 end;
 
 function TDX7VoiceContainer.Get_VMEM_Params: TDX7_VMEM_Params;
@@ -952,6 +973,21 @@ begin
   Add_VCED_ToStream(aStream);
   aStream.WriteByte(GetVCEDChecksum);
   aStream.WriteByte($F7);
+end;
+
+function TDX7VoiceContainer.HasNullInName: boolean;
+begin
+  Result := False;
+  if (FDX7_VMEM_Params.VOICE_NAME_CHAR_1 = 0) or
+    (FDX7_VMEM_Params.VOICE_NAME_CHAR_2 = 0) or
+    (FDX7_VMEM_Params.VOICE_NAME_CHAR_3 = 0) or
+    (FDX7_VMEM_Params.VOICE_NAME_CHAR_4 = 0) or
+    (FDX7_VMEM_Params.VOICE_NAME_CHAR_5 = 0) or
+    (FDX7_VMEM_Params.VOICE_NAME_CHAR_6 = 0) or
+    (FDX7_VMEM_Params.VOICE_NAME_CHAR_7 = 0) or
+    (FDX7_VMEM_Params.VOICE_NAME_CHAR_8 = 0) or
+    (FDX7_VMEM_Params.VOICE_NAME_CHAR_9 = 0) or
+    (FDX7_VMEM_Params.VOICE_NAME_CHAR_10 = 0) then Result := True;
 end;
 
 end.

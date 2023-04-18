@@ -17,7 +17,7 @@ unit untUtils;
 interface
 
 uses
-  Classes, SysUtils;
+  Classes, SysUtils, StrUtils;
 
 procedure FindSYX(Directory: string; var sl: TStringList);
 procedure FindPERF(Directory: string; var sl: TStringList);
@@ -25,8 +25,30 @@ procedure Unused(const A1);
 procedure Unused(const A1, A2);
 procedure Unused(const A1, A2, A3);
 function SameArrays(var a1, a2: array of byte): boolean;
+function GetValidFileName(aFileName: string): string;
+function ExtractFileNameWithoutExt(const AFilename: string): string;
 
 implementation
+
+function ExtractFileNameWithoutExt(const AFilename: string): string;
+var
+  p: integer;
+begin
+  //from LazFileUtils
+  Result := AFilename;
+  p := length(Result);
+  while (p > 0) do
+  begin
+    case Result[p] of
+      PathDelim: exit;
+      {$ifdef windows}
+      '/': if ('/' in AllowDirectorySeparators) then exit;
+      {$endif}
+      '.': exit(copy(Result, 1, p - 1));
+    end;
+    Dec(p);
+  end;
+end;
 
 procedure FindSYX(Directory: string; var sl: TStringList);
 var
@@ -73,6 +95,43 @@ begin
   while (i <= High(a1)) and (a1[i] = a2[i]) do
     Inc(i);
   Result := i >= High(a1);
+end;
+
+function GetValidFileName(aFileName: string): string;
+var
+  FFile, FExt: string;
+  FFileWithExt: string;
+  FWinReservedNames: array [1..22] of
+  string = ('CON', 'PRN', 'AUX', 'NUL', 'COM1', 'COM2', 'COM3', 'COM4',
+    'COM5', 'COM6', 'COM7', 'COM8', 'COM9', 'LPT1', 'LPT2', 'LPT3',
+    'LPT4', 'LPT5', 'LPT6', 'LPT7', 'LPT8', 'LPT9');
+  //% is not illegal, but it will prevent batch processing
+  FWinIllegalChars: array [1..11] of char = ('<', '>', ':', '"', '\', '/', '?', '|', '*', '=', '%');
+  i: integer;
+begin
+  FFile := ExtractFileNameWithoutExt(aFileName);
+  FExt := ExtractFileExt(aFileName);
+
+  if UpperCase(FExt) in FWinReservedNames then FExt := 'InvalidExtension';
+  if UpperCase(FFile) in FWinReservedNames then FFile := 'InvalidName';
+
+  for i := 1 to 11 do
+    FFile := ReplaceStr(FFile, FWinIllegalChars[i], '(' + IntToHex(ord(FWinIllegalChars[i])) + ')');
+
+  for i := 1 to 11 do
+    FExt := ReplaceStr(FExt, FWinIllegalChars[i], '(' + IntToHex(ord(FWinIllegalChars[i])) + ')');
+
+  for i := 1 to Length(FFile) do
+    if (Ord(FFile[i]) < 32) then FFile[i] := '_';
+
+  // do not allow dot or space at the end of the name (inkl. extension)
+  FFileWithExt := Trim(FFile) + Trim(FExt);
+  if FFileWithExt[Length(FFileWithExt)] = ' ' then
+    SetLength(FFileWithExt, Length(FFileWithExt) - 1);
+  if FFileWithExt[Length(FFileWithExt)] = '.' then
+    SetLength(FFileWithExt, Length(FFileWithExt) - 1);
+
+    Result := FFileWithExt;
 end;
 
 end.

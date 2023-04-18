@@ -27,8 +27,12 @@ procedure XSplitVMEM2VCED(aStream: TMemoryStream; aOutDir: string);
 procedure JoinVCED2VMEM(aInputDir: string; aOutFile: string);
 function Hash2Name(aFile: string): boolean;
 function Voice2Name(aFile: string): boolean;
-function CheckIntegrity(aStream: TMemoryStream; aPos: Integer): boolean;
-
+function CheckVMEMIntegrity(aStream: TMemoryStream; aPos: integer;
+  var aNullVoice: Boolean): boolean;
+function CheckVCEDIntegrity(aStream: TMemoryStream; aPos: integer;
+  var aNullVoice: Boolean): boolean;
+procedure NormalizeVMEM(aStream: TMemoryStream; aPos: integer; aFile: string);
+procedure NormalizeVCED(aStream: TMemoryStream; aPos: integer; aFile: string);
 
 implementation
 
@@ -110,6 +114,7 @@ begin
     begin
       fVoice.Load_VCED_FromStream(fStream, iPos);
       fDirectory := IncludeTrailingPathDelimiter(ExtractFileDir(aFile));
+      if fDirectory = PathDelim then fDirectory := '';
       RenameFile(aFile, fDirectory + fVoice.CalculateHash + '.syx');
       Result := True;
     end
@@ -159,6 +164,7 @@ begin
     begin
       fVoice.Load_VCED_FromStream(fStream, iPos);
       fDirectory := IncludeTrailingPathDelimiter(ExtractFileDir(aFile));
+      if fDirectory = PathDelim then fDirectory := '';
       //do not overwrite the file with same name, add a number to the file name
       i := 0;
       if not FileExists(fDirectory + GetValidFileName(fVoice.GetVoiceName) + '.syx') then
@@ -417,20 +423,22 @@ begin
   slVoices.Free;
 end;
 
-function CheckIntegrity(aStream: TMemoryStream; aPos: Integer): boolean;
+function CheckVMEMIntegrity(aStream: TMemoryStream; aPos: integer;
+  var aNullVoice: Boolean): boolean;
 var
   fBank: TDX7BankContainer;
   fVoice: TDX7VoiceContainer;
-  i: Integer;
+  i: integer;
   msRebuilt: TMemoryStream;
-  bLoadSaveCheck: Boolean;
-  bMinMaxCheck: Boolean;
+  bLoadSaveCheck: boolean;
+  bMinMaxCheck: boolean;
   slCorruptedVoices: TStringList;
   slReport: TStringList;
 begin
   Result := True;
   bLoadSaveCheck := True;
   bMinMaxCheck := True;
+  aNullVoice := False;
 
   msRebuilt := TMemoryStream.Create;
   slCorruptedVoices := TStringList.Create;
@@ -454,37 +462,172 @@ begin
     if aStream.ReadByte <> msRebuilt.ReadByte then bLoadSaveCheck := False;
   end;
 
-  //check if the parameters are between mia and max values
+  //check if the parameters are between min and max values
   for i := 1 to 32 do
   begin
     fBank.GetVoice(i, fVoice);
     slReport.Clear;
-    if not fVoice.CheckMinMax(slReport) then begin
+    if not fVoice.CheckMinMax(slReport) then
+    begin
       bMinMaxCheck := False;
       slCorruptedVoices.Add(Format('%.2d', [i]) + ': ' + fVoice.GetVoiceName);
       slCorruptedVoices.AddStrings(slReport);
-      slCorruptedVoices.Add('');;
+      //check for Nulls in voice name
+      if fVoice.HasNullInName then
+      begin
+        aNullVoice := True;
+        slCorruptedVoices.Add('*The voice name contains Null bytes*');
+      end;
+      slCorruptedVoices.Add('');
     end;
   end;
-  if bLoadSaveCheck = false then
+
+  if bLoadSaveCheck = False then
   begin
     WriteLn('File corruption:');
     WriteLn('  Bank contains data outside the required bits');
     Result := False;
   end;
-  if bMinMaxCheck = false then
+
+  if bMinMaxCheck = False then
   begin
     WriteLn('File corruption:');
     WriteLn('  The following voices have data outside the minimum/maximum parameter limits:');
-    for i := 0 to slCorruptedVoices.Count-1 do
+    for i := 0 to slCorruptedVoices.Count - 1 do
       WriteLn('    ' + slCorruptedVoices[i]);
     Result := False;
   end;
+
   msRebuilt.Free;
   fBank.Free;
   fVoice.Free;
   slReport.Free;
   slCorruptedVoices.Free;
+end;
+
+function CheckVCEDIntegrity(aStream: TMemoryStream; aPos: integer;
+  var aNullVoice: Boolean): boolean;
+var
+  fVoice: TDX7VoiceContainer;
+  i: integer;
+  msRebuilt: TMemoryStream;
+  bLoadSaveCheck: boolean;
+  slReport: TStringList;
+begin
+  Result := True;
+  bLoadSaveCheck := True;
+  aNullVoice := False;
+
+  msRebuilt := TMemoryStream.Create;
+  slReport := TStringList.Create;
+  fVoice := TDX7VoiceContainer.Create;
+
+  fVoice.Load_VCED_FromStream(aStream, aPos);
+
+  //check if the same after loading and saving again
+  //because the VMEM to VCED conversion does some sanity checks
+  fVoice.Save_VMEM_ToStream(msRebuilt);
+  fVoice.Load_VMEM_FromStream(msRebuilt, 0);
+  msRebuilt.Clear;
+  fVoice.Save_VCED_ToStream(msRebuilt);
+
+  aStream.Position := aPos;
+  msRebuilt.Position := 0;
+  for i := 1 to 155 do
+  begin
+    if aStream.ReadByte <> msRebuilt.ReadByte then bLoadSaveCheck := False;
+  end;
+  if bLoadSaveCheck = False then
+  begin
+    WriteLn('File corruption:');
+    WriteLn('  Voice contains data outside the required bits');
+    WriteLn('');
+    Result := False;
+  end;
+
+  //check if the parameters are between min and max values
+  slReport.Clear;
+  if not fVoice.CheckMinMax(slReport) then
+  begin
+    WriteLn('File corruption:');
+    WriteLn('  The voice has parameters outside the min/max values');
+    for i := 0 to slReport.Count - 1 do
+      WriteLn('    ' + slReport[i]);
+    WriteLn('');
+    Result := False;
+  end;
+
+  //check for Nulls in voice name
+  if fVoice.HasNullInName then
+  begin
+    aNullVoice := True;
+    WriteLn('File corruption:');
+    WriteLn('  The voice name contains Null bytes');
+    Result := False;
+  end;
+
+  msRebuilt.Free;
+  fVoice.Free;
+  slReport.Free;
+end;
+
+procedure NormalizeVMEM(aStream: TMemoryStream; aPos: integer; aFile: string);
+var
+  fBank: TDX7BankContainer;
+  fVoice: TDX7VoiceContainer;
+  sOutName: string;
+  msOutFile: TMemoryStream;
+  i: integer;
+begin
+  sOutName := ExtractFileName(aFile);
+  sOutName := ExtractFileNameWithoutExt(sOutName);
+  sOutName := IncludeTrailingPathDelimiter(ExtractFileDir(aFile)) +
+    sOutName + '.normalized.syx';
+
+  msOutFile := TMemoryStream.Create;
+
+  fBank := TDX7BankContainer.Create;
+  fVoice := TDX7VoiceContainer.Create;
+
+  fBank.LoadBankFromStream(aStream, aPos);
+
+  for i := 1 to 32 do
+  begin
+    fBank.GetVoice(i, fVoice);
+    fVoice.Normalize;
+    fBank.SetVoice(i, fVoice);
+  end;
+  fBank.SysExBankToStream(1, msOutFile);
+  msOutFile.SaveToFile(sOutName);
+
+  msOutFile.Free;
+  fBank.Free;
+  fVoice.Free;
+end;
+
+procedure NormalizeVCED(aStream: TMemoryStream; aPos: integer; aFile: string);
+var
+  fVoice: TDX7VoiceContainer;
+  sOutName: string;
+  msOutFile: TMemoryStream;
+begin
+  sOutName := ExtractFileName(aFile);
+  sOutName := ExtractFileNameWithoutExt(sOutName);
+  sOutName := IncludeTrailingPathDelimiter(ExtractFileDir(aFile)) +
+    sOutName + '.normalized.syx';
+
+  msOutFile := TMemoryStream.Create;
+
+  fVoice := TDX7VoiceContainer.Create;
+
+  fVoice.Load_VCED_FromStream(aStream, aPos);
+  fVoice.Normalize;
+
+  fVoice.SysExVoiceToStream(1, msOutFile);
+  msOutFile.SaveToFile(sOutName);
+
+  msOutFile.Free;
+  fVoice.Free;
 end;
 
 end.

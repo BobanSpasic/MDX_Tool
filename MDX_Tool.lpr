@@ -23,7 +23,7 @@ program MDX_Tool;
 uses
  {$IFDEF UNIX}
   cthreads,
-               {$ENDIF}
+                {$ENDIF}
   Classes,
   SysUtils,
   CustApp,
@@ -56,11 +56,13 @@ type
     i: integer;
     iStartPos: integer;
     iDmpPos: integer;
+    bNullVoice: Boolean;
   begin
+    bNullVoice := False;
     fInput := '';
     // quick check parameters
-    ErrorMsg := CheckOptions('himnrvcsxjf:d:',
-      'help info hname vname repair voices crop split xsplit join file: dir:');
+    ErrorMsg := CheckOptions('himnzywrvcsxjf:d:',
+      'help info hname vname normalize markcorr marknull repair voices crop split xsplit join file: dir:');
 
     if ErrorMsg <> '' then
     begin
@@ -127,8 +129,171 @@ type
             WriteLn(slReport[i]);
           iStartPos := 0;
           if ContainsDX7BankDump(msInputFile, iStartPos, iDmpPos) then
-            if CheckIntegrity(msInputFile, iDmpPos) then
+            if CheckVMEMIntegrity(msInputFile, iDmpPos, bNullVoice) then
               WriteLn('VMEM data integrity is OK');
+          iStartPos := 0;
+          if ContainsDX7VoiceDump(msInputFile, iStartPos, iDmpPos) then
+            if CheckVCEDIntegrity(msInputFile, iDmpPos, bNullVoice) then
+              WriteLn('VCED data integrity is OK');
+        end
+        else
+        begin
+          for i := 0 to slReport.Count - 1 do
+            WriteLn(slReport[i]);
+        end;
+
+        msInputFile.Free;
+        slReport.Free;
+      end;
+    end;
+
+    if HasOption('y', 'markcorr') then
+    begin
+      if not FileExists(fInput) then
+      begin
+        WriteLn('Parameter -f {filename} is missing or the file {filename} could not be found');
+        Terminate;
+        Exit;
+      end
+      else
+      begin
+        slReport := TStringList.Create;
+        msInputFile := TMemoryStream.Create;
+        msInputFile.LoadFromFile(fInput);
+        iStartPos := 0;
+        iDmpPos := 0;
+
+        if ContainsDX_SixOP_Data_New(msInputFile, iStartPos, slReport) then
+        begin
+          for i := 0 to slReport.Count - 1 do
+            WriteLn(slReport[i]);
+          iStartPos := 0;
+          if ContainsDX7BankDump(msInputFile, iStartPos, iDmpPos) then
+            if not CheckVMEMIntegrity(msInputFile, iDmpPos, bNullVoice) then
+            begin
+              WriteLn('VMEM data is corrupted. Renaming file');
+              RenameFile(fInput, fInput + '.corr');
+            end;
+          iStartPos := 0;
+          if ContainsDX7VoiceDump(msInputFile, iStartPos, iDmpPos) then
+            if not CheckVCEDIntegrity(msInputFile, iDmpPos, bNullVoice) then
+            begin
+              WriteLn('VCED data is corrupted. Renaming file');
+              RenameFile(fInput, fInput + '.corr');
+            end;
+        end
+        else
+        begin
+          for i := 0 to slReport.Count - 1 do
+            WriteLn(slReport[i]);
+        end;
+
+        msInputFile.Free;
+        slReport.Free;
+      end;
+    end;
+
+    if HasOption('w', 'marknull') then
+    begin
+      if not FileExists(fInput) then
+      begin
+        WriteLn('Parameter -f {filename} is missing or the file {filename} could not be found');
+        Terminate;
+        Exit;
+      end
+      else
+      begin
+        slReport := TStringList.Create;
+        msInputFile := TMemoryStream.Create;
+        msInputFile.LoadFromFile(fInput);
+        iStartPos := 0;
+        iDmpPos := 0;
+
+        if ContainsDX_SixOP_Data_New(msInputFile, iStartPos, slReport) then
+        begin
+          for i := 0 to slReport.Count - 1 do
+            WriteLn(slReport[i]);
+          iStartPos := 0;
+          if ContainsDX7BankDump(msInputFile, iStartPos, iDmpPos) then
+            if not CheckVMEMIntegrity(msInputFile, iDmpPos, bNullVoice) then
+            begin
+              if bNullVoice then
+              begin
+              WriteLn('Voice name contains nulls ($00). Renaming file');
+              RenameFile(fInput, fInput + '.nl');
+              end;
+            end;
+          iStartPos := 0;
+          if ContainsDX7VoiceDump(msInputFile, iStartPos, iDmpPos) then
+            if not CheckVCEDIntegrity(msInputFile, iDmpPos, bNullVoice) then
+            begin
+              if bNullVoice then
+              begin
+                WriteLn('Voice name contains nulls ($00). Renaming file');
+                RenameFile(fInput, fInput + '.nl');
+              end;
+            end;
+        end
+        else
+        begin
+          for i := 0 to slReport.Count - 1 do
+            WriteLn(slReport[i]);
+        end;
+
+        msInputFile.Free;
+        slReport.Free;
+      end;
+    end;
+
+    if HasOption('z', 'normalize') then
+    begin
+      if not FileExists(fInput) then
+      begin
+        WriteLn('Parameter -f {filename} is missing or the file {filename} could not be found');
+        Terminate;
+        Exit;
+      end
+      else
+      begin
+        slReport := TStringList.Create;
+        msInputFile := TMemoryStream.Create;
+        if trim(ExtractFileDir(fInput)) = '' then
+          fInput := IncludeTrailingPathDelimiter(GetCurrentDir) + fInput;
+        WriteLn('Input file: ' + fInput);
+        msInputFile.LoadFromFile(fInput);
+        iStartPos := 0;
+        iDmpPos := 0;
+
+        if ContainsDX_SixOP_Data_New(msInputFile, iStartPos, slReport) then
+        begin
+          for i := 0 to slReport.Count - 1 do
+            WriteLn(slReport[i]);
+          iStartPos := 0;
+          if ContainsDX7BankDump(msInputFile, iStartPos, iDmpPos) then
+          begin
+            if CheckVMEMIntegrity(msInputFile, iDmpPos , bNullVoice) then
+            begin
+              WriteLn('VMEM data integrity is OK');
+            end
+            else
+            begin
+              NormalizeVMEM(msInputFile, iDmpPos, fInput);
+              WriteLn('VMEM data integrity is normalized');
+            end;
+          end;
+          iStartPos := 0;
+          if ContainsDX7VoiceDump(msInputFile, iStartPos, iDmpPos) then
+          begin
+            if CheckVCEDIntegrity(msInputFile, iDmpPos, bNullVoice) then
+            begin
+              WriteLn('VCED data integrity is OK');
+            end
+            else
+            begin
+              NormalizeVCED(msInputFile, iDmpPos, fInput);
+              WriteLn('VCED data integrity is normalized');
+            end;
+          end;
         end
         else
         begin
@@ -325,31 +490,40 @@ type
   begin
     writeln('');
     writeln('');
-    writeln('MDX_Tool 1.4 - tool for various manipulation of DX7 VMEM and VCED SysEx files');
+    writeln('MDX_Tool 1.6 - tool for various manipulation of DX7 VMEM and VCED SysEx files');
     writeln('Author: Boban Spasic');
     writeln('https://github.com/BobanSpasic/MDX_Tool');
     writeln('');
     writeln('Usage: ', ExtractFileName(ExeName), ' -parameters');
     writeln('  Parameters (short and long form):');
-    writeln('       -h                 --help                   This help message');
-    writeln('       -i                 --info                   Information');
-    writeln('       -n                 --vname                  Rename file to the name of the contained voice');
-    writeln('       -m                 --hname                  Rename file to the SHA2-256 hash of the file');
-    writeln('       -r                 --repair                 Repair/extract DX7 VMEM data from files');
-    writeln('       -c                 --crop                   Crop headers from the VMEM/VCED files');
-    writeln('       -s                 --split                  Split bank (VMEM) into single voices (VCED)');
-    writeln('       -x                 --xsplit                 Split bank (VMEM) into single voices (VCED)');
-    writeln('                                                   and take the SHA2-256 hash as a file name.');
-    writeln('                                                   Voice name (10xASCII) is not a part of the hash');
-    writeln('       -j                 --join                   Join single voices (VCED) into a bank (VMEM)');
-    writeln('                                                   If the file voices.lst exists inside the input directory');
-    writeln('                                                   - the voices inside the bank will be sorted according to the list');
+    writeln('       -h               --help               This help message');
+    writeln('       -i               --info               Information');
+    writeln('       -n               --vname              Rename file to the name of the contained voice');
+    writeln('       -m               --hname              Rename file to the SHA2-256 hash of the file');
+    writeln('       -z               --normalize          Set parameters to be between minimum and maximum allowed values');
+    writeln('       -y               --markcorr           Mark files that have parameters outside the min/max limits');
+    writeln('                                               Adds .corr as the file extension');
+    writeln('       -w               --marknull           Mark files that have nulls ($00) in voice names');
+    writeln('                                               Adds .nl as the file extension');
+    writeln('       -r               --repair             Repair/extract DX7 VMEM data from files');
+    writeln('                                               Adds _DX7_repaired in the file name');
+    writeln('                                               Adds _x_DX7_repaired in the file name,');
+    writeln('                                               where the x is the number of the dump');
+    writeln('                                               in a multi-dump file');
+    writeln('       -c               --crop               Crop headers from the VMEM/VCED files');
+    writeln('       -s               --split              Split bank (VMEM) into single voices (VCED)');
+    writeln('       -x               --xsplit             Split bank (VMEM) into single voices (VCED)');
+    writeln('                                               and take the SHA2-256 hash as a file name.');
+    writeln('                                               Voice name (10xASCII) is not a part of the hash');
+    writeln('       -j               --join               Join single voices (VCED) into a bank (VMEM)');
+    writeln('                                               If the file voices.lst exists inside the input directory');
+    writeln('                                               - the voices inside the bank will be sorted according to the list');
     writeln('');
-    writeln('       -f {filename}      --file={filename}        Input file (or output file for -j parameter)');
-    writeln('       -d {directory}     --dir={directory}        Output directory for -s and -x parameters');
-    writeln('                                                   Input directory for -j parameter');
-    writeln('                                                   If it does not contain a drive letter, a sub-directory in');
-    writeln('                                                   the current directory will be created.');
+    writeln('       -f {filename}    --file={filename}    Input file (or output file for -j parameter)');
+    writeln('       -d {directory}   --dir={directory}    Output directory for -s and -x parameters');
+    writeln('                                               Input directory for -j parameter');
+    writeln('                                               If it does not contain a drive letter, a sub-directory in');
+    writeln('                                               the current directory will be created.');
     writeLn('');
     writeln('  Example usage:');
     writeln('       MDX_Tool -i -f my_dx_file.syx');
