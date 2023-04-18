@@ -3,14 +3,73 @@
   <ProjectSession>
     <PathDelim Value="\"/>
     <Version Value="12"/>
+    <BuildModes Active="Release Win x64">
+      <Item Name="Release FreeBSD x64">
+        <CompilerOptions>
+          <Version Value="11"/>
+          <PathDelim Value="\"/>
+          <Target>
+            <Filename Value="bin\FreeBSD_x64\MDX_Tool"/>
+          </Target>
+          <SearchPaths>
+            <IncludeFiles Value="$(ProjOutDir)"/>
+            <OtherUnitFiles Value="ext\HashLib\Base;ext\HashLib\Interfaces;ext\HashLib\Utils;ext\HashLib\KDF;ext\HashLib\Nullable;ext\HashLib\NullDigest;ext\HashLib\Checksum;ext\HashLib\Crypto;ext\HashLib\Hash32;ext\HashLib\Hash64;ext\HashLib\Hash128;ext\HashLib\Crypto\Blake2BParams;ext\HashLib\Crypto\Blake2SParams;ext\HashLib\Interfaces\IBlake2BParams;ext\HashLib\Interfaces\IBlake2SParams;units"/>
+            <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
+          </SearchPaths>
+          <CodeGeneration>
+            <SmartLinkUnit Value="True"/>
+            <TargetCPU Value="x86_64"/>
+            <TargetOS Value="freebsd"/>
+            <Optimizations>
+              <OptimizationLevel Value="3"/>
+            </Optimizations>
+          </CodeGeneration>
+          <Linking>
+            <Debugging>
+              <GenerateDebugInfo Value="False"/>
+              <DebugInfoType Value="dsDwarf2Set"/>
+            </Debugging>
+            <LinkSmart Value="True"/>
+          </Linking>
+        </CompilerOptions>
+      </Item>
+      <Item Name="Release Darwin x64">
+        <CompilerOptions>
+          <Version Value="11"/>
+          <PathDelim Value="\"/>
+          <Target>
+            <Filename Value="bin\Darwin\MDX_Tool"/>
+          </Target>
+          <SearchPaths>
+            <IncludeFiles Value="$(ProjOutDir)"/>
+            <OtherUnitFiles Value="ext\HashLib\Base;ext\HashLib\Interfaces;ext\HashLib\Utils;ext\HashLib\KDF;ext\HashLib\Nullable;ext\HashLib\NullDigest;ext\HashLib\Checksum;ext\HashLib\Crypto;ext\HashLib\Hash32;ext\HashLib\Hash64;ext\HashLib\Hash128;ext\HashLib\Crypto\Blake2BParams;ext\HashLib\Crypto\Blake2SParams;ext\HashLib\Interfaces\IBlake2BParams;ext\HashLib\Interfaces\IBlake2SParams;units"/>
+            <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
+          </SearchPaths>
+          <CodeGeneration>
+            <SmartLinkUnit Value="True"/>
+            <TargetCPU Value="x86_64"/>
+            <TargetOS Value="darwin"/>
+            <Optimizations>
+              <OptimizationLevel Value="3"/>
+            </Optimizations>
+          </CodeGeneration>
+          <Linking>
+            <Debugging>
+              <GenerateDebugInfo Value="False"/>
+              <DebugInfoType Value="dsDwarf2Set"/>
+            </Debugging>
+            <LinkSmart Value="True"/>
+          </Linking>
+        </CompilerOptions>
+      </Item>
+    </BuildModes>
     <ManyBuildModesSelection Value="Debug,&quot;Release Win64&quot;"/>
-    <BuildModes Active="Release Win x64"/>
     <Units>
       <Unit>
         <Filename Value="MDX_Tool.lpr"/>
         <IsPartOfProject Value="True"/>
-        <TopLine Value="489"/>
-        <CursorPos X="81" Y="512"/>
+        <IsVisibleTab Value="True"/>
+        <CursorPos X="52" Y="16"/>
         <UsageCount Value="83"/>
         <Loaded Value="True"/>
       </Unit>
@@ -57,9 +116,8 @@
       </Unit>
       <Unit>
         <Filename Value="units\untDX7Voice.pas"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="5"/>
-        <TopLine Value="20"/>
+        <TopLine Value="8"/>
         <CursorPos X="12" Y="32"/>
         <UsageCount Value="21"/>
         <Loaded Value="True"/>
