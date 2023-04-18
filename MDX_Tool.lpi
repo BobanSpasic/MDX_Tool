@@ -148,11 +148,6 @@
     <RunParams>
       <FormatVersion Value="2"/>
     </RunParams>
-    <RequiredPackages>
-      <Item>
-        <PackageName Value="HashLib4PascalPackage"/>
-      </Item>
-    </RequiredPackages>
     <Units>
       <Unit>
         <Filename Value="MDX_Tool.lpr"/>
