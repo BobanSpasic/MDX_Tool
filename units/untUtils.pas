@@ -20,6 +20,7 @@ uses
   Classes, SysUtils, StrUtils;
 
 procedure FindSYX(Directory: string; var sl: TStringList);
+procedure FindSYXRecursive(Directory: string; var sl: TStringList);
 procedure FindPERF(Directory: string; var sl: TStringList);
 procedure Unused(const A1);
 procedure Unused(const A1, A2);
@@ -59,6 +60,26 @@ begin
       sl.Add(ExtractFileName(sr.Name));
     until FindNext(sr) <> 0;
   FindClose(sr);
+end;
+
+procedure FindSYXRecursive(Directory: string; var sl: TStringList);
+var
+  sr: TSearchRec;
+begin
+  if FindFirst(IncludeTrailingBackSlash(Directory) + '*', faAnyFile, sr) = 0 then
+  begin
+    try
+      repeat
+        if SameText(ExtractFileExt(sr.Name),'.syx') then
+          sl.Add(IncludeTrailingBackSlash(Directory) + sr.Name)
+        else
+        if (sr.Name <> '.') and (sr.Name <> '..') then
+          FindSYXRecursive(IncludeTrailingBackSlash(Directory) + sr.Name, sl);
+      until FindNext(sr) <> 0;
+    finally
+      FindClose(sr);
+    end;
+  end;
 end;
 
 procedure FindPERF(Directory: string; var sl: TStringList);
@@ -106,7 +127,8 @@ var
     'COM5', 'COM6', 'COM7', 'COM8', 'COM9', 'LPT1', 'LPT2', 'LPT3',
     'LPT4', 'LPT5', 'LPT6', 'LPT7', 'LPT8', 'LPT9');
   //% is not illegal, but it will prevent batch processing
-  FWinIllegalChars: array [1..11] of char = ('<', '>', ':', '"', '\', '/', '?', '|', '*', '=', '%');
+  FWinIllegalChars: array [1..11] of
+  char = ('<', '>', ':', '"', '\', '/', '?', '|', '*', '=', '%');
   i: integer;
 begin
   FFile := ExtractFileNameWithoutExt(aFileName);
@@ -116,10 +138,12 @@ begin
   if UpperCase(FFile) in FWinReservedNames then FFile := 'InvalidName';
 
   for i := 1 to 11 do
-    FFile := ReplaceStr(FFile, FWinIllegalChars[i], '(' + IntToHex(ord(FWinIllegalChars[i])) + ')');
+    FFile := ReplaceStr(FFile, FWinIllegalChars[i], '(' +
+      IntToHex(Ord(FWinIllegalChars[i])) + ')');
 
   for i := 1 to 11 do
-    FExt := ReplaceStr(FExt, FWinIllegalChars[i], '(' + IntToHex(ord(FWinIllegalChars[i])) + ')');
+    FExt := ReplaceStr(FExt, FWinIllegalChars[i], '(' +
+      IntToHex(Ord(FWinIllegalChars[i])) + ')');
 
   for i := 1 to Length(FFile) do
     if (Ord(FFile[i]) < 32) then FFile[i] := '_';
@@ -131,7 +155,7 @@ begin
   if FFileWithExt[Length(FFileWithExt)] = '.' then
     SetLength(FFileWithExt, Length(FFileWithExt) - 1);
 
-    Result := FFileWithExt;
+  Result := FFileWithExt;
 end;
 
 end.

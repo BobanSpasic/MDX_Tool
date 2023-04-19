@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="12"/>
+    <BuildModes Active="Release Win x64">
+      <Item Name="Release FreeBSD x64">
+        <CompilerOptions>
+          <Version Value="11"/>
+          <PathDelim Value="\"/>
+          <Target>
+            <Filename Value="bin\Win_x64\MDX_Collect"/>
+          </Target>
+          <SearchPaths>
+            <IncludeFiles Value="$(ProjOutDir)"/>
+            <OtherUnitFiles Value="ext\HashLib\Base;ext\HashLib\Interfaces;ext\HashLib\Utils;ext\HashLib\KDF;ext\HashLib\Nullable;ext\HashLib\NullDigest;ext\HashLib\Checksum;ext\HashLib\Crypto;ext\HashLib\Hash32;ext\HashLib\Hash64;ext\HashLib\Hash128;ext\HashLib\Crypto\Blake2BParams;ext\HashLib\Crypto\Blake2SParams;ext\HashLib\Interfaces\IBlake2BParams;ext\HashLib\Interfaces\IBlake2SParams;units"/>
+            <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
+          </SearchPaths>
+          <CodeGeneration>
+            <SmartLinkUnit Value="True"/>
+            <TargetCPU Value="x86_64"/>
+            <TargetOS Value="freebsd"/>
+            <Optimizations>
+              <OptimizationLevel Value="3"/>
+            </Optimizations>
+          </CodeGeneration>
+          <Linking>
+            <Debugging>
+              <GenerateDebugInfo Value="False"/>
+              <DebugInfoType Value="dsDwarf2Set"/>
+            </Debugging>
+            <LinkSmart Value="True"/>
+          </Linking>
+        </CompilerOptions>
+      </Item>
+      <Item Name="Release Darwin x64">
+        <CompilerOptions>
+          <Version Value="11"/>
+          <PathDelim Value="\"/>
+          <Target>
+            <Filename Value="bin\Win_x64\MDX_Collect"/>
+          </Target>
+          <SearchPaths>
+            <IncludeFiles Value="$(ProjOutDir)"/>
+            <OtherUnitFiles Value="ext\HashLib\Base;ext\HashLib\Interfaces;ext\HashLib\Utils;ext\HashLib\KDF;ext\HashLib\Nullable;ext\HashLib\NullDigest;ext\HashLib\Checksum;ext\HashLib\Crypto;ext\HashLib\Hash32;ext\HashLib\Hash64;ext\HashLib\Hash128;ext\HashLib\Crypto\Blake2BParams;ext\HashLib\Crypto\Blake2SParams;ext\HashLib\Interfaces\IBlake2BParams;ext\HashLib\Interfaces\IBlake2SParams;units"/>
+            <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
+          </SearchPaths>
+          <CodeGeneration>
+            <SmartLinkUnit Value="True"/>
+            <TargetCPU Value="x86_64"/>
+            <TargetOS Value="darwin"/>
+            <Optimizations>
+              <OptimizationLevel Value="3"/>
+            </Optimizations>
+          </CodeGeneration>
+          <Linking>
+            <Debugging>
+              <GenerateDebugInfo Value="False"/>
+              <DebugInfoType Value="dsDwarf2Set"/>
+            </Debugging>
+            <LinkSmart Value="True"/>
+          </Linking>
+        </CompilerOptions>
+      </Item>
+    </BuildModes>
+    <ManyBuildModesSelection Value="Debug,&quot;Release Win64&quot;"/>
+    <Units>
+      <Unit>
+        <Filename Value="MDX_Collect.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <TopLine Value="93"/>
+        <CursorPos X="19" Y="130"/>
+        <UsageCount Value="84"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="untDXObjInterface.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="5"/>
+        <TopLine Value="440"/>
+        <CursorPos X="35" Y="473"/>
+        <UsageCount Value="52"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="units\untUtils.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="47"/>
+        <CursorPos X="52" Y="73"/>
+        <UsageCount Value="46"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="units\untDXUtils.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="521"/>
+        <CursorPos X="21" Y="555"/>
+        <UsageCount Value="44"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="untDXUtils.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="84"/>
+        <CursorPos X="35" Y="103"/>
+        <UsageCount Value="37"/>
+      </Unit>
+      <Unit>
+        <Filename Value="untDX7Voice.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="11"/>
+        <CursorPos X="50" Y="32"/>
+        <UsageCount Value="26"/>
+      </Unit>
+      <Unit>
+        <Filename Value="units\untDX7Voice.pas"/>
+        <EditorIndex Value="6"/>
+        <TopLine Value="8"/>
+        <CursorPos X="12" Y="32"/>
+        <UsageCount Value="21"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="units\untDX7IISupplement.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="136"/>
+        <CursorPos X="81" Y="149"/>
+        <UsageCount Value="8"/>
+      </Unit>
+      <Unit>
+        <Filename Value="units\untTX7Function.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="212"/>
+        <CursorPos X="79" Y="225"/>
+        <UsageCount Value="8"/>
+      </Unit>
+      <Unit>
+        <Filename Value="units\untMDXSupplement.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="90"/>
+        <CursorPos X="78" Y="105"/>
+        <UsageCount Value="8"/>
+      </Unit>
+      <Unit>
+        <Filename Value="ext\HashLib\Base\HlpHashFactory.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="3" Y="16"/>
+        <UsageCount Value="7"/>
+      </Unit>
+      <Unit>
+        <Filename Value="ext\HashLib\Interfaces\HlpIHash.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="3" Y="10"/>
+        <UsageCount Value="7"/>
+      </Unit>
+      <Unit>
+        <Filename Value="ext\HashLib\Interfaces\HlpIHashInfo.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="3" Y="12"/>
+        <UsageCount Value="7"/>
+      </Unit>
+      <Unit>
+        <Filename Value="ext\HashLib\Crypto\HlpBlake2B.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="3" Y="13"/>
+        <UsageCount Value="7"/>
+      </Unit>
+      <Unit>
+        <Filename Value="units\untDX7Bank.pas"/>
+        <EditorIndex Value="7"/>
+        <TopLine Value="30"/>
+        <CursorPos X="104" Y="104"/>
+        <UsageCount Value="22"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="units\untParConst.pas"/>
+        <EditorIndex Value="4"/>
+        <TopLine Value="169"/>
+        <CursorPos X="10" Y="330"/>
+        <UsageCount Value="15"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="untcollectionutils.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="untCollectionUtils"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="142"/>
+        <CursorPos X="22" Y="170"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+      </Unit>
+    </Units>
+    <JumpHistory HistoryIndex="29">
+      <Position>
+        <Filename Value="untDXObjInterface.pas"/>
+        <Caret Line="582" Column="36" TopLine="548"/>
+      </Position>
+      <Position>
+        <Filename Value="untDXObjInterface.pas"/>
+        <Caret Line="583" Column="26" TopLine="549"/>
+      </Position>
+      <Position>
+        <Filename Value="untDXObjInterface.pas"/>
+        <Caret Line="584" Column="64" TopLine="550"/>
+      </Position>
+      <Position>
+        <Filename Value="untDXObjInterface.pas"/>
+        <Caret Line="587" Column="12" TopLine="553"/>
+      </Position>
+      <Position>
+        <Filename Value="untDXObjInterface.pas"/>
+        <Caret Line="600" Column="39" TopLine="566"/>
+      </Position>
+      <Position>
+        <Filename Value="untDXObjInterface.pas"/>
+        <Caret Line="601" Column="23" TopLine="567"/>
+      </Position>
+      <Position>
+        <Filename Value="untDXObjInterface.pas"/>
+        <Caret Line="603" Column="12" TopLine="569"/>
+      </Position>
+      <Position>
+        <Filename Value="untDXObjInterface.pas"/>
+        <Caret Line="16" Column="38"/>
+      </Position>
+      <Position>
+        <Filename Value="untDXObjInterface.pas"/>
+        <Caret Line="62" Column="20" TopLine="28"/>
+      </Position>
+      <Position>
+        <Filename Value="untDXObjInterface.pas"/>
+        <Caret Line="106" Column="20" TopLine="72"/>
+      </Position>
+      <Position>
+        <Filename Value="untDXObjInterface.pas"/>
+        <Caret Line="156" Column="20" TopLine="122"/>
+      </Position>
+      <Position>
+        <Filename Value="untDXObjInterface.pas"/>
+        <Caret Line="220" Column="20" TopLine="186"/>
+      </Position>
+      <Position>
+        <Filename Value="untDXObjInterface.pas"/>
+        <Caret Line="279" Column="20" TopLine="245"/>
+      </Position>
+      <Position>
+        <Filename Value="untDXObjInterface.pas"/>
+        <Caret Line="359" Column="26" TopLine="326"/>
+      </Position>
+      <Position>
+        <Filename Value="units\untDXUtils.pas"/>
+        <Caret Line="365" Column="20" TopLine="363"/>
+      </Position>
+      <Position>
+        <Filename Value="units\untDXUtils.pas"/>
+        <Caret Line="376" Column="14" TopLine="363"/>
+      </Position>
+      <Position>
+        <Filename Value="units\untDXUtils.pas"/>
+        <Caret Line="394" Column="14" TopLine="363"/>
+      </Position>
+      <Position>
+        <Filename Value="units\untDXUtils.pas"/>
+        <Caret Line="398" Column="31" TopLine="364"/>
+      </Position>
+      <Position>
+        <Filename Value="units\untDXUtils.pas"/>
+        <Caret Line="406" Column="45" TopLine="373"/>
+      </Position>
+      <Position>
+        <Filename Value="units\untDXUtils.pas"/>
+        <Caret Line="419" Column="51" TopLine="386"/>
+      </Position>
+      <Position>
+        <Filename Value="units\untDXUtils.pas"/>
+        <Caret Line="428" Column="40" TopLine="395"/>
+      </Position>
+      <Position>
+        <Filename Value="units\untDXUtils.pas"/>
+        <Caret Line="433" Column="30" TopLine="400"/>
+      </Position>
+      <Position>
+        <Filename Value="units\untDXUtils.pas"/>
+        <Caret Line="453" Column="89" TopLine="420"/>
+      </Position>
+      <Position>
+        <Filename Value="units\untDXUtils.pas"/>
+        <Caret Line="465" Column="30" TopLine="432"/>
+      </Position>
+      <Position>
+        <Filename Value="units\untDXUtils.pas"/>
+        <Caret Line="466" Column="25" TopLine="433"/>
+      </Position>
+      <Position>
+        <Filename Value="units\untDXUtils.pas"/>
+        <Caret Line="475" Column="56" TopLine="442"/>
+      </Position>
+      <Position>
+        <Filename Value="units\untDXUtils.pas"/>
+        <Caret Line="500" Column="28" TopLine="467"/>
+      </Position>
+      <Position>
+        <Filename Value="units\untDXUtils.pas"/>
+        <Caret Line="542" Column="21" TopLine="508"/>
+      </Position>
+      <Position>
+        <Filename Value="untcollectionutils.pas"/>
+        <Caret Line="62" Column="25" TopLine="44"/>
+      </Position>
+      <Position>
+        <Filename Value="untDXObjInterface.pas"/>
+        <Caret Line="380" Column="63" TopLine="371"/>
+      </Position>
+    </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes ActiveMode="default">
+        <Mode Name="default">
+          <local>
+            <CommandLineParams Value="-m -f Trombones_(5).syx"/>
+            <WorkingDirectory Value="C:\Users\Administrator\Documents\Lazarus\MDX_Tool\bin\Debug"/>
+          </local>
+        </Mode>
+      </Modes>
+    </RunParams>
+    <HistoryLists>
+      <List Name="WorkingDirectory" Type="File" Count="5">
+        <Item1 Value="C:\Users\Administrator\Documents\Lazarus\MDX_Tool\bin\Debug"/>
+        <Item2 Value="C:\Users\Administrator\Documents\Lazarus\MDX_Tool\bin\Win_x64"/>
+        <Item3 Value="C:\Users\User\Documents\Lazarus\MDX_Tool"/>
+        <Item4 Value="C:\Users\User\Documents\Lazarus\MDX_Tool\bin\Debug"/>
+        <Item5 Value="C:\Users\Administrator\Documents\Lazarus\MDX_Tool"/>
+      </List>
+      <List Name="LaunchingApplication" Type="File" Count="1">
+        <Item1 Value="C:\WINDOWS\system32\cmd.exe /C ${TargetCmdLine}"/>
+      </List>
+      <List Name="CommandLineParameters" Count="7">
+        <Item1 Value="-m -f Trombones_(5).syx"/>
+        <Item2 Value="-i -f tx52.syx"/>
+        <Item3 Value="-i -f BUCK-1.SYX"/>
+        <Item4 Value="-i -f DMC-1.SYX"/>
+        <Item5 Value="-r -f DMC-1.SYX"/>
+        <Item6 Value="-r -f BUCK-1.SYX"/>
+        <Item7 Value="-i -r BUCK-1.SYX"/>
+      </List>
+    </HistoryLists>
+  </ProjectSession>
+  <Debugging>
+    <Watches>
+      <Item>
+        <Expression Value="fBank"/>
+      </Item>
+    </Watches>
+  </Debugging>
+</CONFIG>

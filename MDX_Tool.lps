@@ -69,17 +69,18 @@
         <Filename Value="MDX_Tool.lpr"/>
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
-        <CursorPos X="52" Y="16"/>
-        <UsageCount Value="83"/>
+        <TopLine Value="489"/>
+        <CursorPos X="33" Y="248"/>
+        <UsageCount Value="84"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="untDXObjInterface.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="4"/>
-        <TopLine Value="487"/>
-        <CursorPos X="10" Y="508"/>
-        <UsageCount Value="51"/>
+        <TopLine Value="571"/>
+        <CursorPos X="24" Y="574"/>
+        <UsageCount Value="52"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -88,7 +89,7 @@
         <EditorIndex Value="2"/>
         <TopLine Value="96"/>
         <CursorPos X="23" Y="128"/>
-        <UsageCount Value="45"/>
+        <UsageCount Value="46"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -97,7 +98,7 @@
         <EditorIndex Value="1"/>
         <TopLine Value="363"/>
         <CursorPos X="51" Y="378"/>
-        <UsageCount Value="43"/>
+        <UsageCount Value="44"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -185,18 +186,6 @@
       </Unit>
     </Units>
     <JumpHistory HistoryIndex="29">
-      <Position>
-        <Filename Value="untDXObjInterface.pas"/>
-        <Caret Line="98" TopLine="72"/>
-      </Position>
-      <Position>
-        <Filename Value="untDXObjInterface.pas"/>
-        <Caret Line="99" TopLine="73"/>
-      </Position>
-      <Position>
-        <Filename Value="untDXObjInterface.pas"/>
-        <Caret Line="110" TopLine="95"/>
-      </Position>
       <Position>
         <Filename Value="untDXObjInterface.pas"/>
         <Caret Line="111" TopLine="95"/>
@@ -304,6 +293,18 @@
       <Position>
         <Filename Value="MDX_Tool.lpr"/>
         <Caret Line="512" Column="81" TopLine="489"/>
+      </Position>
+      <Position>
+        <Filename Value="MDX_Tool.lpr"/>
+        <Caret Line="16" Column="52"/>
+      </Position>
+      <Position>
+        <Filename Value="MDX_Tool.lpr"/>
+        <Caret Line="65" Column="39" TopLine="31"/>
+      </Position>
+      <Position>
+        <Filename Value="untDXObjInterface.pas"/>
+        <Caret Line="508" Column="10" TopLine="487"/>
       </Position>
     </JumpHistory>
     <RunParams>
