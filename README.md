@@ -43,5 +43,27 @@ Usage: MDX_Tool.exe -parameters
 
 Split and Join parameters expect non-corrupted files as input (headerless files are accepted).
   ```
+# MDX_Collect
+A tool for hashing bank collections  
 
-External library HashLib is used for calculating hash: https://github.com/Xor-el/HashLib4Pascal
+```
+Usage: MDX_Collect.exe -parameters
+  Parameters (short and long form):
+   -h                 --help                    This help message
+
+   -a                 --analyze                 Make a hash list of VMEM/VCED files in a directory
+       -d {directory}     --dir={directory}     Input directory for -a parameter
+       -r {directory}     --report={directory}  Output directory for the reports
+
+   -c                 --compare                 Compare two hash lists
+       -m {filename}      --master={filename}   Hash list of your collection
+       -i {filename}      --incoming={filename} Hash list of incoming collection
+       -r {directory}     --report={directory}  Output directory for the reports
+
+  Example usage:
+       MDX_Tool -a -d MyCollection -r MyReports
+       MDX_Tool -a -d NewFiles -r NewReports
+       MDX_Tool -c -m MyCollection.hsl -i NewFiles.hsl -r MyReports
+   ```
+         
+External library HashLib is used in both tools to calculate hash sums: https://github.com/Xor-el/HashLib4Pascal
