@@ -171,10 +171,7 @@ type
     writeln('  Example usage:');
     writeln('       MDX_Tool -a -d MyCollection -r MyReports');
     writeln('       MDX_Tool -a -d NewFiles -r NewReports');
-    writeln('       MDX_Tool -c -m MyCollection.hsl -i NewFiles.hsl');
-    writeLn('');
-    writeLn('');
-    writeLn('Split and Join parameters expect non-corrupted files as input (headerless files are accepted).');
+    writeln('       MDX_Tool -c -m MyCollection.hsl -i NewFiles.hsl -r MyReports');
   end;
 
 var

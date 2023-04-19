@@ -136,7 +136,6 @@
       <Unit>
         <Filename Value="untCollectionUtils.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="untCollectionUtils"/>
       </Unit>
     </Units>
   </ProjectOptions>

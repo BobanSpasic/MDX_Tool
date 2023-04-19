@@ -68,8 +68,9 @@
       <Unit>
         <Filename Value="MDX_Collect.lpr"/>
         <IsPartOfProject Value="True"/>
-        <TopLine Value="93"/>
-        <CursorPos X="19" Y="130"/>
+        <IsVisibleTab Value="True"/>
+        <TopLine Value="143"/>
+        <CursorPos X="74" Y="174"/>
         <UsageCount Value="84"/>
         <Loaded Value="True"/>
       </Unit>
@@ -98,6 +99,15 @@
         <TopLine Value="521"/>
         <CursorPos X="21" Y="555"/>
         <UsageCount Value="44"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="untCollectionUtils.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="142"/>
+        <CursorPos X="22" Y="170"/>
+        <UsageCount Value="20"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -181,17 +191,6 @@
         <TopLine Value="169"/>
         <CursorPos X="10" Y="330"/>
         <UsageCount Value="15"/>
-        <Loaded Value="True"/>
-      </Unit>
-      <Unit>
-        <Filename Value="untcollectionutils.pas"/>
-        <IsPartOfProject Value="True"/>
-        <UnitName Value="untCollectionUtils"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="1"/>
-        <TopLine Value="142"/>
-        <CursorPos X="22" Y="170"/>
-        <UsageCount Value="20"/>
         <Loaded Value="True"/>
       </Unit>
     </Units>
