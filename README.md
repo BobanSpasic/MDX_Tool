@@ -10,7 +10,9 @@ Usage: MDX_Tool.exe -parameters
        -m               --hname              Rename file to the SHA2-256 hash of the file
        -z               --normalize          Set parameters to be between minimum and maximum allowed values
        -y               --markcorr           Mark files that have parameters outside the min/max limits
-                                               Adds .corr as the file extension
+                                               Adds .x_corr as the file extension where x is the error code
+                                               Lower 4 numbers are the count of min/max errors
+                                               Higher numbers are the count of voices with values in normally unused bits
        -w               --marknull           Mark files that have nulls ($00) in voice names
                                                Adds .nl as the file extension
        -r               --repair             Repair/extract DX7 VMEM data from files
