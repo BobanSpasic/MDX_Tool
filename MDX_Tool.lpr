@@ -23,7 +23,7 @@ program MDX_Tool;
 uses
  {$IFDEF UNIX}
   cthreads,
-                {$ENDIF}
+                 {$ENDIF}
   Classes,
   SysUtils,
   CustApp,
@@ -56,7 +56,8 @@ type
     i: integer;
     iStartPos: integer;
     iDmpPos: integer;
-    bNullVoice: Boolean;
+    bNullVoice: boolean;
+    iErrCode: integer;
   begin
     bNullVoice := False;
     fInput := '';
@@ -129,11 +130,11 @@ type
             WriteLn(slReport[i]);
           iStartPos := 0;
           if ContainsDX7BankDump(msInputFile, iStartPos, iDmpPos) then
-            if CheckVMEMIntegrity(msInputFile, iDmpPos, bNullVoice) then
+            if CheckVMEMIntegrity(msInputFile, iDmpPos, bNullVoice) = 0 then
               WriteLn('VMEM data integrity is OK');
           iStartPos := 0;
           if ContainsDX7VoiceDump(msInputFile, iStartPos, iDmpPos) then
-            if CheckVCEDIntegrity(msInputFile, iDmpPos, bNullVoice) then
+            if CheckVCEDIntegrity(msInputFile, iDmpPos, bNullVoice) = 0 then
               WriteLn('VCED data integrity is OK');
         end
         else
@@ -169,18 +170,30 @@ type
             WriteLn(slReport[i]);
           iStartPos := 0;
           if ContainsDX7BankDump(msInputFile, iStartPos, iDmpPos) then
-            if not CheckVMEMIntegrity(msInputFile, iDmpPos, bNullVoice) then
+          begin
+            iErrCode := CheckVMEMIntegrity(msInputFile, iDmpPos, bNullVoice);
+            if iErrCode <> 0 then
             begin
               WriteLn('VMEM data is corrupted. Renaming file');
-              RenameFile(fInput, fInput + '.corr');
+              if bNullVoice then
+                RenameFile(fInput, fInput + '.nl_' + IntToStr(iErrCode) + '_corr')
+              else
+                RenameFile(fInput, fInput + '.' + IntToStr(iErrCode) + '_corr');
             end;
+          end;
           iStartPos := 0;
           if ContainsDX7VoiceDump(msInputFile, iStartPos, iDmpPos) then
-            if not CheckVCEDIntegrity(msInputFile, iDmpPos, bNullVoice) then
+          begin
+            iErrCode := CheckVCEDIntegrity(msInputFile, iDmpPos, bNullVoice);
+            if iErrCode <> 0 then
             begin
               WriteLn('VCED data is corrupted. Renaming file');
-              RenameFile(fInput, fInput + '.corr');
+              if bNullVoice then
+                RenameFile(fInput, fInput + '.nl_' + IntToStr(iErrCode) + '_corr')
+              else
+                RenameFile(fInput, fInput + '.' + IntToStr(iErrCode) + '_corr');
             end;
+          end;
         end
         else
         begin
@@ -215,17 +228,9 @@ type
             WriteLn(slReport[i]);
           iStartPos := 0;
           if ContainsDX7BankDump(msInputFile, iStartPos, iDmpPos) then
-            if not CheckVMEMIntegrity(msInputFile, iDmpPos, bNullVoice) then
-            begin
-              if bNullVoice then
-              begin
-              WriteLn('Voice name contains nulls ($00). Renaming file');
-              RenameFile(fInput, fInput + '.nl');
-              end;
-            end;
-          iStartPos := 0;
-          if ContainsDX7VoiceDump(msInputFile, iStartPos, iDmpPos) then
-            if not CheckVCEDIntegrity(msInputFile, iDmpPos, bNullVoice) then
+          begin
+            iErrCode := CheckVMEMIntegrity(msInputFile, iDmpPos, bNullVoice);
+            if iErrCode <> 0 then
             begin
               if bNullVoice then
               begin
@@ -233,6 +238,20 @@ type
                 RenameFile(fInput, fInput + '.nl');
               end;
             end;
+          end;
+          iStartPos := 0;
+          if ContainsDX7VoiceDump(msInputFile, iStartPos, iDmpPos) then
+          begin
+            iErrCode := CheckVCEDIntegrity(msInputFile, iDmpPos, bNullVoice);
+            if iErrCode <> 0 then
+            begin
+              if bNullVoice then
+              begin
+                WriteLn('Voice name contains nulls ($00). Renaming file');
+                RenameFile(fInput, fInput + '.nl');
+              end;
+            end;
+          end;
         end
         else
         begin
@@ -271,7 +290,7 @@ type
           iStartPos := 0;
           if ContainsDX7BankDump(msInputFile, iStartPos, iDmpPos) then
           begin
-            if CheckVMEMIntegrity(msInputFile, iDmpPos , bNullVoice) then
+            if CheckVMEMIntegrity(msInputFile, iDmpPos, bNullVoice) = 0 then
             begin
               WriteLn('VMEM data integrity is OK');
             end
@@ -284,7 +303,7 @@ type
           iStartPos := 0;
           if ContainsDX7VoiceDump(msInputFile, iStartPos, iDmpPos) then
           begin
-            if CheckVCEDIntegrity(msInputFile, iDmpPos, bNullVoice) then
+            if CheckVCEDIntegrity(msInputFile, iDmpPos, bNullVoice) = 0 then
             begin
               WriteLn('VCED data integrity is OK');
             end
@@ -490,7 +509,7 @@ type
   begin
     writeln('');
     writeln('');
-    writeln('MDX_Tool 1.6 - tool for various manipulation of DX7 VMEM and VCED SysEx files');
+    writeln('MDX_Tool 1.7 - tool for various manipulation of DX7 VMEM and VCED SysEx files');
     writeln('Author: Boban Spasic');
     writeln('https://github.com/BobanSpasic/MDX_Tool');
     writeln('');
@@ -502,7 +521,9 @@ type
     writeln('       -m               --hname              Rename file to the SHA2-256 hash of the file');
     writeln('       -z               --normalize          Set parameters to be between minimum and maximum allowed values');
     writeln('       -y               --markcorr           Mark files that have parameters outside the min/max limits');
-    writeln('                                               Adds .corr as the file extension');
+    writeln('                                               Adds .x_corr as the file extension where x is the error code');
+    writeln('                                               Lower 4 numbers are the count of min/max errors');
+    writeln('                                               Higher numbers are the count of voices with values in normally unused bits');
     writeln('       -w               --marknull           Mark files that have nulls ($00) in voice names');
     writeln('                                               Adds .nl as the file extension');
     writeln('       -r               --repair             Repair/extract DX7 VMEM data from files');

@@ -7,13 +7,7 @@
  Author: Boban Spasic
 
  Program description:
- This program can get some info from Yamaha DX7 SysEx files. The info is more about the integrity/corruption of the files.
- Second aspect of the program is to repair some of the common corrupted files found on the internet.
- Third aspect (not yet implemented) will be the conversion from VMEM to VCED and vice-versa.
- 
- ToDo:
- - conversion VMEM <> VCED
- - duplicate finder along a collection of files
+ This program helps organizing your Yamaha DX7 SysEx collection
 }
 
 program MDX_Collect;
@@ -34,9 +28,9 @@ uses
 
 type
 
-  { TMDX_Tool }
+  { TMDX_Collect }
 
-  TMDX_Tool = class(TCustomApplication)
+  TMDX_Collect = class(TCustomApplication)
   protected
     procedure DoRun; override;
   public
@@ -45,23 +39,26 @@ type
     procedure WriteHelp; virtual;
   end;
 
-  { TMDX_Tool }
+  { TMDX_Collect }
 
-  procedure TMDX_Tool.DoRun;
+  procedure TMDX_Collect.DoRun;
   var
     ErrorMsg: string;
     fMaster: string;
     fIncoming: string;
     fReportDir: string;
     fInputDir: string;
+    fOutput: string;
   begin
     fMaster := '';
     fIncoming := '';
     fReportDir := '';
     fInputDir := '';
+    fOutput := '';
+
     // quick check parameters
-    ErrorMsg := CheckOptions('hacm:i:r:d:',
-      'help analyze compare master: incoming: report: dir:');
+    ErrorMsg := CheckOptions('hactm:i:r:d:o:',
+      'help analyze compare movetree master: incoming: report: dir: output:');
 
     if ErrorMsg <> '' then
     begin
@@ -86,6 +83,8 @@ type
       fReportDir := IncludeTrailingPathDelimiter(GetOptionValue('r', 'report'));
     if HasOption('d', 'dir') then
       fInputDir := IncludeTrailingPathDelimiter(GetOptionValue('d', 'dir'));
+    if HasOption('o', 'output') then
+      fOutput := IncludeTrailingPathDelimiter(GetOptionValue('o', 'output'));
 
     if HasOption('a', 'analyze') then
     begin
@@ -133,25 +132,43 @@ type
       end;
     end;
 
+     if HasOption('t', 'movetree') then
+    begin
+      if (fOutput = '') or (fIncoming = '') or (fInputDir = '') then
+      begin
+        WriteLn('Some of the Parameters -o, -i or -d is missing');
+        Terminate;
+        Exit;
+      end
+      else
+      begin
+        WriteLn('Incoming list: ' + fIncoming);
+        WriteLn('Tree root directory of the incoming list: ' + fInputDir);
+        WriteLn('Output directory: ' + fOutput);
+        MoveTree(fIncoming, fInputDir, fOutput);
+        WriteLn('Done!');
+      end;
+    end;
+
     Terminate;
   end;
 
-  constructor TMDX_Tool.Create(TheOwner: TComponent);
+  constructor TMDX_Collect.Create(TheOwner: TComponent);
   begin
     inherited Create(TheOwner);
     StopOnException := True;
   end;
 
-  destructor TMDX_Tool.Destroy;
+  destructor TMDX_Collect.Destroy;
   begin
     inherited Destroy;
   end;
 
-  procedure TMDX_Tool.WriteHelp;
+  procedure TMDX_Collect.WriteHelp;
   begin
     writeln('');
     writeln('');
-    writeln('MDX_Collect 1.6 - tool for hashing bank collections');
+    writeln('MDX_Collect 1.7 - tool for managing DX7 SysEx collections');
     writeln('Author: Boban Spasic');
     writeln('https://github.com/BobanSpasic/MDX_Tool');
     writeln('');
@@ -160,7 +177,7 @@ type
     writeln('   -h                 --help                    This help message');
     writeLn('');
     writeln('   -a                 --analyze                 Make a hash list of VMEM/VCED files in a directory');
-    writeln('       -d {directory}     --dir={directory}     Input directory for -a parameter');
+    writeln('       -d {directory}     --dir={directory}     Input directory');
     writeln('       -r {directory}     --report={directory}  Output directory for the reports');
     writeLn('');
     writeln('   -c                 --compare                 Compare two hash lists');
@@ -168,17 +185,22 @@ type
     writeln('       -i {filename}      --incoming={filename} Hash list of incoming collection');
     writeln('       -r {directory}     --report={directory}  Output directory for the reports');
     writeLn('');
+    writeln('   -t                 --movetree                Copy directory tree to the new location and move the diff. files');
+    writeln('       -i {filename}      --incoming={filename} IncomingHasMore.dif list of the incoming collection');
+    writeln('       -d {directory}     --dir={directory}     Root directory of the incoming file collection');
+    writeln('       -o {directory}     --output={directory}  Output directory for the moved files');
+    writeLn('');
     writeln('  Example usage:');
-    writeln('       MDX_Tool -a -d MyCollection -r MyReports');
-    writeln('       MDX_Tool -a -d NewFiles -r NewReports');
-    writeln('       MDX_Tool -c -m MyCollection.hsl -i NewFiles.hsl -r MyReports');
+    writeln('       MDX_Collect -a -d MyCollection -r MyReports');
+    writeln('       MDX_Collect -a -d NewFiles -r NewReports');
+    writeln('       MDX_Collect -c -m MyCollection.hsl -i NewFiles.hsl -r MyReports');
   end;
 
 var
-  Application: TMDX_Tool;
+  Application: TMDX_Collect;
 begin
-  Application := TMDX_Tool.Create(nil);
-  Application.Title := 'MDX_Tool';
+  Application := TMDX_Collect.Create(nil);
+  Application.Title := 'MDX_Collect';
   Application.Run;
   Application.Free;
 end.

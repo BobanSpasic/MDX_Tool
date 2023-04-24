@@ -28,9 +28,9 @@ procedure JoinVCED2VMEM(aInputDir: string; aOutFile: string);
 function Hash2Name(aFile: string): boolean;
 function Voice2Name(aFile: string): boolean;
 function CheckVMEMIntegrity(aStream: TMemoryStream; aPos: integer;
-  var aNullVoice: Boolean): boolean;
+  var aNullVoice: Boolean): Integer;
 function CheckVCEDIntegrity(aStream: TMemoryStream; aPos: integer;
-  var aNullVoice: Boolean): boolean;
+  var aNullVoice: Boolean): Integer;
 procedure NormalizeVMEM(aStream: TMemoryStream; aPos: integer; aFile: string);
 procedure NormalizeVCED(aStream: TMemoryStream; aPos: integer; aFile: string);
 
@@ -117,6 +117,7 @@ begin
       if fDirectory = PathDelim then fDirectory := '';
       RenameFile(aFile, fDirectory + fVoice.CalculateHash + '.syx');
       Result := True;
+      //WriteLn('Voice name: "'+fvoice.GetVoiceName+'"');
     end
     else
       WriteLn('    Not a DX7 VCED file');
@@ -288,12 +289,19 @@ begin
     slVoices := TStringList.Create;
     for i := 1 to 32 do
     begin
+      {WriteLn('Voice name :"'+fBank.GetVoiceName(i)+'"');
       sVoiceName := IncludeTrailingPathDelimiter(aOutDir) +
         fBank.CalculateHash(i) + '.dx7vced.syx';
-      WriteLn('Create :' + sVoiceName);
+      WriteLn('Create :' + sVoiceName);     }
+
       fVoice := TDX7VoiceContainer.Create;
       fBank.GetVoice(i, fVoice);
-      slVoices.AddPair(fBank.CalculateHash(i), fBank.GetVoiceName(i));
+      WriteLn('Voice name :"'+fVoice.GetVoiceName+'"');
+      sVoiceName := IncludeTrailingPathDelimiter(aOutDir) +
+        fVoice.CalculateHash + '.dx7vced.syx';
+      WriteLn('Create :' + sVoiceName);
+      slVoices.AddPair(fVoice.CalculateHash, fVoice.GetVoiceName);
+
       msVoice := TMemoryStream.Create;
       fVoice.SysExVoiceToStream(1, msVoice);
       msVoice.SaveToFile(sVoiceName);
@@ -424,7 +432,7 @@ begin
 end;
 
 function CheckVMEMIntegrity(aStream: TMemoryStream; aPos: integer;
-  var aNullVoice: Boolean): boolean;
+  var aNullVoice: Boolean): Integer;
 var
   fBank: TDX7BankContainer;
   fVoice: TDX7VoiceContainer;
@@ -435,7 +443,7 @@ var
   slCorruptedVoices: TStringList;
   slReport: TStringList;
 begin
-  Result := True;
+  Result := 0;
   bLoadSaveCheck := True;
   bMinMaxCheck := True;
   aNullVoice := False;
@@ -470,6 +478,7 @@ begin
     if not fVoice.CheckMinMax(slReport) then
     begin
       bMinMaxCheck := False;
+      Inc(Result, slReport.Count);
       slCorruptedVoices.Add(Format('%.2d', [i]) + ': ' + fVoice.GetVoiceName);
       slCorruptedVoices.AddStrings(slReport);
       //check for Nulls in voice name
@@ -486,7 +495,7 @@ begin
   begin
     WriteLn('File corruption:');
     WriteLn('  Bank contains data outside the required bits');
-    Result := False;
+    Result := Result + 10000;
   end;
 
   if bMinMaxCheck = False then
@@ -495,7 +504,6 @@ begin
     WriteLn('  The following voices have data outside the minimum/maximum parameter limits:');
     for i := 0 to slCorruptedVoices.Count - 1 do
       WriteLn('    ' + slCorruptedVoices[i]);
-    Result := False;
   end;
 
   msRebuilt.Free;
@@ -506,7 +514,7 @@ begin
 end;
 
 function CheckVCEDIntegrity(aStream: TMemoryStream; aPos: integer;
-  var aNullVoice: Boolean): boolean;
+  var aNullVoice: Boolean): Integer;
 var
   fVoice: TDX7VoiceContainer;
   i: integer;
@@ -514,7 +522,7 @@ var
   bLoadSaveCheck: boolean;
   slReport: TStringList;
 begin
-  Result := True;
+  Result := 0;
   bLoadSaveCheck := True;
   aNullVoice := False;
 
@@ -542,7 +550,7 @@ begin
     WriteLn('File corruption:');
     WriteLn('  Voice contains data outside the required bits');
     WriteLn('');
-    Result := False;
+    Result := Result + 10000;
   end;
 
   //check if the parameters are between min and max values
@@ -552,9 +560,11 @@ begin
     WriteLn('File corruption:');
     WriteLn('  The voice has parameters outside the min/max values');
     for i := 0 to slReport.Count - 1 do
+    begin
       WriteLn('    ' + slReport[i]);
+      Inc(Result);
+    end;
     WriteLn('');
-    Result := False;
   end;
 
   //check for Nulls in voice name
@@ -563,7 +573,6 @@ begin
     aNullVoice := True;
     WriteLn('File corruption:');
     WriteLn('  The voice name contains Null bytes');
-    Result := False;
   end;
 
   msRebuilt.Free;

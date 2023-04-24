@@ -22,6 +22,7 @@ uses
 
 procedure Analyze(aDir, aReportDir: string);
 procedure Compare(aMaster, aIncoming, aReport: string);
+procedure MoveTree(aIncomingList, aRoot, aOutput: string);
 
 implementation
 
@@ -49,9 +50,9 @@ begin
   begin
     WriteLn('Processing ' + slFiles[i]);
     if not FileExists(slFiles[i]) then Break;
-    ;
     msFileStream := TMemoryStream.Create;
     msFileStream.LoadFromFile(slFiles[i]);
+    //is a pure VCED?
     if msFileStream.Size = 163 then
     begin
       iStart := 0;
@@ -60,11 +61,12 @@ begin
       begin
         fDXVoice := TDX7VoiceContainer.Create;
         fDXVoice.Load_VCED_FromStream(msFileStream, iDmp);
-        slHashes.AddPair(fDXVoice.CalculateHash, slFiles[i] + #9 +
+        slHashes.AddPair(fDXVoice.CalculateHash, slFiles[i] + #9#9 +
           '01: ' + fDXVoice.GetVoiceName);
         fDXVoice.Free;
       end;
     end;
+    //is a pure VMEM?
     if msFileStream.Size = 4104 then
     begin
       iStart := 0;
@@ -87,7 +89,10 @@ begin
     msFileStream.Free;
   end;
   if slHashes.Count > 0 then
+  begin
+    ForceDirectories(aReportDir);
     slHashes.SaveToFile(fOutput);
+  end;
   WriteLn('Processed ' + IntToStr(slFiles.Count) + ' files');
   slFiles.Free;
   slHashes.Free;
@@ -160,6 +165,7 @@ begin
       slIncomingHasMore.Add(slIncoming[i]);
   end;
 
+  ForceDirectories(aReport);
   slMasterHasMore.SaveToFile(IncludeTrailingPathDelimiter(aReport) +
     'MasterHasMore.dif');
   slIncomingHasMore.SaveToFile(IncludeTrailingPathDelimiter(aReport) +
@@ -177,6 +183,98 @@ begin
   slIncomingHash.Free;
   slMasterDuplicates.Free;
   slIncomingDuplicates.Free;
+end;
+
+procedure MoveTree(aIncomingList, aRoot, aOutput: string);
+var
+  slIncoming: TStringList;
+  slDirTree: TStringList;
+  slCopyListSource: TStringList;
+  slCopyListDest: TStringList;
+  i, j: integer;
+  sDirPart: string;
+  sNameSource: string;
+  sNameDest: string;
+  msFileStream: TMemoryStream;
+  msTestStream: TMemoryStream;
+  bPass: boolean;
+  iCount: Integer;
+begin
+  slIncoming := TStringList.Create;
+  slDirTree := TStringList.Create;
+  slDirTree.Sorted := True;
+  slDirTree.Duplicates := dupIgnore;
+  slCopyListSource := TStringList.Create;
+  slCopyListDest := TStringList.Create;
+  msFileStream := TMemoryStream.Create;
+
+  WriteLn('Processing input list. This can take a couple of minutes.');
+  slIncoming.LoadFromFile(aIncomingList);
+  iCount := slIncoming.Count;
+  for i := 0 to slIncoming.Count - 1 do
+  begin
+    if (i mod 1000) = 0 then WriteLn('Processed ' + IntToStr(i) + ' from ' + IntToStr(iCount) +' entries');
+    //extract new path
+    sDirPart := slIncoming.ValueFromIndex[i];
+    sDirPart := Trim(Copy(sDirPart, 0, Pos(#9, sDirPart)));
+    sNameSource := sDirPart;
+    //calculate new path
+    sDirPart := ReplaceStr(sDirPart, aRoot, '');
+    sDirPart := ExcludeTrailingPathDelimiter(ExtractFilePath(
+      IncludeTrailingPathDelimiter(aOutput) + sDirPart));
+    sNameDest := IncludeTrailingPathDelimiter(sDirPart) + ExtractFileName(sNameSource);
+    slDirTree.Add(sDirPart);
+    if slCopyListSource.IndexOf(sNameSource) = -1 then
+    begin
+      slCopyListSource.Add(sNameSource);
+      slCopyListDest.Add(sNameDest);
+    end;
+  end;
+
+  WriteLn('Creating new directory tree');
+  for i := 0 to slDirTree.Count - 1 do
+  begin
+    ForceDirectories(slDirTree[i]);
+  end;
+
+  for i := 0 to slCopyListSource.Count - 1 do
+  begin
+    WriteLn(slCopyListSource[i] + #9#9 + slCopyListDest[i]);
+    if FileExists(slCopyListSource[i]) then
+    begin
+      msFileStream.LoadFromFile(slCopyListSource[i]);
+      msFileStream.SaveToFile(slCopyListDest[i]);
+      if FileExists(slCopyListDest[i]) then
+      begin
+        msTestStream := TMemoryStream.Create;
+        msTestStream.LoadFromFile(slCopyListDest[i]);
+        if msTestStream.Size = msFileStream.Size then
+        begin
+          bPass := True;
+          msTestStream.Position := 0;
+          msFileStream.Position := 0;
+          for j := 0 to msTestStream.Size - 1 do
+            if msTestStream.ReadByte <> msFileStream.ReadByte then bPass := False;
+          if bPass then
+          begin
+            DeleteFile(slCopyListSource[i]);
+            WriteLn(#9 + 'File ' + slCopyListSource[i] + ' moved');
+          end
+          else
+            WriteLn(#9 + 'Moving file ' + slCopyListSource[i] + ' failed');
+        end;
+        msTestStream.Free;
+      end;
+    end
+    else
+      WriteLn(#9 + 'File ' + slCopyListSource[i] + ' does not exists');
+  end;
+
+  msFileStream.Free;
+  slDirTree.Free;
+  slCopyListSource.Free;
+  slCopyListDest.Free;
+  slIncoming.Free;
 end;
 
 end.

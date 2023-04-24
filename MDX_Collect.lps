@@ -69,9 +69,9 @@
         <Filename Value="MDX_Collect.lpr"/>
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="143"/>
-        <CursorPos X="74" Y="174"/>
-        <UsageCount Value="84"/>
+        <TopLine Value="163"/>
+        <CursorPos X="77" Y="180"/>
+        <UsageCount Value="88"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -80,7 +80,7 @@
         <EditorIndex Value="5"/>
         <TopLine Value="440"/>
         <CursorPos X="35" Y="473"/>
-        <UsageCount Value="52"/>
+        <UsageCount Value="56"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -89,7 +89,7 @@
         <EditorIndex Value="3"/>
         <TopLine Value="47"/>
         <CursorPos X="52" Y="73"/>
-        <UsageCount Value="46"/>
+        <UsageCount Value="50"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -98,16 +98,15 @@
         <EditorIndex Value="2"/>
         <TopLine Value="521"/>
         <CursorPos X="21" Y="555"/>
-        <UsageCount Value="44"/>
+        <UsageCount Value="48"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="untCollectionUtils.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="142"/>
-        <CursorPos X="22" Y="170"/>
-        <UsageCount Value="20"/>
+        <CursorPos Y="233"/>
+        <UsageCount Value="24"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -129,7 +128,7 @@
         <EditorIndex Value="6"/>
         <TopLine Value="8"/>
         <CursorPos X="12" Y="32"/>
-        <UsageCount Value="21"/>
+        <UsageCount Value="23"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -182,7 +181,7 @@
         <EditorIndex Value="7"/>
         <TopLine Value="30"/>
         <CursorPos X="104" Y="104"/>
-        <UsageCount Value="22"/>
+        <UsageCount Value="24"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -190,47 +189,11 @@
         <EditorIndex Value="4"/>
         <TopLine Value="169"/>
         <CursorPos X="10" Y="330"/>
-        <UsageCount Value="15"/>
+        <UsageCount Value="17"/>
         <Loaded Value="True"/>
       </Unit>
     </Units>
     <JumpHistory HistoryIndex="29">
-      <Position>
-        <Filename Value="untDXObjInterface.pas"/>
-        <Caret Line="582" Column="36" TopLine="548"/>
-      </Position>
-      <Position>
-        <Filename Value="untDXObjInterface.pas"/>
-        <Caret Line="583" Column="26" TopLine="549"/>
-      </Position>
-      <Position>
-        <Filename Value="untDXObjInterface.pas"/>
-        <Caret Line="584" Column="64" TopLine="550"/>
-      </Position>
-      <Position>
-        <Filename Value="untDXObjInterface.pas"/>
-        <Caret Line="587" Column="12" TopLine="553"/>
-      </Position>
-      <Position>
-        <Filename Value="untDXObjInterface.pas"/>
-        <Caret Line="600" Column="39" TopLine="566"/>
-      </Position>
-      <Position>
-        <Filename Value="untDXObjInterface.pas"/>
-        <Caret Line="601" Column="23" TopLine="567"/>
-      </Position>
-      <Position>
-        <Filename Value="untDXObjInterface.pas"/>
-        <Caret Line="603" Column="12" TopLine="569"/>
-      </Position>
-      <Position>
-        <Filename Value="untDXObjInterface.pas"/>
-        <Caret Line="16" Column="38"/>
-      </Position>
-      <Position>
-        <Filename Value="untDXObjInterface.pas"/>
-        <Caret Line="62" Column="20" TopLine="28"/>
-      </Position>
       <Position>
         <Filename Value="untDXObjInterface.pas"/>
         <Caret Line="106" Column="20" TopLine="72"/>
@@ -314,6 +277,42 @@
       <Position>
         <Filename Value="untDXObjInterface.pas"/>
         <Caret Line="380" Column="63" TopLine="371"/>
+      </Position>
+      <Position>
+        <Filename Value="untCollectionUtils.pas"/>
+        <Caret Line="245" Column="24" TopLine="219"/>
+      </Position>
+      <Position>
+        <Filename Value="untCollectionUtils.pas"/>
+        <Caret Line="230" Column="46" TopLine="210"/>
+      </Position>
+      <Position>
+        <Filename Value="untCollectionUtils.pas"/>
+        <Caret Line="192" Column="50" TopLine="186"/>
+      </Position>
+      <Position>
+        <Filename Value="untCollectionUtils.pas"/>
+        <Caret Line="3" Column="27"/>
+      </Position>
+      <Position>
+        <Filename Value="untCollectionUtils.pas"/>
+        <Caret Line="16" Column="6"/>
+      </Position>
+      <Position>
+        <Filename Value="MDX_Collect.lpr"/>
+        <Caret Line="27" Column="27"/>
+      </Position>
+      <Position>
+        <Filename Value="untCollectionUtils.pas"/>
+        <Caret Line="47" Column="75" TopLine="21"/>
+      </Position>
+      <Position>
+        <Filename Value="untCollectionUtils.pas"/>
+        <Caret Line="23" Column="35" TopLine="15"/>
+      </Position>
+      <Position>
+        <Filename Value="untCollectionUtils.pas"/>
+        <Caret Line="29" Column="35" TopLine="15"/>
       </Position>
     </JumpHistory>
     <RunParams>

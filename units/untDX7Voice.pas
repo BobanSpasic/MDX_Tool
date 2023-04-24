@@ -380,159 +380,159 @@ begin
   t.asArray := False;
 
   //first the parameters without conversion
-  t.OP6_EG_rate_1 := aPar.OP6_EG_rate_1;
-  t.OP6_EG_rate_2 := aPar.OP6_EG_rate_2;
-  t.OP6_EG_rate_3 := aPar.OP6_EG_rate_3;
-  t.OP6_EG_rate_4 := aPar.OP6_EG_rate_4;
-  t.OP6_EG_level_1 := aPar.OP6_EG_level_1;
-  t.OP6_EG_level_2 := aPar.OP6_EG_level_2;
-  t.OP6_EG_level_3 := aPar.OP6_EG_level_3;
-  t.OP6_EG_level_4 := aPar.OP6_EG_level_4;
-  t.OP6_KBD_LEV_SCL_BRK_PT := aPar.OP6_KBD_LEV_SCL_BRK_PT;
-  t.OP6_KBD_LEV_SCL_LFT_DEPTH := aPar.OP6_KBD_LEV_SCL_LFT_DEPTH;
-  t.OP6_KBD_LEV_SCL_RHT_DEPTH := aPar.OP6_KBD_LEV_SCL_RHT_DEPTH;
-  t.OP6_OPERATOR_OUTPUT_LEVEL := aPar.OP6_OPERATOR_OUTPUT_LEVEL;
-  t.OP6_OSC_FREQ_FINE := aPar.OP6_OSC_FREQ_FINE;
+  t.OP6_EG_rate_1 := aPar.OP6_EG_rate_1 and 127;
+  t.OP6_EG_rate_2 := aPar.OP6_EG_rate_2 and 127;
+  t.OP6_EG_rate_3 := aPar.OP6_EG_rate_3 and 127;
+  t.OP6_EG_rate_4 := aPar.OP6_EG_rate_4 and 127;
+  t.OP6_EG_level_1 := aPar.OP6_EG_level_1 and 127;
+  t.OP6_EG_level_2 := aPar.OP6_EG_level_2 and 127;
+  t.OP6_EG_level_3 := aPar.OP6_EG_level_3 and 127;
+  t.OP6_EG_level_4 := aPar.OP6_EG_level_4 and 127;
+  t.OP6_KBD_LEV_SCL_BRK_PT := aPar.OP6_KBD_LEV_SCL_BRK_PT and 127;
+  t.OP6_KBD_LEV_SCL_LFT_DEPTH := aPar.OP6_KBD_LEV_SCL_LFT_DEPTH and 127;
+  t.OP6_KBD_LEV_SCL_RHT_DEPTH := aPar.OP6_KBD_LEV_SCL_RHT_DEPTH and 127;
+  t.OP6_OPERATOR_OUTPUT_LEVEL := aPar.OP6_OPERATOR_OUTPUT_LEVEL and 127;
+  t.OP6_OSC_FREQ_FINE := aPar.OP6_OSC_FREQ_FINE and 127;
   //now parameters with conversion
   t.OP6_KBD_LEV_SCL_RC_LC :=
-    (aPar.OP6_KBD_LEV_SCL_RHT_CURVE shl 2) + aPar.OP6_KBD_LEV_SCL_LFT_CURVE;
-  t.OP6_OSC_DET_RS := (aPar.OP6_OSC_DETUNE shl 3) + aPar.OP6_KBD_RATE_SCALING;
-  t.OP6_KVS_AMS := (aPar.OP6_KEY_VEL_SENSITIVITY shl 2) + aPar.OP6_AMP_MOD_SENSITIVITY;
-  t.OP6_FC_M := (aPar.OP6_OSC_FREQ_COARSE shl 1) + aPar.OP6_OSC_MODE;
+    ((aPar.OP6_KBD_LEV_SCL_RHT_CURVE shl 2) and 12) + (aPar.OP6_KBD_LEV_SCL_LFT_CURVE and 3);
+  t.OP6_OSC_DET_RS := ((aPar.OP6_OSC_DETUNE shl 3) and 120) + (aPar.OP6_KBD_RATE_SCALING and 7);
+  t.OP6_KVS_AMS := ((aPar.OP6_KEY_VEL_SENSITIVITY shl 2) and 28) + (aPar.OP6_AMP_MOD_SENSITIVITY and 3);
+  t.OP6_FC_M := ((aPar.OP6_OSC_FREQ_COARSE shl 1) and 62) + (aPar.OP6_OSC_MODE and 1);
 
   //first the parameters without conversion
-  t.OP5_EG_rate_1 := aPar.OP5_EG_rate_1;
-  t.OP5_EG_rate_2 := aPar.OP5_EG_rate_2;
-  t.OP5_EG_rate_3 := aPar.OP5_EG_rate_3;
-  t.OP5_EG_rate_4 := aPar.OP5_EG_rate_4;
-  t.OP5_EG_level_1 := aPar.OP5_EG_level_1;
-  t.OP5_EG_level_2 := aPar.OP5_EG_level_2;
-  t.OP5_EG_level_3 := aPar.OP5_EG_level_3;
-  t.OP5_EG_level_4 := aPar.OP5_EG_level_4;
-  t.OP5_KBD_LEV_SCL_BRK_PT := aPar.OP5_KBD_LEV_SCL_BRK_PT;
-  t.OP5_KBD_LEV_SCL_LFT_DEPTH := aPar.OP5_KBD_LEV_SCL_LFT_DEPTH;
-  t.OP5_KBD_LEV_SCL_RHT_DEPTH := aPar.OP5_KBD_LEV_SCL_RHT_DEPTH;
-  t.OP5_OPERATOR_OUTPUT_LEVEL := aPar.OP5_OPERATOR_OUTPUT_LEVEL;
-  t.OP5_OSC_FREQ_FINE := aPar.OP5_OSC_FREQ_FINE;
+  t.OP5_EG_rate_1 := aPar.OP5_EG_rate_1 and 127;
+  t.OP5_EG_rate_2 := aPar.OP5_EG_rate_2 and 127;
+  t.OP5_EG_rate_3 := aPar.OP5_EG_rate_3 and 127;
+  t.OP5_EG_rate_4 := aPar.OP5_EG_rate_4 and 127;
+  t.OP5_EG_level_1 := aPar.OP5_EG_level_1 and 127;
+  t.OP5_EG_level_2 := aPar.OP5_EG_level_2 and 127;
+  t.OP5_EG_level_3 := aPar.OP5_EG_level_3 and 127;
+  t.OP5_EG_level_4 := aPar.OP5_EG_level_4 and 127;
+  t.OP5_KBD_LEV_SCL_BRK_PT := aPar.OP5_KBD_LEV_SCL_BRK_PT and 127;
+  t.OP5_KBD_LEV_SCL_LFT_DEPTH := aPar.OP5_KBD_LEV_SCL_LFT_DEPTH and 127;
+  t.OP5_KBD_LEV_SCL_RHT_DEPTH := aPar.OP5_KBD_LEV_SCL_RHT_DEPTH and 127;
+  t.OP5_OPERATOR_OUTPUT_LEVEL := aPar.OP5_OPERATOR_OUTPUT_LEVEL and 127;
+  t.OP5_OSC_FREQ_FINE := aPar.OP5_OSC_FREQ_FINE and 127;
   //now parameters with conversion
   t.OP5_KBD_LEV_SCL_RC_LC :=
-    (aPar.OP5_KBD_LEV_SCL_RHT_CURVE shl 2) + aPar.OP5_KBD_LEV_SCL_LFT_CURVE;
-  t.OP5_OSC_DET_RS := (aPar.OP5_OSC_DETUNE shl 3) + aPar.OP5_KBD_RATE_SCALING;
-  t.OP5_KVS_AMS := (aPar.OP5_KEY_VEL_SENSITIVITY shl 2) + aPar.OP5_AMP_MOD_SENSITIVITY;
-  t.OP5_FC_M := (aPar.OP5_OSC_FREQ_COARSE shl 1) + aPar.OP5_OSC_MODE;
+    ((aPar.OP5_KBD_LEV_SCL_RHT_CURVE shl 2) and 12) + (aPar.OP5_KBD_LEV_SCL_LFT_CURVE and 3);
+  t.OP5_OSC_DET_RS := ((aPar.OP5_OSC_DETUNE shl 3) and 120) + (aPar.OP5_KBD_RATE_SCALING and 7);
+  t.OP5_KVS_AMS := ((aPar.OP5_KEY_VEL_SENSITIVITY shl 2) and 28) + (aPar.OP5_AMP_MOD_SENSITIVITY and 3);
+  t.OP5_FC_M := ((aPar.OP5_OSC_FREQ_COARSE shl 1) and 62) + (aPar.OP5_OSC_MODE and 1);
 
   //first the parameters without conversion
-  t.OP4_EG_rate_1 := aPar.OP4_EG_rate_1;
-  t.OP4_EG_rate_2 := aPar.OP4_EG_rate_2;
-  t.OP4_EG_rate_3 := aPar.OP4_EG_rate_3;
-  t.OP4_EG_rate_4 := aPar.OP4_EG_rate_4;
-  t.OP4_EG_level_1 := aPar.OP4_EG_level_1;
-  t.OP4_EG_level_2 := aPar.OP4_EG_level_2;
-  t.OP4_EG_level_3 := aPar.OP4_EG_level_3;
-  t.OP4_EG_level_4 := aPar.OP4_EG_level_4;
-  t.OP4_KBD_LEV_SCL_BRK_PT := aPar.OP4_KBD_LEV_SCL_BRK_PT;
-  t.OP4_KBD_LEV_SCL_LFT_DEPTH := aPar.OP4_KBD_LEV_SCL_LFT_DEPTH;
-  t.OP4_KBD_LEV_SCL_RHT_DEPTH := aPar.OP4_KBD_LEV_SCL_RHT_DEPTH;
-  t.OP4_OPERATOR_OUTPUT_LEVEL := aPar.OP4_OPERATOR_OUTPUT_LEVEL;
-  t.OP4_OSC_FREQ_FINE := aPar.OP4_OSC_FREQ_FINE;
+  t.OP4_EG_rate_1 := aPar.OP4_EG_rate_1 and 127;
+  t.OP4_EG_rate_2 := aPar.OP4_EG_rate_2 and 127;
+  t.OP4_EG_rate_3 := aPar.OP4_EG_rate_3 and 127;
+  t.OP4_EG_rate_4 := aPar.OP4_EG_rate_4 and 127;
+  t.OP4_EG_level_1 := aPar.OP4_EG_level_1 and 127;
+  t.OP4_EG_level_2 := aPar.OP4_EG_level_2 and 127;
+  t.OP4_EG_level_3 := aPar.OP4_EG_level_3 and 127;
+  t.OP4_EG_level_4 := aPar.OP4_EG_level_4 and 127;
+  t.OP4_KBD_LEV_SCL_BRK_PT := aPar.OP4_KBD_LEV_SCL_BRK_PT and 127;
+  t.OP4_KBD_LEV_SCL_LFT_DEPTH := aPar.OP4_KBD_LEV_SCL_LFT_DEPTH and 127;
+  t.OP4_KBD_LEV_SCL_RHT_DEPTH := aPar.OP4_KBD_LEV_SCL_RHT_DEPTH and 127;
+  t.OP4_OPERATOR_OUTPUT_LEVEL := aPar.OP4_OPERATOR_OUTPUT_LEVEL and 127;
+  t.OP4_OSC_FREQ_FINE := aPar.OP4_OSC_FREQ_FINE and 127;
   //now parameters with conversion
   t.OP4_KBD_LEV_SCL_RC_LC :=
-    (aPar.OP4_KBD_LEV_SCL_RHT_CURVE shl 2) + aPar.OP4_KBD_LEV_SCL_LFT_CURVE;
-  t.OP4_OSC_DET_RS := (aPar.OP4_OSC_DETUNE shl 3) + aPar.OP4_KBD_RATE_SCALING;
-  t.OP4_KVS_AMS := (aPar.OP4_KEY_VEL_SENSITIVITY shl 2) + aPar.OP4_AMP_MOD_SENSITIVITY;
-  t.OP4_FC_M := (aPar.OP4_OSC_FREQ_COARSE shl 1) + aPar.OP4_OSC_MODE;
+    ((aPar.OP4_KBD_LEV_SCL_RHT_CURVE shl 2) and 12) + (aPar.OP4_KBD_LEV_SCL_LFT_CURVE and 3);
+  t.OP4_OSC_DET_RS := ((aPar.OP4_OSC_DETUNE shl 3) and 120) + (aPar.OP4_KBD_RATE_SCALING and 7);
+  t.OP4_KVS_AMS := ((aPar.OP4_KEY_VEL_SENSITIVITY shl 2) and 28) + (aPar.OP4_AMP_MOD_SENSITIVITY and 3);
+  t.OP4_FC_M := ((aPar.OP4_OSC_FREQ_COARSE shl 1) and 62) + (aPar.OP4_OSC_MODE and 1);
 
   //first the parameters without conversion
-  t.OP3_EG_rate_1 := aPar.OP3_EG_rate_1;
-  t.OP3_EG_rate_2 := aPar.OP3_EG_rate_2;
-  t.OP3_EG_rate_3 := aPar.OP3_EG_rate_3;
-  t.OP3_EG_rate_4 := aPar.OP3_EG_rate_4;
-  t.OP3_EG_level_1 := aPar.OP3_EG_level_1;
-  t.OP3_EG_level_2 := aPar.OP3_EG_level_2;
-  t.OP3_EG_level_3 := aPar.OP3_EG_level_3;
-  t.OP3_EG_level_4 := aPar.OP3_EG_level_4;
-  t.OP3_KBD_LEV_SCL_BRK_PT := aPar.OP3_KBD_LEV_SCL_BRK_PT;
-  t.OP3_KBD_LEV_SCL_LFT_DEPTH := aPar.OP3_KBD_LEV_SCL_LFT_DEPTH;
-  t.OP3_KBD_LEV_SCL_RHT_DEPTH := aPar.OP3_KBD_LEV_SCL_RHT_DEPTH;
-  t.OP3_OPERATOR_OUTPUT_LEVEL := aPar.OP3_OPERATOR_OUTPUT_LEVEL;
-  t.OP3_OSC_FREQ_FINE := aPar.OP3_OSC_FREQ_FINE;
+  t.OP3_EG_rate_1 := aPar.OP3_EG_rate_1 and 127;
+  t.OP3_EG_rate_2 := aPar.OP3_EG_rate_2 and 127;
+  t.OP3_EG_rate_3 := aPar.OP3_EG_rate_3 and 127;
+  t.OP3_EG_rate_4 := aPar.OP3_EG_rate_4 and 127;
+  t.OP3_EG_level_1 := aPar.OP3_EG_level_1 and 127;
+  t.OP3_EG_level_2 := aPar.OP3_EG_level_2 and 127;
+  t.OP3_EG_level_3 := aPar.OP3_EG_level_3 and 127;
+  t.OP3_EG_level_4 := aPar.OP3_EG_level_4 and 127;
+  t.OP3_KBD_LEV_SCL_BRK_PT := aPar.OP3_KBD_LEV_SCL_BRK_PT and 127;
+  t.OP3_KBD_LEV_SCL_LFT_DEPTH := aPar.OP3_KBD_LEV_SCL_LFT_DEPTH and 127;
+  t.OP3_KBD_LEV_SCL_RHT_DEPTH := aPar.OP3_KBD_LEV_SCL_RHT_DEPTH and 127;
+  t.OP3_OPERATOR_OUTPUT_LEVEL := aPar.OP3_OPERATOR_OUTPUT_LEVEL and 127;
+  t.OP3_OSC_FREQ_FINE := aPar.OP3_OSC_FREQ_FINE and 127;
   //now parameters with conversion
   t.OP3_KBD_LEV_SCL_RC_LC :=
-    (aPar.OP3_KBD_LEV_SCL_RHT_CURVE shl 2) + aPar.OP3_KBD_LEV_SCL_LFT_CURVE;
-  t.OP3_OSC_DET_RS := (aPar.OP3_OSC_DETUNE shl 3) + aPar.OP3_KBD_RATE_SCALING;
-  t.OP3_KVS_AMS := (aPar.OP3_KEY_VEL_SENSITIVITY shl 2) + aPar.OP3_AMP_MOD_SENSITIVITY;
-  t.OP3_FC_M := (aPar.OP3_OSC_FREQ_COARSE shl 1) + aPar.OP3_OSC_MODE;
+    ((aPar.OP3_KBD_LEV_SCL_RHT_CURVE shl 2) and 12) + (aPar.OP3_KBD_LEV_SCL_LFT_CURVE and 3);
+  t.OP3_OSC_DET_RS := ((aPar.OP3_OSC_DETUNE shl 3) and 120) + (aPar.OP3_KBD_RATE_SCALING and 7);
+  t.OP3_KVS_AMS := ((aPar.OP3_KEY_VEL_SENSITIVITY shl 2) and 28) + (aPar.OP3_AMP_MOD_SENSITIVITY and 3);
+  t.OP3_FC_M := ((aPar.OP3_OSC_FREQ_COARSE shl 1) and 62) + (aPar.OP3_OSC_MODE and 1);
 
   //first the parameters without conversion
-  t.OP2_EG_rate_1 := aPar.OP2_EG_rate_1;
-  t.OP2_EG_rate_2 := aPar.OP2_EG_rate_2;
-  t.OP2_EG_rate_3 := aPar.OP2_EG_rate_3;
-  t.OP2_EG_rate_4 := aPar.OP2_EG_rate_4;
-  t.OP2_EG_level_1 := aPar.OP2_EG_level_1;
-  t.OP2_EG_level_2 := aPar.OP2_EG_level_2;
-  t.OP2_EG_level_3 := aPar.OP2_EG_level_3;
-  t.OP2_EG_level_4 := aPar.OP2_EG_level_4;
-  t.OP2_KBD_LEV_SCL_BRK_PT := aPar.OP2_KBD_LEV_SCL_BRK_PT;
-  t.OP2_KBD_LEV_SCL_LFT_DEPTH := aPar.OP2_KBD_LEV_SCL_LFT_DEPTH;
-  t.OP2_KBD_LEV_SCL_RHT_DEPTH := aPar.OP2_KBD_LEV_SCL_RHT_DEPTH;
-  t.OP2_OPERATOR_OUTPUT_LEVEL := aPar.OP2_OPERATOR_OUTPUT_LEVEL;
-  t.OP2_OSC_FREQ_FINE := aPar.OP2_OSC_FREQ_FINE;
+  t.OP2_EG_rate_1 := aPar.OP2_EG_rate_1 and 127;
+  t.OP2_EG_rate_2 := aPar.OP2_EG_rate_2 and 127;
+  t.OP2_EG_rate_3 := aPar.OP2_EG_rate_3 and 127;
+  t.OP2_EG_rate_4 := aPar.OP2_EG_rate_4 and 127;
+  t.OP2_EG_level_1 := aPar.OP2_EG_level_1 and 127;
+  t.OP2_EG_level_2 := aPar.OP2_EG_level_2 and 127;
+  t.OP2_EG_level_3 := aPar.OP2_EG_level_3 and 127;
+  t.OP2_EG_level_4 := aPar.OP2_EG_level_4 and 127;
+  t.OP2_KBD_LEV_SCL_BRK_PT := aPar.OP2_KBD_LEV_SCL_BRK_PT and 127;
+  t.OP2_KBD_LEV_SCL_LFT_DEPTH := aPar.OP2_KBD_LEV_SCL_LFT_DEPTH and 127;
+  t.OP2_KBD_LEV_SCL_RHT_DEPTH := aPar.OP2_KBD_LEV_SCL_RHT_DEPTH and 127;
+  t.OP2_OPERATOR_OUTPUT_LEVEL := aPar.OP2_OPERATOR_OUTPUT_LEVEL and 127;
+  t.OP2_OSC_FREQ_FINE := aPar.OP2_OSC_FREQ_FINE and 127;
   //now parameters with conversion
   t.OP2_KBD_LEV_SCL_RC_LC :=
-    (aPar.OP2_KBD_LEV_SCL_RHT_CURVE shl 2) + aPar.OP2_KBD_LEV_SCL_LFT_CURVE;
-  t.OP2_OSC_DET_RS := (aPar.OP2_OSC_DETUNE shl 3) + aPar.OP2_KBD_RATE_SCALING;
-  t.OP2_KVS_AMS := (aPar.OP2_KEY_VEL_SENSITIVITY shl 2) + aPar.OP2_AMP_MOD_SENSITIVITY;
-  t.OP2_FC_M := (aPar.OP2_OSC_FREQ_COARSE shl 1) + aPar.OP2_OSC_MODE;
+    ((aPar.OP2_KBD_LEV_SCL_RHT_CURVE shl 2) and 12) + (aPar.OP2_KBD_LEV_SCL_LFT_CURVE and 3);
+  t.OP2_OSC_DET_RS := ((aPar.OP2_OSC_DETUNE shl 3) and 120) + (aPar.OP2_KBD_RATE_SCALING and 7);
+  t.OP2_KVS_AMS := ((aPar.OP2_KEY_VEL_SENSITIVITY shl 2) and 28) + (aPar.OP2_AMP_MOD_SENSITIVITY and 3);
+  t.OP2_FC_M := ((aPar.OP2_OSC_FREQ_COARSE shl 1) and 62) + (aPar.OP2_OSC_MODE and 1);
 
   //first the parameters without conversion
-  t.OP1_EG_rate_1 := aPar.OP1_EG_rate_1;
-  t.OP1_EG_rate_2 := aPar.OP1_EG_rate_2;
-  t.OP1_EG_rate_3 := aPar.OP1_EG_rate_3;
-  t.OP1_EG_rate_4 := aPar.OP1_EG_rate_4;
-  t.OP1_EG_level_1 := aPar.OP1_EG_level_1;
-  t.OP1_EG_level_2 := aPar.OP1_EG_level_2;
-  t.OP1_EG_level_3 := aPar.OP1_EG_level_3;
-  t.OP1_EG_level_4 := aPar.OP1_EG_level_4;
-  t.OP1_KBD_LEV_SCL_BRK_PT := aPar.OP1_KBD_LEV_SCL_BRK_PT;
-  t.OP1_KBD_LEV_SCL_LFT_DEPTH := aPar.OP1_KBD_LEV_SCL_LFT_DEPTH;
-  t.OP1_KBD_LEV_SCL_RHT_DEPTH := aPar.OP1_KBD_LEV_SCL_RHT_DEPTH;
-  t.OP1_OPERATOR_OUTPUT_LEVEL := aPar.OP1_OPERATOR_OUTPUT_LEVEL;
-  t.OP1_OSC_FREQ_FINE := aPar.OP1_OSC_FREQ_FINE;
+  t.OP1_EG_rate_1 := aPar.OP1_EG_rate_1 and 127;
+  t.OP1_EG_rate_2 := aPar.OP1_EG_rate_2 and 127;
+  t.OP1_EG_rate_3 := aPar.OP1_EG_rate_3 and 127;
+  t.OP1_EG_rate_4 := aPar.OP1_EG_rate_4 and 127;
+  t.OP1_EG_level_1 := aPar.OP1_EG_level_1 and 127;
+  t.OP1_EG_level_2 := aPar.OP1_EG_level_2 and 127;
+  t.OP1_EG_level_3 := aPar.OP1_EG_level_3 and 127;
+  t.OP1_EG_level_4 := aPar.OP1_EG_level_4 and 127;
+  t.OP1_KBD_LEV_SCL_BRK_PT := aPar.OP1_KBD_LEV_SCL_BRK_PT and 127;
+  t.OP1_KBD_LEV_SCL_LFT_DEPTH := aPar.OP1_KBD_LEV_SCL_LFT_DEPTH and 127;
+  t.OP1_KBD_LEV_SCL_RHT_DEPTH := aPar.OP1_KBD_LEV_SCL_RHT_DEPTH and 127;
+  t.OP1_OPERATOR_OUTPUT_LEVEL := aPar.OP1_OPERATOR_OUTPUT_LEVEL and 127;
+  t.OP1_OSC_FREQ_FINE := aPar.OP1_OSC_FREQ_FINE and 127;
   //now parameters with conversion
   t.OP1_KBD_LEV_SCL_RC_LC :=
-    (aPar.OP1_KBD_LEV_SCL_RHT_CURVE shl 2) + aPar.OP1_KBD_LEV_SCL_LFT_CURVE;
-  t.OP1_OSC_DET_RS := (aPar.OP1_OSC_DETUNE shl 3) + aPar.OP1_KBD_RATE_SCALING;
-  t.OP1_KVS_AMS := (aPar.OP1_KEY_VEL_SENSITIVITY shl 2) + aPar.OP1_AMP_MOD_SENSITIVITY;
-  t.OP1_FC_M := (aPar.OP1_OSC_FREQ_COARSE shl 1) + aPar.OP1_OSC_MODE;
+    ((aPar.OP1_KBD_LEV_SCL_RHT_CURVE shl 2) and 12) + (aPar.OP1_KBD_LEV_SCL_LFT_CURVE and 3);
+  t.OP1_OSC_DET_RS := ((aPar.OP1_OSC_DETUNE shl 3) and 120) + (aPar.OP1_KBD_RATE_SCALING and 7);
+  t.OP1_KVS_AMS := ((aPar.OP1_KEY_VEL_SENSITIVITY shl 2) and 28) + (aPar.OP1_AMP_MOD_SENSITIVITY and 3);
+  t.OP1_FC_M := ((aPar.OP1_OSC_FREQ_COARSE shl 1) and 62) + (aPar.OP1_OSC_MODE and 1);
 
   //global parameters
-  t.PITCH_EG_RATE_1 := aPar.PITCH_EG_RATE_1;
-  t.PITCH_EG_RATE_2 := aPar.PITCH_EG_RATE_2;
-  t.PITCH_EG_RATE_3 := aPar.PITCH_EG_RATE_3;
-  t.PITCH_EG_RATE_4 := aPar.PITCH_EG_RATE_4;
-  t.PITCH_EG_LEVEL_1 := aPar.PITCH_EG_LEVEL_1;
-  t.PITCH_EG_LEVEL_2 := aPar.PITCH_EG_LEVEL_2;
-  t.PITCH_EG_LEVEL_3 := aPar.PITCH_EG_LEVEL_3;
-  t.PITCH_EG_LEVEL_4 := aPar.PITCH_EG_LEVEL_4;
-  t.ALGORITHM := aPar.ALGORITHM;
-  t.OSCSYNC_FEEDBACK := (aPar.OSCILLATOR_SYNC shl 3) + aPar.FEEDBACK;
-  t.LFO_SPEED := aPar.LFO_SPEED;
-  t.LFO_DELAY := aPar.LFO_DELAY;
-  t.LFO_PITCH_MOD_DEPTH := aPar.LFO_PITCH_MOD_DEPTH;
-  t.LFO_AMP_MOD_DEPTH := aPar.LFO_AMP_MOD_DEPTH;
-  t.PMS_WAVE_SYNC := (aPar.PITCH_MOD_SENSITIVITY shl 4) +
-    (aPar.LFO_WAVEFORM shl 1) + aPar.LFO_SYNC;
-  t.TRANSPOSE := aPar.TRANSPOSE;
-  t.VOICE_NAME_CHAR_1 := aPar.VOICE_NAME_CHAR_1;
-  t.VOICE_NAME_CHAR_2 := aPar.VOICE_NAME_CHAR_2;
-  t.VOICE_NAME_CHAR_3 := aPar.VOICE_NAME_CHAR_3;
-  t.VOICE_NAME_CHAR_4 := aPar.VOICE_NAME_CHAR_4;
-  t.VOICE_NAME_CHAR_5 := aPar.VOICE_NAME_CHAR_5;
-  t.VOICE_NAME_CHAR_6 := aPar.VOICE_NAME_CHAR_6;
-  t.VOICE_NAME_CHAR_7 := aPar.VOICE_NAME_CHAR_7;
-  t.VOICE_NAME_CHAR_8 := aPar.VOICE_NAME_CHAR_8;
-  t.VOICE_NAME_CHAR_9 := aPar.VOICE_NAME_CHAR_9;
-  t.VOICE_NAME_CHAR_10 := aPar.VOICE_NAME_CHAR_10;
+  t.PITCH_EG_RATE_1 := aPar.PITCH_EG_RATE_1 and 127;
+  t.PITCH_EG_RATE_2 := aPar.PITCH_EG_RATE_2 and 127;
+  t.PITCH_EG_RATE_3 := aPar.PITCH_EG_RATE_3 and 127;
+  t.PITCH_EG_RATE_4 := aPar.PITCH_EG_RATE_4 and 127;
+  t.PITCH_EG_LEVEL_1 := aPar.PITCH_EG_LEVEL_1 and 127;
+  t.PITCH_EG_LEVEL_2 := aPar.PITCH_EG_LEVEL_2 and 127;
+  t.PITCH_EG_LEVEL_3 := aPar.PITCH_EG_LEVEL_3 and 127;
+  t.PITCH_EG_LEVEL_4 := aPar.PITCH_EG_LEVEL_4 and 127;
+  t.ALGORITHM := aPar.ALGORITHM and 31;
+  t.OSCSYNC_FEEDBACK := ((aPar.OSCILLATOR_SYNC shl 3) and 8) + (aPar.FEEDBACK and 7);
+  t.LFO_SPEED := aPar.LFO_SPEED and 127;
+  t.LFO_DELAY := aPar.LFO_DELAY and 127;
+  t.LFO_PITCH_MOD_DEPTH := aPar.LFO_PITCH_MOD_DEPTH and 127;
+  t.LFO_AMP_MOD_DEPTH := aPar.LFO_AMP_MOD_DEPTH and 127;
+  t.PMS_WAVE_SYNC := ((aPar.PITCH_MOD_SENSITIVITY shl 4) and 112) +
+    ((aPar.LFO_WAVEFORM shl 1) and 14) + (aPar.LFO_SYNC and 1);
+  t.TRANSPOSE := aPar.TRANSPOSE and 63;
+  t.VOICE_NAME_CHAR_1 := aPar.VOICE_NAME_CHAR_1 and 127;
+  t.VOICE_NAME_CHAR_2 := aPar.VOICE_NAME_CHAR_2 and 127;
+  t.VOICE_NAME_CHAR_3 := aPar.VOICE_NAME_CHAR_3 and 127;
+  t.VOICE_NAME_CHAR_4 := aPar.VOICE_NAME_CHAR_4 and 127;
+  t.VOICE_NAME_CHAR_5 := aPar.VOICE_NAME_CHAR_5 and 127;
+  t.VOICE_NAME_CHAR_6 := aPar.VOICE_NAME_CHAR_6 and 127;
+  t.VOICE_NAME_CHAR_7 := aPar.VOICE_NAME_CHAR_7 and 127;
+  t.VOICE_NAME_CHAR_8 := aPar.VOICE_NAME_CHAR_8 and 127;
+  t.VOICE_NAME_CHAR_9 := aPar.VOICE_NAME_CHAR_9 and 127;
+  t.VOICE_NAME_CHAR_10 := aPar.VOICE_NAME_CHAR_10 and 127;
 
   Result := t;
 end;
@@ -542,179 +542,179 @@ var
   t: TDX7_VCED_Params;
 begin
   //first the parameters without conversion
-  t.OP6_EG_rate_1 := aPar.OP6_EG_rate_1;
-  t.OP6_EG_rate_2 := aPar.OP6_EG_rate_2;
-  t.OP6_EG_rate_3 := aPar.OP6_EG_rate_3;
-  t.OP6_EG_rate_4 := aPar.OP6_EG_rate_4;
-  t.OP6_EG_level_1 := aPar.OP6_EG_level_1;
-  t.OP6_EG_level_2 := aPar.OP6_EG_level_2;
-  t.OP6_EG_level_3 := aPar.OP6_EG_level_3;
-  t.OP6_EG_level_4 := aPar.OP6_EG_level_4;
-  t.OP6_KBD_LEV_SCL_BRK_PT := aPar.OP6_KBD_LEV_SCL_BRK_PT;
-  t.OP6_KBD_LEV_SCL_LFT_DEPTH := aPar.OP6_KBD_LEV_SCL_LFT_DEPTH;
-  t.OP6_KBD_LEV_SCL_RHT_DEPTH := aPar.OP6_KBD_LEV_SCL_RHT_DEPTH;
-  t.OP6_OPERATOR_OUTPUT_LEVEL := aPar.OP6_OPERATOR_OUTPUT_LEVEL;
-  t.OP6_OSC_FREQ_FINE := aPar.OP6_OSC_FREQ_FINE;
+  t.OP6_EG_rate_1 := aPar.OP6_EG_rate_1 and 127;
+  t.OP6_EG_rate_2 := aPar.OP6_EG_rate_2 and 127;
+  t.OP6_EG_rate_3 := aPar.OP6_EG_rate_3 and 127;
+  t.OP6_EG_rate_4 := aPar.OP6_EG_rate_4 and 127;
+  t.OP6_EG_level_1 := aPar.OP6_EG_level_1 and 127;
+  t.OP6_EG_level_2 := aPar.OP6_EG_level_2 and 127;
+  t.OP6_EG_level_3 := aPar.OP6_EG_level_3 and 127;
+  t.OP6_EG_level_4 := aPar.OP6_EG_level_4 and 127;
+  t.OP6_KBD_LEV_SCL_BRK_PT := aPar.OP6_KBD_LEV_SCL_BRK_PT and 127;
+  t.OP6_KBD_LEV_SCL_LFT_DEPTH := aPar.OP6_KBD_LEV_SCL_LFT_DEPTH and 127;
+  t.OP6_KBD_LEV_SCL_RHT_DEPTH := aPar.OP6_KBD_LEV_SCL_RHT_DEPTH and 127;
+  t.OP6_OPERATOR_OUTPUT_LEVEL := aPar.OP6_OPERATOR_OUTPUT_LEVEL and 127;
+  t.OP6_OSC_FREQ_FINE := aPar.OP6_OSC_FREQ_FINE and 127;
   //now parameters with conversion
-  t.OP6_KBD_LEV_SCL_RHT_CURVE := aPar.OP6_KBD_LEV_SCL_RC_LC shr 2;
+  t.OP6_KBD_LEV_SCL_RHT_CURVE := (aPar.OP6_KBD_LEV_SCL_RC_LC shr 2) and 3;
   t.OP6_KBD_LEV_SCL_LFT_CURVE := aPar.OP6_KBD_LEV_SCL_RC_LC and 3;
-  t.OP6_OSC_DETUNE := aPar.OP6_OSC_DET_RS shr 3;
+  t.OP6_OSC_DETUNE := (aPar.OP6_OSC_DET_RS shr 3) and 15;
   t.OP6_KBD_RATE_SCALING := aPar.OP6_OSC_DET_RS and 7;
-  t.OP6_KEY_VEL_SENSITIVITY := aPar.OP6_KVS_AMS shr 2;
+  t.OP6_KEY_VEL_SENSITIVITY := (aPar.OP6_KVS_AMS shr 2) and 7;
   t.OP6_AMP_MOD_SENSITIVITY := aPar.OP6_KVS_AMS and 3;
-  t.OP6_OSC_FREQ_COARSE := aPar.OP6_FC_M shr 1;
+  t.OP6_OSC_FREQ_COARSE := (aPar.OP6_FC_M shr 1) and 31;
   t.OP6_OSC_MODE := aPar.OP6_FC_M and 1;
 
   //first the parameters without conversion
-  t.OP5_EG_rate_1 := aPar.OP5_EG_rate_1;
-  t.OP5_EG_rate_2 := aPar.OP5_EG_rate_2;
-  t.OP5_EG_rate_3 := aPar.OP5_EG_rate_3;
-  t.OP5_EG_rate_4 := aPar.OP5_EG_rate_4;
-  t.OP5_EG_level_1 := aPar.OP5_EG_level_1;
-  t.OP5_EG_level_2 := aPar.OP5_EG_level_2;
-  t.OP5_EG_level_3 := aPar.OP5_EG_level_3;
-  t.OP5_EG_level_4 := aPar.OP5_EG_level_4;
-  t.OP5_KBD_LEV_SCL_BRK_PT := aPar.OP5_KBD_LEV_SCL_BRK_PT;
-  t.OP5_KBD_LEV_SCL_LFT_DEPTH := aPar.OP5_KBD_LEV_SCL_LFT_DEPTH;
-  t.OP5_KBD_LEV_SCL_RHT_DEPTH := aPar.OP5_KBD_LEV_SCL_RHT_DEPTH;
-  t.OP5_OPERATOR_OUTPUT_LEVEL := aPar.OP5_OPERATOR_OUTPUT_LEVEL;
-  t.OP5_OSC_FREQ_FINE := aPar.OP5_OSC_FREQ_FINE;
+  t.OP5_EG_rate_1 := aPar.OP5_EG_rate_1 and 127;
+  t.OP5_EG_rate_2 := aPar.OP5_EG_rate_2 and 127;
+  t.OP5_EG_rate_3 := aPar.OP5_EG_rate_3 and 127;
+  t.OP5_EG_rate_4 := aPar.OP5_EG_rate_4 and 127;
+  t.OP5_EG_level_1 := aPar.OP5_EG_level_1 and 127;
+  t.OP5_EG_level_2 := aPar.OP5_EG_level_2 and 127;
+  t.OP5_EG_level_3 := aPar.OP5_EG_level_3 and 127;
+  t.OP5_EG_level_4 := aPar.OP5_EG_level_4 and 127;
+  t.OP5_KBD_LEV_SCL_BRK_PT := aPar.OP5_KBD_LEV_SCL_BRK_PT and 127;
+  t.OP5_KBD_LEV_SCL_LFT_DEPTH := aPar.OP5_KBD_LEV_SCL_LFT_DEPTH and 127;
+  t.OP5_KBD_LEV_SCL_RHT_DEPTH := aPar.OP5_KBD_LEV_SCL_RHT_DEPTH and 127;
+  t.OP5_OPERATOR_OUTPUT_LEVEL := aPar.OP5_OPERATOR_OUTPUT_LEVEL and 127;
+  t.OP5_OSC_FREQ_FINE := aPar.OP5_OSC_FREQ_FINE and 127;
   //now parameters with conversion
-  t.OP5_KBD_LEV_SCL_RHT_CURVE := aPar.OP5_KBD_LEV_SCL_RC_LC shr 2;
+  t.OP5_KBD_LEV_SCL_RHT_CURVE := (aPar.OP5_KBD_LEV_SCL_RC_LC shr 2) and 3;
   t.OP5_KBD_LEV_SCL_LFT_CURVE := aPar.OP5_KBD_LEV_SCL_RC_LC and 3;
-  t.OP5_OSC_DETUNE := aPar.OP5_OSC_DET_RS shr 3;
+  t.OP5_OSC_DETUNE := (aPar.OP5_OSC_DET_RS shr 3) and 15;
   t.OP5_KBD_RATE_SCALING := aPar.OP5_OSC_DET_RS and 7;
-  t.OP5_KEY_VEL_SENSITIVITY := aPar.OP5_KVS_AMS shr 2;
+  t.OP5_KEY_VEL_SENSITIVITY := (aPar.OP5_KVS_AMS shr 2) and 7;
   t.OP5_AMP_MOD_SENSITIVITY := aPar.OP5_KVS_AMS and 3;
-  t.OP5_OSC_FREQ_COARSE := aPar.OP5_FC_M shr 1;
+  t.OP5_OSC_FREQ_COARSE := (aPar.OP5_FC_M shr 1) and 31;
   t.OP5_OSC_MODE := aPar.OP5_FC_M and 1;
 
   //first the parameters without conversion
-  t.OP4_EG_rate_1 := aPar.OP4_EG_rate_1;
-  t.OP4_EG_rate_2 := aPar.OP4_EG_rate_2;
-  t.OP4_EG_rate_3 := aPar.OP4_EG_rate_3;
-  t.OP4_EG_rate_4 := aPar.OP4_EG_rate_4;
-  t.OP4_EG_level_1 := aPar.OP4_EG_level_1;
-  t.OP4_EG_level_2 := aPar.OP4_EG_level_2;
-  t.OP4_EG_level_3 := aPar.OP4_EG_level_3;
-  t.OP4_EG_level_4 := aPar.OP4_EG_level_4;
-  t.OP4_KBD_LEV_SCL_BRK_PT := aPar.OP4_KBD_LEV_SCL_BRK_PT;
-  t.OP4_KBD_LEV_SCL_LFT_DEPTH := aPar.OP4_KBD_LEV_SCL_LFT_DEPTH;
-  t.OP4_KBD_LEV_SCL_RHT_DEPTH := aPar.OP4_KBD_LEV_SCL_RHT_DEPTH;
-  t.OP4_OPERATOR_OUTPUT_LEVEL := aPar.OP4_OPERATOR_OUTPUT_LEVEL;
-  t.OP4_OSC_FREQ_FINE := aPar.OP4_OSC_FREQ_FINE;
+  t.OP4_EG_rate_1 := aPar.OP4_EG_rate_1 and 127;
+  t.OP4_EG_rate_2 := aPar.OP4_EG_rate_2 and 127;
+  t.OP4_EG_rate_3 := aPar.OP4_EG_rate_3 and 127;
+  t.OP4_EG_rate_4 := aPar.OP4_EG_rate_4 and 127;
+  t.OP4_EG_level_1 := aPar.OP4_EG_level_1 and 127;
+  t.OP4_EG_level_2 := aPar.OP4_EG_level_2 and 127;
+  t.OP4_EG_level_3 := aPar.OP4_EG_level_3 and 127;
+  t.OP4_EG_level_4 := aPar.OP4_EG_level_4 and 127;
+  t.OP4_KBD_LEV_SCL_BRK_PT := aPar.OP4_KBD_LEV_SCL_BRK_PT and 127;
+  t.OP4_KBD_LEV_SCL_LFT_DEPTH := aPar.OP4_KBD_LEV_SCL_LFT_DEPTH and 127;
+  t.OP4_KBD_LEV_SCL_RHT_DEPTH := aPar.OP4_KBD_LEV_SCL_RHT_DEPTH and 127;
+  t.OP4_OPERATOR_OUTPUT_LEVEL := aPar.OP4_OPERATOR_OUTPUT_LEVEL and 127;
+  t.OP4_OSC_FREQ_FINE := aPar.OP4_OSC_FREQ_FINE and 127;
   //now parameters with conversion
-  t.OP4_KBD_LEV_SCL_RHT_CURVE := aPar.OP4_KBD_LEV_SCL_RC_LC shr 2;
+  t.OP4_KBD_LEV_SCL_RHT_CURVE := (aPar.OP4_KBD_LEV_SCL_RC_LC shr 2) and 3;
   t.OP4_KBD_LEV_SCL_LFT_CURVE := aPar.OP4_KBD_LEV_SCL_RC_LC and 3;
-  t.OP4_OSC_DETUNE := aPar.OP4_OSC_DET_RS shr 3;
+  t.OP4_OSC_DETUNE := (aPar.OP4_OSC_DET_RS shr 3) and 15;
   t.OP4_KBD_RATE_SCALING := aPar.OP4_OSC_DET_RS and 7;
-  t.OP4_KEY_VEL_SENSITIVITY := aPar.OP4_KVS_AMS shr 2;
+  t.OP4_KEY_VEL_SENSITIVITY := (aPar.OP4_KVS_AMS shr 2) and 7;
   t.OP4_AMP_MOD_SENSITIVITY := aPar.OP4_KVS_AMS and 3;
-  t.OP4_OSC_FREQ_COARSE := aPar.OP4_FC_M shr 1;
+  t.OP4_OSC_FREQ_COARSE := (aPar.OP4_FC_M shr 1) and 31;
   t.OP4_OSC_MODE := aPar.OP4_FC_M and 1;
 
   //first the parameters without conversion
-  t.OP3_EG_rate_1 := aPar.OP3_EG_rate_1;
-  t.OP3_EG_rate_2 := aPar.OP3_EG_rate_2;
-  t.OP3_EG_rate_3 := aPar.OP3_EG_rate_3;
-  t.OP3_EG_rate_4 := aPar.OP3_EG_rate_4;
-  t.OP3_EG_level_1 := aPar.OP3_EG_level_1;
-  t.OP3_EG_level_2 := aPar.OP3_EG_level_2;
-  t.OP3_EG_level_3 := aPar.OP3_EG_level_3;
-  t.OP3_EG_level_4 := aPar.OP3_EG_level_4;
-  t.OP3_KBD_LEV_SCL_BRK_PT := aPar.OP3_KBD_LEV_SCL_BRK_PT;
-  t.OP3_KBD_LEV_SCL_LFT_DEPTH := aPar.OP3_KBD_LEV_SCL_LFT_DEPTH;
-  t.OP3_KBD_LEV_SCL_RHT_DEPTH := aPar.OP3_KBD_LEV_SCL_RHT_DEPTH;
-  t.OP3_OPERATOR_OUTPUT_LEVEL := aPar.OP3_OPERATOR_OUTPUT_LEVEL;
-  t.OP3_OSC_FREQ_FINE := aPar.OP3_OSC_FREQ_FINE;
+  t.OP3_EG_rate_1 := aPar.OP3_EG_rate_1 and 127;
+  t.OP3_EG_rate_2 := aPar.OP3_EG_rate_2 and 127;
+  t.OP3_EG_rate_3 := aPar.OP3_EG_rate_3 and 127;
+  t.OP3_EG_rate_4 := aPar.OP3_EG_rate_4 and 127;
+  t.OP3_EG_level_1 := aPar.OP3_EG_level_1 and 127;
+  t.OP3_EG_level_2 := aPar.OP3_EG_level_2 and 127;
+  t.OP3_EG_level_3 := aPar.OP3_EG_level_3 and 127;
+  t.OP3_EG_level_4 := aPar.OP3_EG_level_4 and 127;
+  t.OP3_KBD_LEV_SCL_BRK_PT := aPar.OP3_KBD_LEV_SCL_BRK_PT and 127;
+  t.OP3_KBD_LEV_SCL_LFT_DEPTH := aPar.OP3_KBD_LEV_SCL_LFT_DEPTH and 127;
+  t.OP3_KBD_LEV_SCL_RHT_DEPTH := aPar.OP3_KBD_LEV_SCL_RHT_DEPTH and 127;
+  t.OP3_OPERATOR_OUTPUT_LEVEL := aPar.OP3_OPERATOR_OUTPUT_LEVEL and 127;
+  t.OP3_OSC_FREQ_FINE := aPar.OP3_OSC_FREQ_FINE and 127;
   //now parameters with conversion
-  t.OP3_KBD_LEV_SCL_RHT_CURVE := aPar.OP3_KBD_LEV_SCL_RC_LC shr 2;
+  t.OP3_KBD_LEV_SCL_RHT_CURVE := (aPar.OP3_KBD_LEV_SCL_RC_LC shr 2) and 3;
   t.OP3_KBD_LEV_SCL_LFT_CURVE := aPar.OP3_KBD_LEV_SCL_RC_LC and 3;
-  t.OP3_OSC_DETUNE := aPar.OP3_OSC_DET_RS shr 3;
+  t.OP3_OSC_DETUNE := (aPar.OP3_OSC_DET_RS shr 3) and 15;
   t.OP3_KBD_RATE_SCALING := aPar.OP3_OSC_DET_RS and 7;
-  t.OP3_KEY_VEL_SENSITIVITY := aPar.OP3_KVS_AMS shr 2;
+  t.OP3_KEY_VEL_SENSITIVITY := (aPar.OP3_KVS_AMS shr 2) and 7;
   t.OP3_AMP_MOD_SENSITIVITY := aPar.OP3_KVS_AMS and 3;
-  t.OP3_OSC_FREQ_COARSE := aPar.OP3_FC_M shr 1;
+  t.OP3_OSC_FREQ_COARSE := (aPar.OP3_FC_M shr 1) and 31;
   t.OP3_OSC_MODE := aPar.OP3_FC_M and 1;
 
   //first the parameters without conversion
-  t.OP2_EG_rate_1 := aPar.OP2_EG_rate_1;
-  t.OP2_EG_rate_2 := aPar.OP2_EG_rate_2;
-  t.OP2_EG_rate_3 := aPar.OP2_EG_rate_3;
-  t.OP2_EG_rate_4 := aPar.OP2_EG_rate_4;
-  t.OP2_EG_level_1 := aPar.OP2_EG_level_1;
-  t.OP2_EG_level_2 := aPar.OP2_EG_level_2;
-  t.OP2_EG_level_3 := aPar.OP2_EG_level_3;
-  t.OP2_EG_level_4 := aPar.OP2_EG_level_4;
-  t.OP2_KBD_LEV_SCL_BRK_PT := aPar.OP2_KBD_LEV_SCL_BRK_PT;
-  t.OP2_KBD_LEV_SCL_LFT_DEPTH := aPar.OP2_KBD_LEV_SCL_LFT_DEPTH;
-  t.OP2_KBD_LEV_SCL_RHT_DEPTH := aPar.OP2_KBD_LEV_SCL_RHT_DEPTH;
-  t.OP2_OPERATOR_OUTPUT_LEVEL := aPar.OP2_OPERATOR_OUTPUT_LEVEL;
-  t.OP2_OSC_FREQ_FINE := aPar.OP2_OSC_FREQ_FINE;
+  t.OP2_EG_rate_1 := aPar.OP2_EG_rate_1 and 127;
+  t.OP2_EG_rate_2 := aPar.OP2_EG_rate_2 and 127;
+  t.OP2_EG_rate_3 := aPar.OP2_EG_rate_3 and 127;
+  t.OP2_EG_rate_4 := aPar.OP2_EG_rate_4 and 127;
+  t.OP2_EG_level_1 := aPar.OP2_EG_level_1 and 127;
+  t.OP2_EG_level_2 := aPar.OP2_EG_level_2 and 127;
+  t.OP2_EG_level_3 := aPar.OP2_EG_level_3 and 127;
+  t.OP2_EG_level_4 := aPar.OP2_EG_level_4 and 127;
+  t.OP2_KBD_LEV_SCL_BRK_PT := aPar.OP2_KBD_LEV_SCL_BRK_PT and 127;
+  t.OP2_KBD_LEV_SCL_LFT_DEPTH := aPar.OP2_KBD_LEV_SCL_LFT_DEPTH and 127;
+  t.OP2_KBD_LEV_SCL_RHT_DEPTH := aPar.OP2_KBD_LEV_SCL_RHT_DEPTH and 127;
+  t.OP2_OPERATOR_OUTPUT_LEVEL := aPar.OP2_OPERATOR_OUTPUT_LEVEL and 127;
+  t.OP2_OSC_FREQ_FINE := aPar.OP2_OSC_FREQ_FINE and 127;
   //now parameters with conversion
-  t.OP2_KBD_LEV_SCL_RHT_CURVE := aPar.OP2_KBD_LEV_SCL_RC_LC shr 2;
+  t.OP2_KBD_LEV_SCL_RHT_CURVE := (aPar.OP2_KBD_LEV_SCL_RC_LC shr 2) and 3;
   t.OP2_KBD_LEV_SCL_LFT_CURVE := aPar.OP2_KBD_LEV_SCL_RC_LC and 3;
-  t.OP2_OSC_DETUNE := aPar.OP2_OSC_DET_RS shr 3;
+  t.OP2_OSC_DETUNE := (aPar.OP2_OSC_DET_RS shr 3) and 15;
   t.OP2_KBD_RATE_SCALING := aPar.OP2_OSC_DET_RS and 7;
-  t.OP2_KEY_VEL_SENSITIVITY := aPar.OP2_KVS_AMS shr 2;
+  t.OP2_KEY_VEL_SENSITIVITY := (aPar.OP2_KVS_AMS shr 2) and 7;
   t.OP2_AMP_MOD_SENSITIVITY := aPar.OP2_KVS_AMS and 3;
-  t.OP2_OSC_FREQ_COARSE := aPar.OP2_FC_M shr 1;
+  t.OP2_OSC_FREQ_COARSE := (aPar.OP2_FC_M shr 1) and 31;
   t.OP2_OSC_MODE := aPar.OP2_FC_M and 1;
 
   //first the parameters without conversion
-  t.OP1_EG_rate_1 := aPar.OP1_EG_rate_1;
-  t.OP1_EG_rate_2 := aPar.OP1_EG_rate_2;
-  t.OP1_EG_rate_3 := aPar.OP1_EG_rate_3;
-  t.OP1_EG_rate_4 := aPar.OP1_EG_rate_4;
-  t.OP1_EG_level_1 := aPar.OP1_EG_level_1;
-  t.OP1_EG_level_2 := aPar.OP1_EG_level_2;
-  t.OP1_EG_level_3 := aPar.OP1_EG_level_3;
-  t.OP1_EG_level_4 := aPar.OP1_EG_level_4;
-  t.OP1_KBD_LEV_SCL_BRK_PT := aPar.OP1_KBD_LEV_SCL_BRK_PT;
-  t.OP1_KBD_LEV_SCL_LFT_DEPTH := aPar.OP1_KBD_LEV_SCL_LFT_DEPTH;
-  t.OP1_KBD_LEV_SCL_RHT_DEPTH := aPar.OP1_KBD_LEV_SCL_RHT_DEPTH;
-  t.OP1_OPERATOR_OUTPUT_LEVEL := aPar.OP1_OPERATOR_OUTPUT_LEVEL;
-  t.OP1_OSC_FREQ_FINE := aPar.OP1_OSC_FREQ_FINE;
+  t.OP1_EG_rate_1 := aPar.OP1_EG_rate_1 and 127;
+  t.OP1_EG_rate_2 := aPar.OP1_EG_rate_2 and 127;
+  t.OP1_EG_rate_3 := aPar.OP1_EG_rate_3 and 127;
+  t.OP1_EG_rate_4 := aPar.OP1_EG_rate_4 and 127;
+  t.OP1_EG_level_1 := aPar.OP1_EG_level_1 and 127;
+  t.OP1_EG_level_2 := aPar.OP1_EG_level_2 and 127;
+  t.OP1_EG_level_3 := aPar.OP1_EG_level_3 and 127;
+  t.OP1_EG_level_4 := aPar.OP1_EG_level_4 and 127;
+  t.OP1_KBD_LEV_SCL_BRK_PT := aPar.OP1_KBD_LEV_SCL_BRK_PT and 127;
+  t.OP1_KBD_LEV_SCL_LFT_DEPTH := aPar.OP1_KBD_LEV_SCL_LFT_DEPTH and 127;
+  t.OP1_KBD_LEV_SCL_RHT_DEPTH := aPar.OP1_KBD_LEV_SCL_RHT_DEPTH and 127;
+  t.OP1_OPERATOR_OUTPUT_LEVEL := aPar.OP1_OPERATOR_OUTPUT_LEVEL and 127;
+  t.OP1_OSC_FREQ_FINE := aPar.OP1_OSC_FREQ_FINE and 127;
   //now parameters with conversion
-  t.OP1_KBD_LEV_SCL_RHT_CURVE := aPar.OP1_KBD_LEV_SCL_RC_LC shr 2;
+  t.OP1_KBD_LEV_SCL_RHT_CURVE := (aPar.OP1_KBD_LEV_SCL_RC_LC shr 2) and 3;
   t.OP1_KBD_LEV_SCL_LFT_CURVE := aPar.OP1_KBD_LEV_SCL_RC_LC and 3;
-  t.OP1_OSC_DETUNE := aPar.OP1_OSC_DET_RS shr 3;
+  t.OP1_OSC_DETUNE := (aPar.OP1_OSC_DET_RS shr 3) and 15;
   t.OP1_KBD_RATE_SCALING := aPar.OP1_OSC_DET_RS and 7;
-  t.OP1_KEY_VEL_SENSITIVITY := aPar.OP1_KVS_AMS shr 2;
+  t.OP1_KEY_VEL_SENSITIVITY := (aPar.OP1_KVS_AMS shr 2) and 7;
   t.OP1_AMP_MOD_SENSITIVITY := aPar.OP1_KVS_AMS and 3;
-  t.OP1_OSC_FREQ_COARSE := aPar.OP1_FC_M shr 1;
+  t.OP1_OSC_FREQ_COARSE := (aPar.OP1_FC_M shr 1) and 31;
   t.OP1_OSC_MODE := aPar.OP1_FC_M and 1;
 
   //global parameters
-  t.PITCH_EG_RATE_1 := aPar.PITCH_EG_RATE_1;
-  t.PITCH_EG_RATE_2 := aPar.PITCH_EG_RATE_2;
-  t.PITCH_EG_RATE_3 := aPar.PITCH_EG_RATE_3;
-  t.PITCH_EG_RATE_4 := aPar.PITCH_EG_RATE_4;
-  t.PITCH_EG_LEVEL_1 := aPar.PITCH_EG_LEVEL_1;
-  t.PITCH_EG_LEVEL_2 := aPar.PITCH_EG_LEVEL_2;
-  t.PITCH_EG_LEVEL_3 := aPar.PITCH_EG_LEVEL_3;
-  t.PITCH_EG_LEVEL_4 := aPar.PITCH_EG_LEVEL_4;
-  t.ALGORITHM := aPar.ALGORITHM;
-  t.OSCILLATOR_SYNC := aPar.OSCSYNC_FEEDBACK shr 3;
+  t.PITCH_EG_RATE_1 := aPar.PITCH_EG_RATE_1 and 127;
+  t.PITCH_EG_RATE_2 := aPar.PITCH_EG_RATE_2 and 127;
+  t.PITCH_EG_RATE_3 := aPar.PITCH_EG_RATE_3 and 127;
+  t.PITCH_EG_RATE_4 := aPar.PITCH_EG_RATE_4 and 127;
+  t.PITCH_EG_LEVEL_1 := aPar.PITCH_EG_LEVEL_1 and 127;
+  t.PITCH_EG_LEVEL_2 := aPar.PITCH_EG_LEVEL_2 and 127;
+  t.PITCH_EG_LEVEL_3 := aPar.PITCH_EG_LEVEL_3 and 127;
+  t.PITCH_EG_LEVEL_4 := aPar.PITCH_EG_LEVEL_4 and 127;
+  t.ALGORITHM := aPar.ALGORITHM and 31;
+  t.OSCILLATOR_SYNC := (aPar.OSCSYNC_FEEDBACK shr 3) and 1;
   t.FEEDBACK := aPar.OSCSYNC_FEEDBACK and 7;
-  t.LFO_SPEED := aPar.LFO_SPEED;
-  t.LFO_DELAY := aPar.LFO_DELAY;
-  t.LFO_PITCH_MOD_DEPTH := aPar.LFO_PITCH_MOD_DEPTH;
-  t.LFO_AMP_MOD_DEPTH := aPar.LFO_AMP_MOD_DEPTH;
-  t.PITCH_MOD_SENSITIVITY := aPar.PMS_WAVE_SYNC shr 4;
+  t.LFO_SPEED := aPar.LFO_SPEED and 127;
+  t.LFO_DELAY := aPar.LFO_DELAY and 127;
+  t.LFO_PITCH_MOD_DEPTH := aPar.LFO_PITCH_MOD_DEPTH and 127;
+  t.LFO_AMP_MOD_DEPTH := aPar.LFO_AMP_MOD_DEPTH and 127;
+  t.PITCH_MOD_SENSITIVITY := (aPar.PMS_WAVE_SYNC shr 4) and 7;
   t.LFO_WAVEFORM := (aPar.PMS_WAVE_SYNC shr 1) and 7;
   t.LFO_SYNC := aPar.PMS_WAVE_SYNC and 1;
-  t.TRANSPOSE := aPar.TRANSPOSE;
-  t.VOICE_NAME_CHAR_1 := aPar.VOICE_NAME_CHAR_1;
-  t.VOICE_NAME_CHAR_2 := aPar.VOICE_NAME_CHAR_2;
-  t.VOICE_NAME_CHAR_3 := aPar.VOICE_NAME_CHAR_3;
-  t.VOICE_NAME_CHAR_4 := aPar.VOICE_NAME_CHAR_4;
-  t.VOICE_NAME_CHAR_5 := aPar.VOICE_NAME_CHAR_5;
-  t.VOICE_NAME_CHAR_6 := aPar.VOICE_NAME_CHAR_6;
-  t.VOICE_NAME_CHAR_7 := aPar.VOICE_NAME_CHAR_7;
-  t.VOICE_NAME_CHAR_8 := aPar.VOICE_NAME_CHAR_8;
-  t.VOICE_NAME_CHAR_9 := aPar.VOICE_NAME_CHAR_9;
-  t.VOICE_NAME_CHAR_10 := aPar.VOICE_NAME_CHAR_10;
+  t.TRANSPOSE := aPar.TRANSPOSE and 63;
+  t.VOICE_NAME_CHAR_1 := aPar.VOICE_NAME_CHAR_1 and 127;
+  t.VOICE_NAME_CHAR_2 := aPar.VOICE_NAME_CHAR_2 and 127;
+  t.VOICE_NAME_CHAR_3 := aPar.VOICE_NAME_CHAR_3 and 127;
+  t.VOICE_NAME_CHAR_4 := aPar.VOICE_NAME_CHAR_4 and 127;
+  t.VOICE_NAME_CHAR_5 := aPar.VOICE_NAME_CHAR_5 and 127;
+  t.VOICE_NAME_CHAR_6 := aPar.VOICE_NAME_CHAR_6 and 127;
+  t.VOICE_NAME_CHAR_7 := aPar.VOICE_NAME_CHAR_7 and 127;
+  t.VOICE_NAME_CHAR_8 := aPar.VOICE_NAME_CHAR_8 and 127;
+  t.VOICE_NAME_CHAR_9 := aPar.VOICE_NAME_CHAR_9 and 127;
+  t.VOICE_NAME_CHAR_10 := aPar.VOICE_NAME_CHAR_10 and 127;
   t.OPERATOR_ON_OFF := 63; //just set to all OP=on; not part of VMEM
   Result := t;
 end;
@@ -732,7 +732,7 @@ begin
   try
     FDX7_VMEM_Params.asArray := True;
     for i := 0 to 127 do
-      FDX7_VMEM_Params.params[i] := aStream.ReadByte;
+      FDX7_VMEM_Params.params[i] := aStream.ReadByte and 127;
 
     FDX7_VCED_Params := VMEMtoVCED(FDX7_VMEM_Params);
     Result := True;
@@ -753,7 +753,7 @@ begin
     Exit;
   try
     for i := 0 to 155 do
-      FDX7_VCED_Params.params[i] := aStream.ReadByte;
+      FDX7_VCED_Params.params[i] := aStream.ReadByte and 127;
 
     FDX7_VMEM_Params := VCEDtoVMEM(FDX7_VCED_Params);
     Result := True;
@@ -905,7 +905,7 @@ begin
   aStream := TMemoryStream.Create;
   for i := 0 to 143 do
     aStream.WriteByte(FDX7_VCED_Params.params[i]);
-  aStream.WriteByte(FDX7_VCED_Params.params[155]);
+  //aStream.WriteByte(FDX7_VCED_Params.params[155]);
   aStream.Position := 0;
   Result := THashFactory.TCrypto.CreateSHA2_256().ComputeStream(aStream).ToString();
   aStream.Free;
