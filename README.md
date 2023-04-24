@@ -60,10 +60,15 @@ Usage: MDX_Collect.exe -parameters
        -i {filename}      --incoming={filename} Hash list of incoming collection
        -r {directory}     --report={directory}  Output directory for the reports
 
+   -t                 --movetree                Copy directory tree to the new location and move the diff. files
+       -i {filename}      --incoming={filename} IncomingHasMore.dif list of the incoming collection
+       -d {directory}     --dir={directory}     Root directory of the incoming file collection
+       -o {directory}     --output={directory}  Output directory for the moved files
+
   Example usage:
-       MDX_Tool -a -d MyCollection -r MyReports
-       MDX_Tool -a -d NewFiles -r NewReports
-       MDX_Tool -c -m MyCollection.hsl -i NewFiles.hsl -r MyReports
+       MDX_Collect -a -d MyCollection -r MyReports
+       MDX_Collect -a -d NewFiles -r NewReports
+       MDX_Collect -c -m MyCollection.hsl -i NewFiles.hsl -r MyReports
    ```
          
 External library HashLib is used in both tools to calculate hash sums: https://github.com/Xor-el/HashLib4Pascal
