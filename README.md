@@ -74,3 +74,5 @@ Usage: MDX_Collect.exe -parameters
    ```
          
 External library HashLib is used in both tools to calculate hash sums: https://github.com/Xor-el/HashLib4Pascal
+
+Do not miss to take a look at the Wiki here. It is still in the development, but it will contain info on DX7 SysEx files, and how to repair the corrupted files.
