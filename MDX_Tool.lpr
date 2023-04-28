@@ -62,8 +62,8 @@ type
     bNullVoice := False;
     fInput := '';
     // quick check parameters
-    ErrorMsg := CheckOptions('himnzywrvcsxjf:d:',
-      'help info hname vname normalize markcorr marknull repair voices crop split xsplit join file: dir:');
+    ErrorMsg := CheckOptions('himnzywrvcsxjqf:d:',
+      'help info hname vname normalize markcorr marknull repair voices crop split xsplit join quest file: dir:');
 
     if ErrorMsg <> '' then
     begin
@@ -491,6 +491,40 @@ type
       end;
     end;
 
+        if HasOption('q', 'quest') then
+    begin
+      if not FileExists(fInput) then
+      begin
+        WriteLn('Parameter -f {filename} is missing or the file {filename} could not be found');
+        Terminate;
+        Exit;
+      end
+      else
+      begin
+        if not HasOption('d', 'dir') then
+        begin
+          WriteLn('Parameter -d {directory} is missing');
+          Terminate;
+          Exit;
+        end
+        else
+        begin
+          fOutputDir := IncludeTrailingPathDelimiter(GetOptionValue('d', 'outdir'));
+          if pos(':\', fOutputDir) = 0 then
+            fOutputDir := IncludeTrailingPathDelimiter(GetCurrentDir) + fOutputDir;
+          if not DirectoryExists(fOutputDir) then
+            ForceDirectories(fOutputDir);
+          msInputFile := TMemoryStream.Create;
+          msInputFile.LoadFromFile(fInput);
+
+          RipMidiQuest(msInputFile, fOutputDir);
+
+          msInputFile.Free;
+          WriteLn('Done!');
+        end;
+      end;
+    end;
+
     Terminate;
   end;
 
@@ -509,7 +543,7 @@ type
   begin
     writeln('');
     writeln('');
-    writeln('MDX_Tool 1.7 - tool for various manipulation of DX7 VMEM and VCED SysEx files');
+    writeln('MDX_Tool 1.8 - tool for various manipulation of DX7 VMEM and VCED SysEx files');
     writeln('Author: Boban Spasic');
     writeln('https://github.com/BobanSpasic/MDX_Tool');
     writeln('');
@@ -539,6 +573,7 @@ type
     writeln('       -j               --join               Join single voices (VCED) into a bank (VMEM)');
     writeln('                                               If the file voices.lst exists inside the input directory');
     writeln('                                               - the voices inside the bank will be sorted according to the list');
+    writeln('       -q               --quest              Rip MidiQuest SQL files (tested on MidiQuest 6)');
     writeln('');
     writeln('       -f {filename}    --file={filename}    Input file (or output file for -j parameter)');
     writeln('       -d {directory}   --dir={directory}    Output directory for -s and -x parameters');

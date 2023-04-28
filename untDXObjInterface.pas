@@ -19,18 +19,22 @@ interface
 
 
 uses
-  Classes, SysUtils, untDX7Voice, untDX7Bank, untDXUtils, untUtils;
+  Classes, SysUtils, untDX7Voice, untDX7Bank, untDXUtils, untUtils,
+  untSysExUtils, HlpHashFactory;
 
 procedure GetVoices(aStream: TMemoryStream; var aList: TStringList);
 procedure SplitVMEM2VCED(aStream: TMemoryStream; aOutDir: string);
+procedure RipMidiQuest(aStream: TMemoryStream; aOutDir: string);
 procedure XSplitVMEM2VCED(aStream: TMemoryStream; aOutDir: string);
 procedure JoinVCED2VMEM(aInputDir: string; aOutFile: string);
 function Hash2Name(aFile: string): boolean;
+function Test_VCEDHash(aFile: string): string;
+function Test_VMEMHash(aFile: string; aVoiceNr: integer = 1): string;
 function Voice2Name(aFile: string): boolean;
 function CheckVMEMIntegrity(aStream: TMemoryStream; aPos: integer;
-  var aNullVoice: Boolean): Integer;
+  var aNullVoice: boolean): integer;
 function CheckVCEDIntegrity(aStream: TMemoryStream; aPos: integer;
-  var aNullVoice: Boolean): Integer;
+  var aNullVoice: boolean): integer;
 procedure NormalizeVMEM(aStream: TMemoryStream; aPos: integer; aFile: string);
 procedure NormalizeVCED(aStream: TMemoryStream; aPos: integer; aFile: string);
 
@@ -85,6 +89,9 @@ var
   tmpByte: byte;
   fStream: TMemoryStream;
   fDirectory: string;
+  sPart: string;
+  sNPart: string;
+  i: integer;
 begin
   Result := False;
   fVoice := TDX7VoiceContainer.Create;
@@ -115,9 +122,24 @@ begin
       fVoice.Load_VCED_FromStream(fStream, iPos);
       fDirectory := IncludeTrailingPathDelimiter(ExtractFileDir(aFile));
       if fDirectory = PathDelim then fDirectory := '';
-      RenameFile(aFile, fDirectory + fVoice.CalculateHash + '.syx');
-      Result := True;
-      //WriteLn('Voice name: "'+fvoice.GetVoiceName+'"');
+      sPart := fDirectory + fVoice.CalculateHash;
+      sNPart := sPart;
+      i := 0;
+      if aFile <> sPart + '.syx' then
+      begin
+        while FileExists(sNPart + '.syx') do
+        begin
+          Inc(i);
+          sNPart := sPart + '_' + Format('%.2d', [i]);
+        end;
+        Result := RenameFile(aFile, sNPart + '.syx');
+        if Result then
+          WriteLn('File ' + aFile + ' renamed to ' + sNPart + '.syx')
+        else
+          WriteLn('File ' + aFile + ' failed to rename');
+      end
+      else
+        WriteLn('File ' + aFile + ' will not be renamed');
     end
     else
       WriteLn('    Not a DX7 VCED file');
@@ -251,6 +273,62 @@ begin
   fBank.Free;
 end;
 
+procedure RipMidiQuest(aStream: TMemoryStream; aOutDir: string);
+var
+  abBODY: array[0..3] of byte = ($42, $4F, $44, $59);
+  msVCED: TMemoryStream;
+  msHeadless: TMemoryStream;
+  iCounter: Integer;
+  iPos: Integer;
+  checksum: Integer;
+  i: Integer;
+begin
+  msVCED := TMemoryStream.Create;
+  msHeadless := TMemoryStream.Create;
+  iCounter := 1;
+  iPos := -1;
+  WriteLn('Stream size ' + IntToStr(aStream.Size));
+  while iPos < aStream.Size do
+  begin
+    iPos := PosBytes(abBODY, aStream, iPos + 1);
+    WriteLn('iPos: ' + IntToStr(iPos));
+    if iPos > -1 then
+    begin
+      aStream.Position := iPos + 14;
+      if aStream.Position + 155 < aStream.Size then
+      begin
+        msVCED.WriteByte($F0);
+        msVCED.WriteByte($43);
+        msVCED.WriteByte($00);
+        msVCED.WriteByte($00);
+        msVCED.WriteByte($01);
+        msVCED.WriteByte($1B);
+
+        msHeadless.CopyFrom(aStream, 155);
+        msHeadless.Position:=0;
+
+        msVCED.CopyFrom(msHeadless, 155);
+
+        msHeadless.Position:=0;
+        checksum :=0;
+        for i := 1 to 155 do
+          checksum := checksum + msHeadless.ReadByte;
+        checksum := ((not (checksum and 255)) and 127) + 1;
+
+        msVCED.WriteByte(checksum);
+        msVCED.WriteByte($F7);
+        //msHeadless.SaveToFile(aOutDir + Format('%.6d', [iCounter]) + '.hsyx');
+        msVCED.SaveToFile(aOutDir + Format('%.6d', [iCounter]) + '.syx');
+        msHeadless.Clear;
+        msVCED.Clear;
+        Inc(iCounter);
+      end;
+    end else break;
+  end;
+  msVCED.Free;
+  msHeadless.Free;
+end;
+
 procedure XSplitVMEM2VCED(aStream: TMemoryStream; aOutDir: string);
 var
   fBank: TDX7BankContainer;
@@ -296,7 +374,7 @@ begin
 
       fVoice := TDX7VoiceContainer.Create;
       fBank.GetVoice(i, fVoice);
-      WriteLn('Voice name :"'+fVoice.GetVoiceName+'"');
+      WriteLn('Voice name :"' + fVoice.GetVoiceName + '"');
       sVoiceName := IncludeTrailingPathDelimiter(aOutDir) +
         fVoice.CalculateHash + '.dx7vced.syx';
       WriteLn('Create :' + sVoiceName);
@@ -326,8 +404,10 @@ var
   iPos: integer;
   abSysExID: array[0..1] of byte = ($F0, $43);
   iCount: integer;
+  iBankCount: integer;
   slList: TStringList;
   tmpByte: byte;
+  sOutFile: string;
 begin
   slVoices := TStringList.Create;
   FindSYX(aInputDir, slVoices);
@@ -380,20 +460,17 @@ begin
         msVoice.Free;
       end;
     end;
+    fBank.SaveBankToSysExFile(aOutFile);
   end
   else
   begin
-    //do not load more than 32 files
-    if slVoices.Count > 32 then
-    begin
-      iCount := 32;
-      WriteLn('Directory contains more than 32 voices');
-      WriteLn('Just the first 32 voices will be joined');
-    end
+    if slVoices.Count < 32 then iBankCount := 0
     else
-      iCount := slVoices.Count;
-    for i := 0 to iCount - 1 do
+      iBankCount := 1;
+    i := 0;
+    while i < slVoices.Count do
     begin
+      iCount := (i + 1) mod 32;
       msVoice := TMemoryStream.Create;
       msVoice.LoadFromFile(IncludeTrailingPathDelimiter(aInputDir) + slVoices[i]);
       iPos := -1;
@@ -404,7 +481,7 @@ begin
         if tmpByte = 0 then
         begin
           iPos := 6;
-          WriteLn(slVoices[iCount] + ' - VCED header found');
+          WriteLn(slVoices[i] + ' - VCED header found');
         end;
       end
       else
@@ -412,27 +489,41 @@ begin
         if msVoice.Size = 155 then
         begin
           iPos := 0;
-          WriteLn(slVoices[iCount] + ' - Headerless file');
+          WriteLn(slVoices[i] + ' - Headerless file');
         end;
       end;
       if iPos <> -1 then
       begin
         fVoice.Load_VCED_FromStream(msVoice, iPos);
-        fBank.SetVoice(i + 1, fVoice);
+        if iCount = 0 then iCount := 32;
+        fBank.SetVoice(iCount, fVoice);
       end
       else
         WriteLn(slVoices[iCount] + ' - Not a DX7 VCED file');
       msVoice.Free;
+      Inc(i);
+      if (iCount = 32) or (i = slVoices.Count) then
+      begin
+        if iBankCount = 0 then
+          fBank.SaveBankToSysExFile(aOutFile)
+        else
+        begin
+          sOutFile := ExtractFileNameWithoutExt(aOutFile) + '_' +
+            Format('%.3d', [iBankCount]) + '.syx';
+          fBank.SaveBankToSysExFile(sOutFile);
+          Inc(iBankCount);
+          fBank.InitBank;
+        end;
+      end;
     end;
   end;
-  fBank.SaveBankToSysExFile(aOutFile);
   fBank.Free;
   fVoice.Free;
   slVoices.Free;
 end;
 
 function CheckVMEMIntegrity(aStream: TMemoryStream; aPos: integer;
-  var aNullVoice: Boolean): Integer;
+  var aNullVoice: boolean): integer;
 var
   fBank: TDX7BankContainer;
   fVoice: TDX7VoiceContainer;
@@ -514,7 +605,7 @@ begin
 end;
 
 function CheckVCEDIntegrity(aStream: TMemoryStream; aPos: integer;
-  var aNullVoice: Boolean): Integer;
+  var aNullVoice: boolean): integer;
 var
   fVoice: TDX7VoiceContainer;
   i: integer;
@@ -637,6 +728,140 @@ begin
 
   msOutFile.Free;
   fVoice.Free;
+end;
+
+function Test_VCEDHash(aFile: string): string;
+var
+  fVoice: TDX7VoiceContainer;
+  iPos: integer;
+  abSysExID: array[0..1] of byte = ($F0, $43);
+  tmpByte: byte;
+  fStream: TMemoryStream;
+  fTmpStream: TMemoryStream;
+  i: integer;
+  bStreamCheck: boolean;
+begin
+  Result := '0';
+  fVoice := TDX7VoiceContainer.Create;
+  fStream := TMemoryStream.Create;
+  fStream.LoadFromFile(aFile);
+  iPos := -1;
+  if PosBytes(abSysExID, fStream) >= 0 then
+  begin
+    fStream.Position := 3;
+    tmpByte := fStream.ReadByte;
+    if tmpByte = 0 then
+    begin
+      iPos := 6;
+      WriteLn('    VCED header found');
+    end;
+  end
+  else
+  begin
+    if fStream.Size = 155 then
+    begin
+      iPos := 0;
+      WriteLn('    Headerless file');
+    end;
+  end;
+  try
+    if iPos <> -1 then
+    begin
+      Writeln('Stream data before loading:');
+      WriteLn(SysExStreamToStr(fStream));
+      fVoice.Load_VCED_FromStream(fStream, iPos);
+      fTmpStream := TMemoryStream.Create;
+      fVoice.Add_VCED_ToStream(fTmpStream);
+      Writeln('Stream data after saving:');
+      WriteLn(SysExStreamToStr(fTmpStream));
+      if (fStream.Size - 8) = fTmpStream.Size then
+      begin
+        bStreamCheck := True;
+        fTmpStream.Position := 0;
+        //cut off the headers in a dirty way
+        fStream.Position := 6;
+        for i := 0 to fStream.Size - 9 do
+          if fStream.ReadByte <> fTmpStream.ReadByte then bStreamCheck := False;
+        if bStreamCheck then WriteLn('Stream check PASS')
+        else
+          WriteLn('Stream check FAIL');
+      end
+      else
+        WriteLn('Load and save streams not the same size');
+      Result := fVoice.CalculateHash;
+      WriteLn('Hash summ from record: ' + Result);
+      fTmpStream.SetSize(144);
+      fTmpStream.Position := 0;
+      WriteLn('Hash summ from stream: ' +
+        THashFactory.TCrypto.CreateSHA2_256().ComputeStream(fTmpStream).ToString());
+      fTmpStream.Free;
+    end
+    else
+      WriteLn('    Not a DX7 VCED file');
+  finally
+    fStream.Free;
+    fVoice.Free;
+  end;
+end;
+
+function Test_VMEMHash(aFile: string; aVoiceNr: integer = 1): string;
+var
+  fBank: TDX7BankContainer;
+  fVoice: TDX7VoiceContainer;
+  iPos: integer;
+  abSysExID: array[0..1] of byte = ($F0, $43);
+  tmpByte: byte;
+  fStream: TMemoryStream;
+  fTmpStream: TMemoryStream;
+begin
+  Result := '0';
+
+  fStream := TMemoryStream.Create;
+  fStream.LoadFromFile(aFile);
+
+  fBank := TDX7BankContainer.Create;
+  iPos := -1;
+  if PosBytes(abSysExID, fStream) >= 0 then
+  begin
+    fStream.Position := 3;
+    tmpByte := fStream.ReadByte;
+    if tmpByte = 9 then
+    begin
+      iPos := 6;
+      WriteLn('    VMEM header found');
+    end;
+  end
+  else
+  begin
+    if fStream.Size = 4096 then
+    begin
+      iPos := 0;
+      WriteLn('    Headerless file');
+    end;
+  end;
+  if iPos <> -1 then
+  begin
+    fBank.LoadBankFromStream(fStream, iPos);
+    fTmpStream := TMemoryStream.Create;
+    fVoice := TDX7VoiceContainer.Create;
+    fBank.GetVoice(aVoiceNr, fVoice);
+    Writeln('Loading voice ' + IntToStr(aVoiceNr) + ': ' + fVoice.GetVoiceName);
+    fVoice.Add_VCED_ToStream(fTmpStream);
+    Writeln('Stream data after loading from VMEM to VCED:');
+    WriteLn(SysExStreamToStr(fTmpStream));
+    Result := fVoice.CalculateHash;
+    WriteLn('Hash summ from record: ' + Result);
+    fTmpStream.SetSize(144);
+    fTmpStream.Position := 0;
+    WriteLn('Hash summ from stream: ' +
+      THashFactory.TCrypto.CreateSHA2_256().ComputeStream(fTmpStream).ToString());
+    fTmpStream.Free;
+    fVoice.Free;
+  end
+  else
+    WriteLn('    Not a DX7 VMEM file');
+  fBank.Free;
+  fStream.Free;
 end;
 
 end.

@@ -149,10 +149,11 @@ begin
           else
           begin
             Result := -1;
-            Exit;
+            //Exit;
           end;
-        Exit;
+        //Exit;
       end;
+      if Result <> -1 then Exit;
     end;
   end;
 end;

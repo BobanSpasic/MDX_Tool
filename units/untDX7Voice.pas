@@ -901,7 +901,7 @@ var
   aStream: TMemoryStream;
   i: integer;
 begin
-  //do not take Transpose and VoiceName into calculation
+  //do not take Transpose (144) and VoiceName (145-155) into calculation
   aStream := TMemoryStream.Create;
   for i := 0 to 143 do
     aStream.WriteByte(FDX7_VCED_Params.params[i]);

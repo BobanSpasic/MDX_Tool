@@ -41,6 +41,7 @@ type
     procedure SysExBankToStream(aCh: integer; var aStream: TMemoryStream);
     procedure AppendSysExBankToStream(aCh: Integer; var aStream: TMemoryStream);
     function CalculateHash(aVoiceNr: integer): string;
+    procedure InitBank;
   end;
 
 implementation
@@ -65,6 +66,16 @@ begin
     if Assigned(FDX7BankParams[i]) then
       FDX7BankParams[i].Destroy;
   inherited;
+end;
+
+procedure TDX7BankContainer.InitBank;
+var
+  i: integer;
+begin
+  for i := 1 to 32 do
+  begin
+    FDX7BankParams[i].InitVoice;
+  end;
 end;
 
 function TDX7BankContainer.GetVoice(aVoiceNr: integer;

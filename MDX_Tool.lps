@@ -69,36 +69,35 @@
         <Filename Value="MDX_Tool.lpr"/>
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="510"/>
-        <CursorPos X="26" Y="512"/>
-        <UsageCount Value="104"/>
+        <TopLine Value="546"/>
+        <CursorPos X="26" Y="546"/>
+        <UsageCount Value="144"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="untDXObjInterface.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="4"/>
-        <TopLine Value="273"/>
-        <CursorPos X="7" Y="296"/>
-        <UsageCount Value="72"/>
+        <TopLine Value="290"/>
+        <CursorPos X="82" Y="320"/>
+        <UsageCount Value="112"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="units\untUtils.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="2"/>
-        <TopLine Value="96"/>
         <CursorPos X="23" Y="128"/>
-        <UsageCount Value="66"/>
+        <UsageCount Value="106"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="units\untDXUtils.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="363"/>
-        <CursorPos X="51" Y="378"/>
-        <UsageCount Value="64"/>
+        <TopLine Value="22"/>
+        <CursorPos X="9" Y="469"/>
+        <UsageCount Value="104"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -106,21 +105,20 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="84"/>
         <CursorPos X="35" Y="103"/>
-        <UsageCount Value="35"/>
+        <UsageCount Value="32"/>
       </Unit>
       <Unit>
         <Filename Value="untDX7Voice.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="11"/>
         <CursorPos X="50" Y="32"/>
-        <UsageCount Value="24"/>
+        <UsageCount Value="21"/>
       </Unit>
       <Unit>
         <Filename Value="units\untDX7Voice.pas"/>
         <EditorIndex Value="5"/>
-        <TopLine Value="889"/>
-        <CursorPos X="5" Y="908"/>
-        <UsageCount Value="31"/>
+        <CursorPos X="15" Y="937"/>
+        <UsageCount Value="50"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -128,182 +126,182 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="136"/>
         <CursorPos X="81" Y="149"/>
-        <UsageCount Value="6"/>
+        <UsageCount Value="3"/>
       </Unit>
       <Unit>
         <Filename Value="units\untTX7Function.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="212"/>
         <CursorPos X="79" Y="225"/>
-        <UsageCount Value="6"/>
+        <UsageCount Value="3"/>
       </Unit>
       <Unit>
         <Filename Value="units\untMDXSupplement.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="90"/>
         <CursorPos X="78" Y="105"/>
-        <UsageCount Value="6"/>
+        <UsageCount Value="3"/>
       </Unit>
       <Unit>
         <Filename Value="ext\HashLib\Base\HlpHashFactory.pas"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="3" Y="16"/>
-        <UsageCount Value="5"/>
+        <UsageCount Value="2"/>
       </Unit>
       <Unit>
         <Filename Value="ext\HashLib\Interfaces\HlpIHash.pas"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="3" Y="10"/>
-        <UsageCount Value="5"/>
+        <UsageCount Value="2"/>
       </Unit>
       <Unit>
         <Filename Value="ext\HashLib\Interfaces\HlpIHashInfo.pas"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="3" Y="12"/>
-        <UsageCount Value="5"/>
+        <UsageCount Value="2"/>
       </Unit>
       <Unit>
         <Filename Value="ext\HashLib\Crypto\HlpBlake2B.pas"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="3" Y="13"/>
-        <UsageCount Value="5"/>
+        <UsageCount Value="2"/>
       </Unit>
       <Unit>
         <Filename Value="units\untDX7Bank.pas"/>
         <EditorIndex Value="6"/>
-        <TopLine Value="69"/>
-        <CursorPos X="3" Y="73"/>
-        <UsageCount Value="32"/>
+        <TopLine Value="40"/>
+        <CursorPos X="8" Y="76"/>
+        <UsageCount Value="51"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="units\untParConst.pas"/>
         <EditorIndex Value="3"/>
         <CursorPos X="10" Y="330"/>
-        <UsageCount Value="25"/>
+        <UsageCount Value="44"/>
         <Loaded Value="True"/>
       </Unit>
     </Units>
     <JumpHistory HistoryIndex="29">
       <Position>
-        <Filename Value="MDX_Tool.lpr"/>
-        <Caret Line="65" Column="39" TopLine="31"/>
+        <Filename Value="units\untDXUtils.pas"/>
+        <Caret Line="138" TopLine="112"/>
       </Position>
       <Position>
-        <Filename Value="untDXObjInterface.pas"/>
-        <Caret Line="508" Column="10" TopLine="487"/>
+        <Filename Value="units\untDXUtils.pas"/>
+        <Caret Line="135" TopLine="112"/>
       </Position>
       <Position>
-        <Filename Value="untDXObjInterface.pas"/>
-        <Caret Line="33" Column="36" TopLine="16"/>
+        <Filename Value="units\untDXUtils.pas"/>
+        <Caret Line="137" TopLine="112"/>
       </Position>
       <Position>
-        <Filename Value="untDXObjInterface.pas"/>
-        <Caret Line="30" Column="10" TopLine="9"/>
+        <Filename Value="units\untDXUtils.pas"/>
+        <Caret Line="138" TopLine="112"/>
       </Position>
       <Position>
-        <Filename Value="untDXObjInterface.pas"/>
-        <Caret Line="565" Column="53" TopLine="540"/>
+        <Filename Value="units\untDXUtils.pas"/>
+        <Caret Line="135" TopLine="112"/>
       </Position>
       <Position>
-        <Filename Value="MDX_Tool.lpr"/>
-        <Caret Line="60" Column="23" TopLine="43"/>
+        <Filename Value="units\untDXUtils.pas"/>
+        <Caret Line="137" TopLine="112"/>
       </Position>
       <Position>
-        <Filename Value="MDX_Tool.lpr"/>
-        <Caret Line="188" Column="80" TopLine="152"/>
+        <Filename Value="units\untDXUtils.pas"/>
+        <Caret Line="138" TopLine="112"/>
       </Position>
       <Position>
-        <Filename Value="MDX_Tool.lpr"/>
-        <Caret Line="240" Column="29" TopLine="230"/>
+        <Filename Value="units\untDXUtils.pas"/>
+        <Caret Line="135" TopLine="112"/>
       </Position>
       <Position>
-        <Filename Value="MDX_Tool.lpr"/>
-        <Caret Line="300" Column="72" TopLine="283"/>
+        <Filename Value="units\untDXUtils.pas"/>
+        <Caret Line="137" TopLine="112"/>
       </Position>
       <Position>
-        <Filename Value="MDX_Tool.lpr"/>
-        <Caret Line="43" Column="16" TopLine="23"/>
+        <Filename Value="units\untDXUtils.pas"/>
+        <Caret Line="138" TopLine="112"/>
       </Position>
       <Position>
-        <Filename Value="MDX_Tool.lpr"/>
-        <Caret Line="181" Column="81" TopLine="158"/>
+        <Filename Value="units\untDXUtils.pas"/>
+        <Caret Line="135" TopLine="112"/>
       </Position>
       <Position>
-        <Filename Value="units\untDX7Voice.pas"/>
-        <Caret Line="347" Column="24" TopLine="335"/>
+        <Filename Value="units\untDXUtils.pas"/>
+        <Caret Line="137" TopLine="112"/>
       </Position>
       <Position>
-        <Filename Value="units\untDX7Voice.pas"/>
-        <Caret Line="568" TopLine="560"/>
+        <Filename Value="units\untDXUtils.pas"/>
+        <Caret Line="138" TopLine="112"/>
       </Position>
       <Position>
-        <Filename Value="units\untDX7Voice.pas"/>
-        <Caret Line="590" Column="30" TopLine="560"/>
+        <Filename Value="units\untDXUtils.pas"/>
+        <Caret Line="135" TopLine="112"/>
       </Position>
       <Position>
-        <Filename Value="units\untDX7Voice.pas"/>
-        <Caret Line="592" TopLine="586"/>
+        <Filename Value="units\untDXUtils.pas"/>
+        <Caret Line="137" TopLine="112"/>
       </Position>
       <Position>
-        <Filename Value="units\untDX7Voice.pas"/>
-        <Caret Line="616" TopLine="610"/>
+        <Filename Value="units\untDXUtils.pas"/>
+        <Caret Line="138" TopLine="112"/>
       </Position>
       <Position>
-        <Filename Value="units\untDX7Voice.pas"/>
-        <Caret Line="640" TopLine="631"/>
+        <Filename Value="units\untDXUtils.pas"/>
+        <Caret Line="135" TopLine="112"/>
       </Position>
       <Position>
-        <Filename Value="units\untDX7Voice.pas"/>
-        <Caret Line="664" TopLine="657"/>
+        <Filename Value="units\untDXUtils.pas"/>
+        <Caret Line="137" TopLine="112"/>
       </Position>
       <Position>
-        <Filename Value="units\untDX7Voice.pas"/>
-        <Caret Line="403" TopLine="401"/>
+        <Filename Value="units\untDXUtils.pas"/>
+        <Caret Line="138" TopLine="112"/>
       </Position>
       <Position>
-        <Filename Value="units\untDX7Voice.pas"/>
-        <Caret Line="424" TopLine="414"/>
+        <Filename Value="units\untDXUtils.pas"/>
+        <Caret Line="135" TopLine="112"/>
       </Position>
       <Position>
-        <Filename Value="units\untDX7Voice.pas"/>
-        <Caret Line="445" TopLine="436"/>
+        <Filename Value="units\untDXUtils.pas"/>
+        <Caret Line="137" TopLine="112"/>
       </Position>
       <Position>
-        <Filename Value="units\untDX7Voice.pas"/>
-        <Caret Line="466" TopLine="457"/>
+        <Filename Value="units\untDXUtils.pas"/>
+        <Caret Line="138" TopLine="112"/>
       </Position>
       <Position>
-        <Filename Value="units\untDX7Voice.pas"/>
-        <Caret Line="487" TopLine="476"/>
+        <Filename Value="units\untDXUtils.pas"/>
+        <Caret Line="140" TopLine="114"/>
       </Position>
       <Position>
-        <Filename Value="units\untDX7Voice.pas"/>
-        <Caret Line="366" Column="19" TopLine="346"/>
+        <Filename Value="units\untDXUtils.pas"/>
+        <Caret Line="141" TopLine="115"/>
       </Position>
       <Position>
-        <Filename Value="untDXObjInterface.pas"/>
-        <Caret Line="28" Column="14"/>
+        <Filename Value="units\untDXUtils.pas"/>
+        <Caret Line="142" TopLine="116"/>
       </Position>
       <Position>
-        <Filename Value="untDXObjInterface.pas"/>
-        <Caret Line="26" Column="18"/>
+        <Filename Value="units\untDXUtils.pas"/>
+        <Caret Line="144" TopLine="118"/>
       </Position>
       <Position>
-        <Filename Value="untDXObjInterface.pas"/>
-        <Caret Line="292" Column="56" TopLine="269"/>
+        <Filename Value="units\untDXUtils.pas"/>
+        <Caret Line="145" TopLine="119"/>
       </Position>
       <Position>
-        <Filename Value="units\untDX7Bank.pas"/>
-        <Caret Line="35" Column="18" TopLine="31"/>
+        <Filename Value="units\untDXUtils.pas"/>
+        <Caret Line="151" TopLine="136"/>
       </Position>
       <Position>
-        <Filename Value="units\untDX7Voice.pas"/>
-        <Caret Line="355" Column="22" TopLine="331"/>
+        <Filename Value="units\untDXUtils.pas"/>
+        <Caret Line="152" TopLine="136"/>
       </Position>
       <Position>
-        <Filename Value="units\untDX7Voice.pas"/>
-        <Caret Line="820" Column="29" TopLine="817"/>
+        <Filename Value="units\untDXUtils.pas"/>
+        <Caret Line="128" TopLine="112"/>
       </Position>
     </JumpHistory>
     <RunParams>
@@ -311,7 +309,7 @@
       <Modes ActiveMode="default">
         <Mode Name="default">
           <local>
-            <CommandLineParams Value="-m -f Trombones_(5).syx"/>
+            <CommandLineParams Value="-q -f dx7.sql -d extracted"/>
             <WorkingDirectory Value="C:\Users\Administrator\Documents\Lazarus\MDX_Tool\bin\Debug"/>
           </local>
         </Mode>
@@ -328,14 +326,16 @@
       <List Name="LaunchingApplication" Type="File" Count="1">
         <Item1 Value="C:\WINDOWS\system32\cmd.exe /C ${TargetCmdLine}"/>
       </List>
-      <List Name="CommandLineParameters" Count="7">
-        <Item1 Value="-m -f Trombones_(5).syx"/>
-        <Item2 Value="-i -f tx52.syx"/>
-        <Item3 Value="-i -f BUCK-1.SYX"/>
-        <Item4 Value="-i -f DMC-1.SYX"/>
-        <Item5 Value="-r -f DMC-1.SYX"/>
-        <Item6 Value="-r -f BUCK-1.SYX"/>
-        <Item7 Value="-i -r BUCK-1.SYX"/>
+      <List Name="CommandLineParameters" Count="9">
+        <Item1 Value="-q -f dx7.sql -d extracted"/>
+        <Item2 Value="-q -f dx.sql -d extracted"/>
+        <Item3 Value="-m -f Trombones_(5).syx"/>
+        <Item4 Value="-i -f tx52.syx"/>
+        <Item5 Value="-i -f BUCK-1.SYX"/>
+        <Item6 Value="-i -f DMC-1.SYX"/>
+        <Item7 Value="-r -f DMC-1.SYX"/>
+        <Item8 Value="-r -f BUCK-1.SYX"/>
+        <Item9 Value="-i -r BUCK-1.SYX"/>
       </List>
     </HistoryLists>
   </ProjectSession>
