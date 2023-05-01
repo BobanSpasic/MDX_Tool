@@ -22,14 +22,29 @@ uses
 procedure FindSYX(Directory: string; var sl: TStringList);
 procedure FindSYXRecursive(Directory: string; var sl: TStringList);
 procedure FindPERF(Directory: string; var sl: TStringList);
+procedure FindVCED_SYX(Directory: string; var sl: TStringList);
 procedure Unused(const A1);
 procedure Unused(const A1, A2);
 procedure Unused(const A1, A2, A3);
 function SameArrays(var a1, a2: array of byte): boolean;
+function PosBytes(aBytes: array of byte; aStream: TStream;
+  aFromPos: integer = 0): integer;
 function GetValidFileName(aFileName: string): string;
 function ExtractFileNameWithoutExt(const AFilename: string): string;
+function Printable(c: char): char;
 
 implementation
+
+operator in (const AByte: byte; const AArray: array of byte): boolean; inline;
+var
+  Item: byte;
+begin
+  for Item in AArray do
+    if Item = AByte then
+      Exit(True);
+
+  Result := False;
+end;
 
 function ExtractFileNameWithoutExt(const AFilename: string): string;
 var
@@ -93,6 +108,18 @@ begin
   FindClose(sr);
 end;
 
+procedure FindVCED_SYX(Directory: string; var sl: TStringList);
+var
+  sr: TSearchRec;
+begin
+  if FindFirst(Directory + '*.syx', faAnyFile, sr) = 0 then
+    repeat
+      if sr.Size = 163 then
+        sl.Add(ExtractFileName(sr.Name));
+    until FindNext(sr) <> 0;
+  FindClose(sr);
+end;
+
 {$PUSH}{$HINTS OFF}
 procedure Unused(const A1);
 begin
@@ -116,6 +143,44 @@ begin
   while (i <= High(a1)) and (a1[i] = a2[i]) do
     Inc(i);
   Result := i >= High(a1);
+end;
+
+function PosBytes(aBytes: array of byte; aStream: TStream;
+  aFromPos: integer = 0): integer;
+var
+  i, j: integer;
+  arrLen: integer;
+begin
+  Result := -1;
+  arrLen := Length(aBytes);
+  if arrLen = 0 then Exit;
+  if arrLen >= aStream.Size then Exit;
+  if (aFromPos + arrLen) > aStream.Size then Exit;
+  aStream.Position := aFromPos;
+  while aStream.Position <= (aStream.Size - arrLen) do
+  begin
+    i := aStream.Position;
+    if aStream.ReadByte = aBytes[0] then
+    begin
+      Result := i;
+      if arrLen = 1 then Exit;
+      for j := 1 to High(aBytes) do
+      begin
+        if Result <> -1 then
+          if aStream.ReadByte = aBytes[j] then
+          begin
+            Result := i;
+          end
+          else
+          begin
+            Result := -1;
+            //Exit;
+          end;
+        //Exit;
+      end;
+      if Result <> -1 then Exit;
+    end;
+  end;
 end;
 
 function GetValidFileName(aFileName: string): string;
@@ -156,6 +221,13 @@ begin
     SetLength(FFileWithExt, Length(FFileWithExt) - 1);
 
   Result := FFileWithExt;
+end;
+
+function Printable(c: char): char;
+begin
+  if (Ord(c) > 31) and (Ord(c) < 127) then Result := c
+  else
+    Result := #32;
 end;
 
 end.

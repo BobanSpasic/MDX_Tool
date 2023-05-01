@@ -10,10 +10,6 @@
  This program can get some info from Yamaha DX7 SysEx files. The info is more about the integrity/corruption of the files.
  Second aspect of the program is to repair some of the common corrupted files found on the internet.
  Third aspect (not yet implemented) will be the conversion from VMEM to VCED and vice-versa.
- 
- ToDo:
- - conversion VMEM <> VCED
- - duplicate finder along a collection of files
 }
 
 program MDX_Tool;
@@ -23,7 +19,7 @@ program MDX_Tool;
 uses
  {$IFDEF UNIX}
   cthreads,
-                 {$ENDIF}
+                  {$ENDIF}
   Classes,
   SysUtils,
   CustApp,
@@ -98,6 +94,12 @@ type
       if trim(ExtractFileDir(fInput)) = '' then
         fInput := IncludeTrailingPathDelimiter(GetCurrentDir) + fInput;
       if RepairDX7SysEx(fInput, slReport) then
+      begin
+        for i := 0 to slReport.Count - 1 do
+          WriteLn(slReport[i]);
+      end
+      else
+      if MultiVCED2VMEM(fInput, slReport) then
       begin
         for i := 0 to slReport.Count - 1 do
           WriteLn(slReport[i]);
@@ -491,7 +493,7 @@ type
       end;
     end;
 
-        if HasOption('q', 'quest') then
+    if HasOption('q', 'quest') then
     begin
       if not FileExists(fInput) then
       begin

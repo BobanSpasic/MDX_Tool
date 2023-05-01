@@ -91,6 +91,7 @@ type
     LM__MCRTE1   274 byte   Micro Tuning Edit Buffer FULL
     LM__8023S0    26 byte   System
     LM__8073S0    42 byte   System
+    LM__8952PM   171 byte   TX802 Performance
     }
   end;
 
@@ -103,9 +104,6 @@ function ContainsDX7BankDump(dmp: TMemoryStream;
 function RepairDX7SysEx(aFileName: string; const Report: TStrings): boolean;
 function CropHeaders(aFileName: string): boolean;
 function CheckSum(dmp: TMemoryStream; StartPos, DumpLen: integer): boolean;
-function PosBytes(aBytes: array of byte; aStream: TStream;
-  aFromPos: integer = 0): integer;
-function Printable(c: char): char;
 
 implementation
 
@@ -118,44 +116,6 @@ begin
       Exit(True);
 
   Result := False;
-end;
-
-function PosBytes(aBytes: array of byte; aStream: TStream;
-  aFromPos: integer = 0): integer;
-var
-  i, j: integer;
-  arrLen: integer;
-begin
-  Result := -1;
-  arrLen := Length(aBytes);
-  if arrLen = 0 then Exit;
-  if arrLen >= aStream.Size then Exit;
-  if (aFromPos + arrLen) > aStream.Size then Exit;
-  aStream.Position := aFromPos;
-  while aStream.Position <= (aStream.Size - arrLen) do
-  begin
-    i := aStream.Position;
-    if aStream.ReadByte = aBytes[0] then
-    begin
-      Result := i;
-      if arrLen = 1 then Exit;
-      for j := 1 to High(aBytes) do
-      begin
-        if Result <> -1 then
-          if aStream.ReadByte = aBytes[j] then
-          begin
-            Result := i;
-          end
-          else
-          begin
-            Result := -1;
-            //Exit;
-          end;
-        //Exit;
-      end;
-      if Result <> -1 then Exit;
-    end;
-  end;
 end;
 
 function ContainsDX_SixOP_Data_New(dmp: TMemoryStream; var StartPos: integer;
@@ -571,65 +531,6 @@ begin
   msCropped.Free;
 end;
 
-//function RepairDX7SysEx(aFileName, aOutFileName: string;
-//  const Report: TStrings): boolean;
-//var
-//  msToRepair: TMemoryStream;
-//  msRepaired: TMemoryStream;
-//  checksum: integer;
-//  bChk: byte;
-//  i, j: integer;
-//begin
-//  Result := False;
-//  msToRepair := TMemoryStream.Create;
-//  msRepaired := TMemoryStream.Create;
-//  msToRepair.LoadFromFile(aFileName);
-//  Report.Add('Repairing ' + aFileName);
-
-//  //32 VCEDs without header
-//  if msToRepair.Size = 4960 then
-//  begin
-//    Report.Add('File size = 4960. Saving separate VCED SysEx dumps.');
-//    msToRepair.Position := 0;
-//    for j := 1 to 32 do
-//    begin
-//      try
-//        msRepaired.Clear;
-//        msRepaired.Size := 0;
-//        //write DX7 VCED header
-//        msRepaired.WriteByte($F0);
-//        msRepaired.WriteByte($43);
-//        msRepaired.WriteByte($00);
-//        msRepaired.WriteByte($00);
-//        msRepaired.WriteByte($01);
-//        msRepaired.WriteByte($1B);
-
-//        //copy data
-//        msRepaired.CopyFrom(msToRepair, 155);
-
-//        //get checksum
-//        checksum := 0;
-//        msRepaired.Position := 6;
-//        while msRepaired.Position < (msRepaired.Size) do
-//          checksum := checksum + msRepaired.ReadByte;
-//        bChk := byte(((not (checksum and 255)) and 127) + 1);
-
-//        msRepaired.WriteByte(bChk);
-//        msRepaired.WriteByte($F7);
-//        Result := True;
-//      except
-//        on E: Exception do Result := False;
-//      end;
-//      if Result then msRepaired.SaveToFile(aOutFileName + 'DX7_R' +
-//          IntToHex(j, 2) + '.syx');
-
-//    end;
-//  end;
-
-//  msToRepair.Free;
-//  msRepaired.Free;
-//end;
-
 function CheckSum(dmp: TMemoryStream; StartPos, DumpLen: integer): boolean;
 var
   CalcCheckSum: integer;
@@ -651,13 +552,6 @@ begin
   else
     Result := True;
   dmp.Position := tmpPos;
-end;
-
-function Printable(c: char): char;
-begin
-  if (Ord(c) > 31) and (Ord(c) < 127) then Result := c
-  else
-    Result := #32;
 end;
 
 end.

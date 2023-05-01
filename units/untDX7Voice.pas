@@ -29,7 +29,7 @@ unit untDX7Voice;
 interface
 
 uses
-  Classes, HlpHashFactory, SysUtils, untDXUtils, untParConst;
+  Classes, HlpHashFactory, SysUtils, untUtils, untParConst;
 
 type
   TDX7_VMEM_Dump = array [0..127] of byte;
@@ -350,6 +350,7 @@ type
       Position: integer): boolean;
     procedure InitVoice; //set defaults
     function GetVoiceName: string;
+    procedure SetVoiceName(aName: string);
     function Get_VMEM_Params: TDX7_VMEM_Params;
     function Get_VCED_Params: TDX7_VCED_Params;
     function Set_VMEM_Params(aParams: TDX7_VMEM_Params): boolean;
@@ -849,6 +850,21 @@ begin
   s := s + Printable(chr(FDX7_VMEM_Params.VOICE_NAME_CHAR_9));
   s := s + Printable(chr(FDX7_VMEM_Params.VOICE_NAME_CHAR_10));
   Result := s;
+end;
+
+procedure TDX7VoiceContainer.SetVoiceName(aName: string);
+begin
+  while Length(aName) < 10 do aName := aName + ' ';
+  FDX7_VMEM_Params.VOICE_NAME_CHAR_1 := Ord(aName[1]);
+  FDX7_VMEM_Params.VOICE_NAME_CHAR_2 := Ord(aName[2]);
+  FDX7_VMEM_Params.VOICE_NAME_CHAR_3 := Ord(aName[3]);
+  FDX7_VMEM_Params.VOICE_NAME_CHAR_4 := Ord(aName[4]);
+  FDX7_VMEM_Params.VOICE_NAME_CHAR_5 := Ord(aName[5]);
+  FDX7_VMEM_Params.VOICE_NAME_CHAR_6 := Ord(aName[6]);
+  FDX7_VMEM_Params.VOICE_NAME_CHAR_7 := Ord(aName[7]);
+  FDX7_VMEM_Params.VOICE_NAME_CHAR_8 := Ord(aName[8]);
+  FDX7_VMEM_Params.VOICE_NAME_CHAR_9 := Ord(aName[9]);
+  FDX7_VMEM_Params.VOICE_NAME_CHAR_10 := Ord(aName[10]);
 end;
 
 function TDX7VoiceContainer.Save_VMEM_ToStream(var aStream: TMemoryStream): boolean;

@@ -19,7 +19,7 @@ interface
 
 
 uses
-  Classes, SysUtils, untDX7Voice, untDX7Bank, untDXUtils, untUtils,
+  Classes, SysUtils, untDX7Voice, untDX7Bank, untUtils,
   untSysExUtils, HlpHashFactory;
 
 procedure GetVoices(aStream: TMemoryStream; var aList: TStringList);
@@ -37,6 +37,7 @@ function CheckVCEDIntegrity(aStream: TMemoryStream; aPos: integer;
   var aNullVoice: boolean): integer;
 procedure NormalizeVMEM(aStream: TMemoryStream; aPos: integer; aFile: string);
 procedure NormalizeVCED(aStream: TMemoryStream; aPos: integer; aFile: string);
+function MultiVCED2VMEM(aFileName: string; const Report: TStrings): boolean;
 
 implementation
 
@@ -278,10 +279,10 @@ var
   abBODY: array[0..3] of byte = ($42, $4F, $44, $59);
   msVCED: TMemoryStream;
   msHeadless: TMemoryStream;
-  iCounter: Integer;
-  iPos: Integer;
-  checksum: Integer;
-  i: Integer;
+  iCounter: integer;
+  iPos: integer;
+  checksum: integer;
+  i: integer;
 begin
   msVCED := TMemoryStream.Create;
   msHeadless := TMemoryStream.Create;
@@ -305,12 +306,12 @@ begin
         msVCED.WriteByte($1B);
 
         msHeadless.CopyFrom(aStream, 155);
-        msHeadless.Position:=0;
+        msHeadless.Position := 0;
 
         msVCED.CopyFrom(msHeadless, 155);
 
-        msHeadless.Position:=0;
-        checksum :=0;
+        msHeadless.Position := 0;
+        checksum := 0;
         for i := 1 to 155 do
           checksum := checksum + msHeadless.ReadByte;
         checksum := ((not (checksum and 255)) and 127) + 1;
@@ -323,7 +324,9 @@ begin
         msVCED.Clear;
         Inc(iCounter);
       end;
-    end else break;
+    end
+    else
+      break;
   end;
   msVCED.Free;
   msHeadless.Free;
@@ -862,6 +865,40 @@ begin
     WriteLn('    Not a DX7 VMEM file');
   fBank.Free;
   fStream.Free;
+end;
+
+function MultiVCED2VMEM(aFileName: string; const Report: TStrings): boolean;
+var
+  fBank: TDX7BankContainer;
+  fVoice: TDX7VoiceContainer;
+  msFile: TMemoryStream;
+  i: integer;
+  iVoiceNr: integer;
+begin
+  Result := False;
+  fBank := TDX7BankContainer.Create;
+  fVoice := TDX7VoiceContainer.Create;
+  msFile := TMemoryStream.Create;
+  msFile.LoadFromFile(aFileName);
+  if msFile.Size = 4960 then
+  begin
+    Report.Add('Multi-VCED file found. Converting to VMEM');
+    i := 0;
+    iVoiceNr := 1;
+    while i < 4960 do
+    begin
+      fVoice.Load_VCED_FromStream(msFile, i);
+      fBank.SetVoice(iVoiceNr, fVoice);
+      Inc(i, 155);
+      Inc(iVoiceNr);
+    end;
+    Result := True;
+    fBank.SaveBankToSysExFile(ExtractFileNameWithoutExt(aFileName) + '.vmem.syx');
+  end
+  else
+    Report.Add('Not a Multi-VCED');
+  fBank.Free;
+  fVoice.Free;
 end;
 
 end.
