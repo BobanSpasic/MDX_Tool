@@ -101,7 +101,8 @@ function ContainsDX7VoiceDump(dmp: TMemoryStream;
   var StartPos, StartDmp: integer): boolean;
 function ContainsDX7BankDump(dmp: TMemoryStream;
   var StartPos, StartDmp: integer): boolean;
-function RepairDX7SysEx(aFileName: string; const Report: TStrings): boolean;
+function RepairDX7SysEx(aFileName: string; const Report: TStrings;
+  aOverwrite: boolean = False): boolean;
 function CropHeaders(aFileName: string): boolean;
 function CheckSum(dmp: TMemoryStream; StartPos, DumpLen: integer): boolean;
 
@@ -323,7 +324,8 @@ begin
   end;
 end;
 
-function RepairDX7SysEx(aFileName: string; const Report: TStrings): boolean;
+function RepairDX7SysEx(aFileName: string; const Report: TStrings;
+  aOverwrite: boolean = False): boolean;
 var
   sDirRepaired: string;
   sNameRepaired: string;
@@ -441,7 +443,9 @@ begin
         iCalcChk := ((not (iCalcChk and 255)) and 127) + 1;
         msRepaired.WriteByte(iCalcChk);
         msRepaired.WriteByte($F7);
-        sNameRepaired := sDirRepaired + sNameRepaired + '_DX7_repaired.syx';
+        if aOverwrite then sNameRepaired := aFileName
+        else
+          sNameRepaired := sDirRepaired + sNameRepaired + '_DX7_repaired.syx';
         msRepaired.SaveToFile(sNameRepaired);
         Report.Add('File is just 4096 bytes long. Writting headers.');
         Result := True;
@@ -467,8 +471,10 @@ begin
       iCalcChk := ((not (iCalcChk and 255)) and 127) + 1;
       msRepaired.WriteByte(iCalcChk);
       msRepaired.WriteByte($F7);
-      sNameRepaired := sDirRepaired + sNameRepaired + '_' +
-        IntToStr(iDumpStart) + '_DX7_repaired.syx';
+      if aOverwrite then sNameRepaired := aFileName
+      else
+        sNameRepaired := sDirRepaired + sNameRepaired + '_' +
+          IntToStr(iDumpStart) + '_DX7_repaired.syx';
       msRepaired.SaveToFile(sNameRepaired);
       Result := True;
     end;

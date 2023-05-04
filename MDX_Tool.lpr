@@ -19,7 +19,7 @@ program MDX_Tool;
 uses
  {$IFDEF UNIX}
   cthreads,
-                  {$ENDIF}
+                   {$ENDIF}
   Classes,
   SysUtils,
   CustApp,
@@ -54,12 +54,14 @@ type
     iDmpPos: integer;
     bNullVoice: boolean;
     iErrCode: integer;
+    bOverwrite: boolean;
   begin
     bNullVoice := False;
     fInput := '';
+    bOverwrite := False;
     // quick check parameters
-    ErrorMsg := CheckOptions('himnzywrvcsxjqf:d:',
-      'help info hname vname normalize markcorr marknull repair voices crop split xsplit join quest file: dir:');
+    ErrorMsg := CheckOptions('hiomnzywrvcsxjqf:d:',
+      'help info overwrite hname vname normalize markcorr marknull repair voices crop split xsplit join quest file: dir:');
 
     if ErrorMsg <> '' then
     begin
@@ -79,6 +81,9 @@ type
     if HasOption('f', 'file') then
       fInput := GetOptionValue('f', 'file');
 
+    if HasOption('o', 'overwrite') then
+      bOverwrite := True;
+
     if HasOption('r', 'repair') then
     begin
       if not FileExists(fInput) then
@@ -93,13 +98,13 @@ type
       WriteLn('Repairing file ' + ExtractFileName(fInput));
       if trim(ExtractFileDir(fInput)) = '' then
         fInput := IncludeTrailingPathDelimiter(GetCurrentDir) + fInput;
-      if RepairDX7SysEx(fInput, slReport) then
+      if RepairDX7SysEx(fInput, slReport, bOverwrite) then
       begin
         for i := 0 to slReport.Count - 1 do
           WriteLn(slReport[i]);
       end
       else
-      if MultiVCED2VMEM(fInput, slReport) then
+      if MultiVCED2VMEM(fInput, slReport, bOverwrite) then
       begin
         for i := 0 to slReport.Count - 1 do
           WriteLn(slReport[i]);
@@ -298,7 +303,7 @@ type
             end
             else
             begin
-              NormalizeVMEM(msInputFile, iDmpPos, fInput);
+              NormalizeVMEM(msInputFile, iDmpPos, fInput, bOverwrite);
               WriteLn('VMEM data integrity is normalized');
             end;
           end;
@@ -311,7 +316,7 @@ type
             end
             else
             begin
-              NormalizeVCED(msInputFile, iDmpPos, fInput);
+              NormalizeVCED(msInputFile, iDmpPos, fInput, bOverwrite);
               WriteLn('VCED data integrity is normalized');
             end;
           end;
@@ -582,6 +587,8 @@ type
     writeln('                                               Input directory for -j parameter');
     writeln('                                               If it does not contain a drive letter, a sub-directory in');
     writeln('                                               the current directory will be created.');
+    writeLn('');
+    writeln('       -o               --overwrite          Overwrite source file at repairing or normalizing');
     writeLn('');
     writeln('  Example usage:');
     writeln('       MDX_Tool -i -f my_dx_file.syx');

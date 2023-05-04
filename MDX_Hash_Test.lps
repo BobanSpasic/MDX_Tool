@@ -68,6 +68,7 @@
       <Unit>
         <Filename Value="MDX_Hash_Test.lpr"/>
         <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
         <CursorPos X="24" Y="92"/>
         <UsageCount Value="129"/>
         <Loaded Value="True"/>
@@ -75,7 +76,6 @@
       <Unit>
         <Filename Value="untDXObjInterface.pas"/>
         <IsPartOfProject Value="True"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="4"/>
         <TopLine Value="708"/>
         <CursorPos X="29" Y="727"/>
@@ -117,8 +117,8 @@
       <Unit>
         <Filename Value="units\untDX7Voice.pas"/>
         <EditorIndex Value="5"/>
-        <TopLine Value="862"/>
-        <CursorPos X="38" Y="865"/>
+        <TopLine Value="759"/>
+        <CursorPos X="36" Y="779"/>
         <UsageCount Value="43"/>
         <Loaded Value="True"/>
       </Unit>
@@ -257,10 +257,6 @@
       </Position>
       <Position>
         <Filename Value="untDXObjInterface.pas"/>
-        <Caret Line="143" Column="15" TopLine="158"/>
-      </Position>
-      <Position>
-        <Filename Value="untDXObjInterface.pas"/>
         <Caret Line="190" Column="52" TopLine="159"/>
       </Position>
       <Position>
@@ -302,6 +298,10 @@
       <Position>
         <Filename Value="untDXObjInterface.pas"/>
         <Caret Line="131" Column="5" TopLine="111"/>
+      </Position>
+      <Position>
+        <Filename Value="MDX_Hash_Test.lpr"/>
+        <Caret Line="92" Column="24"/>
       </Position>
     </JumpHistory>
     <RunParams>

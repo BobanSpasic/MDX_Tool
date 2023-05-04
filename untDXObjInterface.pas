@@ -35,9 +35,12 @@ function CheckVMEMIntegrity(aStream: TMemoryStream; aPos: integer;
   var aNullVoice: boolean): integer;
 function CheckVCEDIntegrity(aStream: TMemoryStream; aPos: integer;
   var aNullVoice: boolean): integer;
-procedure NormalizeVMEM(aStream: TMemoryStream; aPos: integer; aFile: string);
-procedure NormalizeVCED(aStream: TMemoryStream; aPos: integer; aFile: string);
-function MultiVCED2VMEM(aFileName: string; const Report: TStrings): boolean;
+procedure NormalizeVMEM(aStream: TMemoryStream; aPos: integer;
+  aFile: string; aOverwrite: boolean = False);
+procedure NormalizeVCED(aStream: TMemoryStream; aPos: integer;
+  aFile: string; aOverwrite: boolean = False);
+function MultiVCED2VMEM(aFileName: string; const Report: TStrings;
+  aOverwrite: boolean = False): boolean;
 
 implementation
 
@@ -674,7 +677,8 @@ begin
   slReport.Free;
 end;
 
-procedure NormalizeVMEM(aStream: TMemoryStream; aPos: integer; aFile: string);
+procedure NormalizeVMEM(aStream: TMemoryStream; aPos: integer;
+  aFile: string; aOverwrite: boolean = False);
 var
   fBank: TDX7BankContainer;
   fVoice: TDX7VoiceContainer;
@@ -682,10 +686,14 @@ var
   msOutFile: TMemoryStream;
   i: integer;
 begin
-  sOutName := ExtractFileName(aFile);
-  sOutName := ExtractFileNameWithoutExt(sOutName);
-  sOutName := IncludeTrailingPathDelimiter(ExtractFileDir(aFile)) +
-    sOutName + '.normalized.syx';
+  if aOverwrite then sOutName := aFile
+  else
+  begin
+    sOutName := ExtractFileName(aFile);
+    sOutName := ExtractFileNameWithoutExt(sOutName);
+    sOutName := IncludeTrailingPathDelimiter(ExtractFileDir(aFile)) +
+      sOutName + '.normalized.syx';
+  end;
 
   msOutFile := TMemoryStream.Create;
 
@@ -708,16 +716,21 @@ begin
   fVoice.Free;
 end;
 
-procedure NormalizeVCED(aStream: TMemoryStream; aPos: integer; aFile: string);
+procedure NormalizeVCED(aStream: TMemoryStream; aPos: integer;
+  aFile: string; aOverwrite: boolean = False);
 var
   fVoice: TDX7VoiceContainer;
   sOutName: string;
   msOutFile: TMemoryStream;
 begin
-  sOutName := ExtractFileName(aFile);
-  sOutName := ExtractFileNameWithoutExt(sOutName);
-  sOutName := IncludeTrailingPathDelimiter(ExtractFileDir(aFile)) +
-    sOutName + '.normalized.syx';
+  if aOverwrite then sOutName := aFile
+  else
+  begin
+    sOutName := ExtractFileName(aFile);
+    sOutName := ExtractFileNameWithoutExt(sOutName);
+    sOutName := IncludeTrailingPathDelimiter(ExtractFileDir(aFile)) +
+      sOutName + '.normalized.syx';
+  end;
 
   msOutFile := TMemoryStream.Create;
 
@@ -867,7 +880,8 @@ begin
   fStream.Free;
 end;
 
-function MultiVCED2VMEM(aFileName: string; const Report: TStrings): boolean;
+function MultiVCED2VMEM(aFileName: string; const Report: TStrings;
+  aOverwrite: boolean = False): boolean;
 var
   fBank: TDX7BankContainer;
   fVoice: TDX7VoiceContainer;
@@ -893,7 +907,9 @@ begin
       Inc(iVoiceNr);
     end;
     Result := True;
-    fBank.SaveBankToSysExFile(ExtractFileNameWithoutExt(aFileName) + '.vmem.syx');
+    if not aOverwrite then
+      aFileName := ExtractFileNameWithoutExt(aFileName) + '.vmem.syx';
+    fBank.SaveBankToSysExFile(aFileName);
   end
   else
     Report.Add('Not a Multi-VCED');
