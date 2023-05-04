@@ -28,12 +28,15 @@ Usage: MDX_Tool.exe -parameters
        -j               --join               Join single voices (VCED) into a bank (VMEM)
                                                If the file voices.lst exists inside the input directory
                                                - the voices inside the bank will be sorted according to the list
+       -q               --quest              Rip MidiQuest SQL files (tested on MidiQuest 6)
 
        -f {filename}    --file={filename}    Input file (or output file for -j parameter)
        -d {directory}   --dir={directory}    Output directory for -s and -x parameters
                                                Input directory for -j parameter
                                                If it does not contain a drive letter, a sub-directory in
                                                the current directory will be created.
+
+       -o               --overwrite          Overwrite source file at repairing or normalizing
 
   Example usage:
        MDX_Tool -i -f my_dx_file.syx
