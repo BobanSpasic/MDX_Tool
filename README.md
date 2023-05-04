@@ -1,3 +1,5 @@
+The [wiki](https://github.com/BobanSpasic/MDX_Tool/wiki) here will contain more info on repairing the SysEx files. Do not "repair" your files without knowing what are you doing... or make backups before every operation.
+
 # MDX_Tool
 A tool for manipulating Yamaha DX7 VMEM and VCED SysEx files  
 
@@ -75,7 +77,10 @@ Usage: MDX_Collect.exe -parameters
        MDX_Collect -a -d NewFiles -r NewReports
        MDX_Collect -c -m MyCollection.hsl -i NewFiles.hsl -r MyReports
    ```
-         
+# MDX_Hash_Test
+Test the internal hashing functions. There was a problem with different generated hash sums if the voice was from a VCED or from a VMEM file.
+
+# Other stuff...
 External library HashLib is used in both tools to calculate hash sums: https://github.com/Xor-el/HashLib4Pascal
 
 Do not miss to take a look at the Wiki here. It is still in the development, but it will contain info on DX7 SysEx files, and how to repair the corrupted files.
