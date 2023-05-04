@@ -69,8 +69,8 @@
         <Filename Value="MDX_Collect.lpr"/>
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="103"/>
-        <CursorPos X="77" Y="180"/>
+        <TopLine Value="165"/>
+        <CursorPos X="29" Y="171"/>
         <UsageCount Value="89"/>
         <Loaded Value="True"/>
       </Unit>

@@ -168,7 +168,7 @@ type
   begin
     writeln('');
     writeln('');
-    writeln('MDX_Collect 1.7 - tool for managing DX7 SysEx collections');
+    writeln('MDX_Collect 1.8 - tool for managing DX7 SysEx collections');
     writeln('Author: Boban Spasic');
     writeln('https://github.com/BobanSpasic/MDX_Tool');
     writeln('');
