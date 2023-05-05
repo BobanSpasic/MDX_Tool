@@ -1,5 +1,7 @@
 The [wiki](https://github.com/BobanSpasic/MDX_Tool/wiki) here will contain more info on repairing the SysEx files. Do not "repair" your files without knowing what are you doing... or make backups before every operation.
 
+Similear set of tools, but for the 4OP series, are located [here](https://github.com/BobanSpasic/MDX_Tool_4OP)
+
 # MDX_Tool
 A tool for manipulating Yamaha DX7 VMEM and VCED SysEx files  
 
